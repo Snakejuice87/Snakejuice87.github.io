@@ -6,8 +6,7 @@
 - ![mp4 1st](https://github.com/Snakejuice87/Snakejuice87.github.io/assets/117030692/b3ebc747-731e-46af-a6ff-e95b40f39c05)
 
 
-
-### https://github.com/Snakejuice87/Snakejuice87.github.io/assets/117030692/b3ebc747-731e-46af-a6ff-e95b40f39c05
+https://github.com/Snakejuice87/Snakejuice87.github.io/assets/117030692/b3ebc747-731e-46af-a6ff-e95b40f39c05
 
 
  <video style="width: 300px; height: auto;" src="https://dl.phncdn.com/pics/gifs/043/634/361/43634361a.mp4" controls="" loop="" unmuted="" autoplay=""></video
