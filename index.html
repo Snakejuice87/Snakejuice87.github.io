@@ -29,25 +29,26 @@
 		color: red;
 		pointer-events: none;
 	}
-	div#wrapper > div > video, div#wrapper > div > img {
-		max-width: 400px;
+	div#wrapper > div > video {
+		max-width: 320px;
+		height: auto;
+	}
+	div#wrapper > div > img {
+		max-width: 320px;
 		height: auto;
 	}
 	div#wrapper {
-	/*	display: flex; */
-	/*	flex: wrap; */
-	/*	max-width: inherit; */
+		display: grid; 
 		padding: 20px 0;
 	}
 	div#wrapper > div {
-	/*	display: block;  */
-		float:left;
-			  width : 11%;
-			  padding : 1%;
-			height: 260px;
-			  max-width : 340px;
-			  min-width : 310px;
-				}
+		float: left;
+		  width : 11%;
+	          padding : 1%;
+		height: 260px;
+		 max-width : 340px;
+	         min-width : 310px;
+	}
 	div#wrapper > div > span {
 		color: white;
 		text-decoration: underline;
