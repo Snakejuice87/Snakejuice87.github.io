@@ -8,7 +8,6 @@
     <meta name="language" content="en">
     <base href="/">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <link href="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js">
     <style>
       * {
         font-family: helvetica;
@@ -118,8 +117,8 @@
         </p>
         <video src="https://github.com/Snakejuice87/Snakejuice87.github.io/assets/117030692/9e418124-22fc-47ea-9a6e-01b7b555954a" loop controls unmuted></video>
       </div>
-    <p>---</p>
-    <div style="display: grid; position: relative;">
+    </div>
+    <div id="wrapper" style="display: grid; position: relative;">
       <div style="padding:5px; display: block; width: 900px; z-index: 9999;">
         <p>
          <span text-align="center" font-size="28px">
@@ -129,8 +128,7 @@
         <audio unmuted controls src="https://raw.githubusercontent.com/Snakejuice87/Snakejuice87.github.io/main/_posts/Sammy%20%26%20Hailey%20A%2B%20(Boosted)%20-%20Me%20%20Snake%20n%20u%20stay%20there..%20I%20can%20make%20him%20come%20if%20I%20wanted.m4a"></audio>
       </div>
     </div>
-    <p>---</p>
-    <div style="display: flex;">
+     <div style="display: flex;">
       <div>
         <span>20220615_102823_Original.PNG</span>
         <img src="https://github.com/Snakejuice87/Snakejuice87.github.io/assets/117030692/a26c237c-e71d-4131-8144-2772c1360266" />
@@ -140,10 +138,9 @@
         <img src="https://github.com/Snakejuice87/Snakejuice87.github.io/assets/117030692/ada338c5-e824-4120-8315-816bbde33754" />
       </div>
     </div>
-    <p>---</p>
-    <script>
+      <script>
       $(function() {
-        $('.video').on('mouseenter', function() {
+        $('video').on('mouseenter', function() {
           if (this.paused) this.play();
         }).on('mouseleave', function() {
           if (!this.playing) this.pause();
