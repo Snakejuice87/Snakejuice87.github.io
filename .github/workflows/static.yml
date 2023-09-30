@@ -23,12 +23,10 @@ concurrency:
 
 jobs:
   # Single deploy job since we're just deploying
-  deploy:
-    environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
+      runs-on: ubuntu-latest
+steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Pages
@@ -45,8 +43,8 @@ jobs:
       - name: Proof HTML
   # You may pin to the exact commit or the version.
   # uses: anishathalye/proof-html@7dc4ab1eb4b36b12d0012657111b180770867139
-  uses: anishathalye/proof-html@v2.1.2
-  with:
+uses: anishathalye/proof-html@v2.1.2
+   with:
     # The directory to scan
     directory: 
     # Check whether external anchors exist
