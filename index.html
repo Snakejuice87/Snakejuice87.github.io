@@ -7,6 +7,8 @@
     <meta charset="utf-8">
     <meta name="language" content="en">
     <base href="/">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<link href="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></link>
 <style>
 	* {
 		font-family: helvetica;
@@ -38,8 +40,8 @@
 		height: auto;
 	}
 	div#wrapper {
-		display: grid; 
-		padding: 20px 0;
+		/* display: grid; */
+		/* padding: 20px 0; */
 	}
 	div#wrapper > div {
 		float: left;
@@ -121,5 +123,14 @@
 </div>
 <p>---</p>
 </div>
+	   		<script>
+  $(function(){
+    $('.video').on('mouseenter', function(){
+        if( this.paused) this.play();
+    }).on('mouseleave', function(){
+        if( !this.playing) this.pause();
+    });
+});
+</script>
 </body>
 </html>
