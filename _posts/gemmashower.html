@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2023 by Snakejuice87 (http://jsbin.com/zamuwit/1/edit)
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+  <style>
+  * {
+   font-family: helvetica;
+  font-size: 20px;
+   }
+   
+  body {
+  padding-bottom: 100px;
+  overflow: scroll;
+}
+
+.header {
+  position: responsive;
+  display: block;
+  width: 100%;
+  height: 40px;
+  margin-top: -8px;
+  background-color: black;
+}
+
+div.header {
+  text-align: center;
+  color: white;
+}
+
+.wrapper {
+  float: left;
+  position: absolute;
+  display: block;
+  width: 97%;
+  /* height: 600px; */
+  background-color: lightgrey;
+  margin-top: 30px !important;
+  /* padding: 5px 20px; */
+  margin: 0 5px;
+}
+
+.innerwrap {
+  display: block;
+  position: relative;
+  background-color: grey;
+  /*  height: 60%;  */
+  width: 95%;
+  margin: -10px 25px;
+}
+
+video {
+  padding: 10px 10px;
+  max-width: 300px;
+  height: auto;
+  border: 2px solid grey;
+  /*  padding: 10px 0px; */
+}
+
+video:hover {
+  border:2px solid yellow;
+  }
+
+.spc {
+  padding: 30px 0;
+  height: 400px;
+  display: block;
+}
+</style>
+  <script id="jsbin-javascript">
+(function() {
+	'use strict';
+	var elements = document.querySelectorAll("video");
+	for (var element of elements) {
+		element.setAttribute("controls", true);
+		element.setAttribute("loop", true);
+		element.setAttribute("muted", false);
+		element.setAttribute("autoplay", true);
+		element.controls = true;
+		element.loop = true;
+		element.muted = false;
+		element.autoplay = true;
+	}
+	{
+	if (typeof element.loop == 'boolean') { // loop supported
+		element.loop = true;
+	} else { // loop property not supported
+		element.addEventListener('ended', function() {
+			this.currentTime = 0;
+			this.play();
+		}, false);
+	}
+	//...
+	element.play();
+	}
+	})
+</script>
+</head>
+<body>
+ <div class="header">
+    gemma shower scenes
+  </div>
+  <div class="wrapper">
+    <div class="innerwrap">
+      <video controls src="https://web.archive.org/web/20211008033258im_/https://el.phncdn.com/pics/gifs/037/997/511/37997511a.mp4"></video>
+      <video controls src="https://web.archive.org/web/20211008074448im_/https://cl.phncdn.com/pics/gifs/037/997/421/37997421a.mp4"></video>
+      <video controls src="https://web.archive.org/web/20211008032057im_/https://dl.phncdn.com/pics/gifs/037/997/471/37997471a.mp4"></video>
+      <video controls src="https://web.archive.org/web/20211008032137im_/https://dl.phncdn.com/pics/gifs/037/997/451/37997451a.mp4"></video>
+      <video controls src="https://web.archive.org/web/20211008032137im_/https://dl.phncdn.com/pics/gifs/037/997/491/37997491a.mp4"></video>
+    </div>
+  </div>
+  <div class="spc">
+    <br>
+  </div>
+
+</body>
+</html>
