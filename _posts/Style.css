@@ -1,3 +1,4 @@
+
       * {
         font-family: helvetica;
         color: black;
@@ -29,13 +30,14 @@
       }
 
       div#wrapper>div {
-				border: 2px solid grey;
+       display: inline-grid;
+	border: 2px solid grey;
         float: left;
         width: 13%;
         padding: 1%;
-        height: 2680px;
+        height: auto;
         max-width: 350px;
-        min-width: 310px;
+        min-height: 360px;
       }
 
       div#wrapper>div>span {
