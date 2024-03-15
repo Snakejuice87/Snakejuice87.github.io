@@ -11,7 +11,7 @@
     <style>
       * {
         font-family: helvetica;
-        color: black;
+        color: white;
       }
 
       body {
@@ -39,7 +39,7 @@
          display: grid;
       }
 
-      div#wrapper>div {
+      div#wrapper>div, #wrapper>div>* {
        display: inline-grid;
 	border: 2px solid grey;
         float: left;
@@ -51,7 +51,7 @@
       }
 
       div#wrapper>div>span {
-        color: black;
+        color: white;
         text-decoration: underline;
         font-size: 18px;
         font-weight: 600;
