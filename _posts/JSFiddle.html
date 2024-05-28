@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="language-en" lang="en">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+			<style>
+				* {
+					font-family: helvetica;
+				}
+body {
+  padding-bottom: 100px;
+  overflow: scroll;
+  background: lightgrey;
+}
+
+.header {
+  position: responsive;
+  display: block;
+  width: 100%;
+  height: 40px;
+  margin-top: -8px;
+  background-color: black;
+}
+
+div.header {
+  text-align: center;
+  color: white;
+  padding-top: 15px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.wrapper {
+  float: center;
+  position: absolute;
+  display: block;
+  width: calc(100% - 50px);
+  height: 520px;
+  background-color: white;
+  margin-top: 30px;
+  margin-left: 20px;
+  /* padding: 5px 120px; */
+}
+
+.innerwrap {
+  display: block;
+  position: relative;
+  background-color: white;
+  /*  height: 60%;  */
+  width: calc(100% - 70px);
+  margin: 10px 25px;
+  margin-left: 15px;
+  padding: 10px;
+    padding-left: 30px;
+}
+
+video {
+  padding: 5px 5px;
+  width: 300px;
+  height: auto;
+  /*  padding: 10px 0px; */
+}
+
+.spc {
+  padding: 30px 0;
+  height: 400px;
+  display: block;
+}
+			</style>
+		</head>
+		<body>
+			 <div class="header">Gemma Shower PH gif videos</div>
+<!--			 
+ <button onclick="openFullscreen();">Open Fullscreen</button>
+<button onclick="closeFullscreen();">Close Fullscreen</button>
+​-->
+ <div class="wrapper">
+   <div class="innerwrap">
+    
+     <video loop onmouseover="this.play()" onmouseout="this.pause()" unmuted poster="https://web.archive.org/web/20211008032137im_/https://dl.phncdn.com/pics/gifs/037/997/511/(m=bKOCwLV)(mh=OHf9SjW6VnV1a6v_)37997511a.jpg" src="https://web.archive.org/web/20211008033258im_/https://el.phncdn.com/pics/gifs/037/997/511/37997511a.mp4">failed</video>
+    
+     <video loop onmouseover="this.play()" onmouseout="this.pause()" unmuted poster="https://web.archive.org/web/20211008032057im_/https://dl.phncdn.com/pics/gifs/037/997/421/(m=bKOCwLV)(mh=ykIomIFWXZeeYbQu)37997421a.jpg" src="https://web.archive.org/web/20211008074448im_/https://cl.phncdn.com/pics/gifs/037/997/421/37997421a.mp4">failed</video>
+    
+     <video loop onmouseover="this.play()" onmouseout="this.pause()" unmuted poster="https://web.archive.org/web/20211008031731im_/https://cl.phncdn.com/pics/gifs/037/997/471/(m=bKOCwLV)(mh=Ecmse1K0FJ03BeKa)37997471a.jpg" src="https://web.archive.org/web/20211008032057im_/https://dl.phncdn.com/pics/gifs/037/997/471/37997471a.mp4">failed</video>
+    
+     <video loop onmouseover="this.play()" onmouseout="this.pause()" unmuted poster="https://web.archive.org/web/20211008031731im_/https://cl.phncdn.com/pics/gifs/037/997/451/(m=bKOCwLV)(mh=4xlr2zDIvo36GTfn)37997451a.jpg" src="https://web.archive.org/web/20211008032137im_/https://dl.phncdn.com/pics/gifs/037/997/451/37997451a.mp4">failed</video>
+    
+     <video loop onmouseover="this.play()" onmouseout="this.pause()" unmuted poster="https://web.archive.org/web/20211008032057im_/https://dl.phncdn.com/pics/gifs/037/997/491/(m=bKOCwLV)(mh=6p9y-UUjXTyT1aVf)37997491a.jpg" src="https://web.archive.org/web/20211008032137im_/https://dl.phncdn.com/pics/gifs/037/997/491/37997491a.mp4">failed</video>
+    
+     <video loop onmouseover="this.play()" onmouseout="this.pause()" unmuted poster="https://web.archive.org/web/20211008031733im_/https://cl.phncdn.com/pics/gifs/037/992/871/(m=bKOCwLV)(mh=UNQETjvgAYznx_eZ)37992871a.jpg" src="https://web.archive.org/web/20211008031733im_/https://cl.phncdn.com/pics/gifs/037/992/871/37992871a.mp4">failed</video>
+    
+   </div>
+
+ </div>
+     <button label="Play" onclick="fplay()">Play</button>     <button label="Mute" onclick="fmute()">- Controls</button>     <button label="unmute" onclick="funmute()">+ Controls</button>
+ <div class="spc">
+   <br>
+ </div>
+ 
+ <!--
+ <script>
+var retry = 0;
+$('video').on('error', function() {
+    if(retry < 4){
+      retry++;
+      alert('something went wrong! Retrying.. '+retry+'');
+      $n = $(this);
+        setTimeout(function(){
+        $n.appendTo( $('#video') );
+      },5000);
+    }
+});
+</script>
+
+<script>
+      		$(function(){
+    $(’.video’).on(’mouseenter’, function(){
+        if( this.paused) this.play();
+    }).on(’mouseleave’, function(){
+        if( !this.playing) this.pause();
+    });
+}
+</script>
+-->
+
+<script>
+(function() {
+  'use strict';
+  var elements = document.querySelectorAll("video");
+  for (var element of elements) {
+    element.setAttribute("loop", true);
+    element.loop = true;
+    element.controls = true;
+    // element.preload = true;
+  } {
+    if (typeof element.loop == 'boolean') { // loop supported
+      element.loop = true;
+    } else { // loop property not supported
+      element.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+      }, false);
+    }
+    //...
+    element.play();
+  }
+})();
+</script>
+
+<script>
+function fplay() {
+    var elems = document.querySelectorAll("video");
+  for (var elem of elems) {
+     elem.play();
+     elem.unmuted = true;
+  }
+  }
+</script>
+
+<script>
+  function fmute() {
+    var elems = document.querySelectorAll("video");
+  for (var elem of elems) {
+     elem.controls = false;
+  }
+  }
+</script>
+
+<script>
+  function funmute() {
+    var elems = document.querySelectorAll("video");
+  for (var elem of elems) {
+     elem.controls = true;
+  }
+  }
+</script>
+
+
+<!--
+<script>
+var elem = document.documentElement;
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+​
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+}
+</script>
+-->
+
+		</body>
+</html>
