@@ -66,8 +66,93 @@ video {
   display: block;
 }
 			</style>
-		</head>
-		<body>
+	<style>
+      * {
+        font-family: helvetica;
+        color: black;
+      }
+
+      body {
+        display: block;
+   /*     background-color: #333234; */
+      }
+
+      nav {
+        padding: 0 10px 20px 10px;
+        border-bottom: 2px solid white;
+      }
+
+      a {
+      /*  color: blue; */
+        font-weight: 700;
+      }
+
+      a#selected {
+        font-weight: 900;
+        color: orange;
+        pointer-events: none;
+      }
+
+      div#wrapper {
+         display: grid;
+      }
+
+      div#wrapper>div {
+       display: inline-grid;
+	border: 2px solid grey;
+        float: left;
+        width: 13%;
+        padding: 1%;
+        height: auto;
+	width: auto;
+        min-width: 350px;
+        min-height: 360px;
+      }
+
+      div#wrapper>div>span {
+        color: black;
+        text-decoration: underline;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      div#wrapper>div>video {
+        max-width: 340px;
+        height: auto;
+      }
+
+      audio {
+        width: 350px;
+      }
+
+      img {
+        max-width: 340px;
+        height: auto;
+      }
+
+      h1 {
+        color: orange;
+        text-decoration: underline;
+        font-size: 20px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a id="selected" href="https://snakejuice87.github.io/">Index</a>
+	    |  <a href="_posts/Template.html">Template</a>
+	    |  <a href="https://snakejuice87.github.io/_posts/Web-archive-uploaded-videos.html">Web archive uploaded videos</a>
+	    |  <a href="_posts/gemmashower.html">Gemma shower</a>
+	    | <a href="_posts/Aussie-sluts.html">Aussie Sluts</a>
+	    | <a href="_posts/archivebrowser.html">Deleted Pornhub Gifs & Gif Webms - SnakeJuice87</a>
+	    | <a href="_posts/ph gif refrence 2.html">Ph GIF refrence 2</a>
+	    | <a href="_posts/Github-made.html">Github made</a>
+	    | <a href="_posts/Gemma pornhub gif videos.html">Gemma pornhub gif videos</a> |
+	    <br>
+	    | <a href="_posts/JSFiddle.html">JSFiddle</a>
+	    | <a href="_posts/Web Archive full videos.html">Web Archive full videos</a> |
+    </nav>
 			 <div class="header">Gemma Shower PH gif videos</div>
 <!--			 
  <button onclick="openFullscreen();">Open Fullscreen</button>
