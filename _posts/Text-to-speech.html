@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech Example</title>
+</head>
+<body>
+    <h1>Google Text to Speech Example</h1>
+    <textarea id="text-input" rows="10" cols="50" placeholder="Enter text here..."></textarea>
+    <br>
+    <button onclick="speakText()">Speak</button>
+
+    <script>
+        function speakText() {
+            var text = document.getElementById('text-input').value;
+            var speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'en-AU';  // Set language as needed
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+</html>
