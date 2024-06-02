@@ -29,7 +29,7 @@
         // Function to highlight the current page
         function highlightCurrentPage() {
             const navLinks = document.querySelectorAll('#main-nav a');
-            const currentPage = window.location.pathname.split('/').pop();
+            const currentPage = window.location.pathname.pop();
 
             navLinks.forEach(link => {
                 if (link.getAttribute('href') === currentPage) {
