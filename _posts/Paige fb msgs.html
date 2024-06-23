@@ -1,0 +1,3306 @@
+<!DOCTYPE html>
+<html lang="en" > 
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Facebook Messenger Chat Emulation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.meta {
+  padding: 10px 10px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: grey;
+}
+
+ .meta:hover {
+  text-decoration: underline;
+  }
+
+.clearfix:after, .messages:after {
+  content: "";
+  display: table;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+
+body {
+  overscroll: hidden;
+  zoom: 1.4; 
+  background-color: black;
+  padding: 0px;
+}
+
+.screen {
+  background-color: #fff;
+  height: 490px; /* 740px */
+  width: 550px; /* 350px */
+  margin: 0 auto;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.conversation {
+  height: calc(100% - 0px);
+  overflow: auto;
+  padding: 10px;
+  padding-bottom: 0;
+}
+
+.messages {
+  margin-bottom: 2px;
+}
+
+.b4 {
+  display: flex;
+  height: 0px;
+}
+
+.b4 {
+  top: 0px; 
+  left: -5px;
+  display: block;
+  float: left;
+  position: relative;
+  height: 26px;
+  width: 26px;
+  background-image: url('https://dn790009.ca.archive.org/0/items/paige-acacia-facebook-2/IMG_3651.gif');
+  background-position: -5px 0px;
+  background-repeat: repeat;
+  background-size: 130%;
+  border-radius: 50px;
+  background-color: grey;
+}
+
+.prof {
+	display: none;
+	visibility: hidden;
+}
+
+.messages--received .message {
+  float: left;
+  background-color: #ddd;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.messages--received .message:first-child {
+  margin-top: -30px;
+  border-top-left-radius: 15px;
+}
+.messages--received .message:last-child {
+  border-bottom-left-radius: 15px;
+}
+.messages--sent .message {
+  float: right;
+  background-color: #1998e6;
+  color: #fff;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.messages--sent .message:first-child {
+  border-top-right-radius: 15px;
+}
+.messages--sent .message:last-child {
+  border-bottom-right-radius: 15px;
+}
+
+.message {
+  margin-left: 29px;
+  display: inline-block;
+  margin-bottom: 2px;
+  clear: both;
+  padding: 7px 13px;
+  font-size: 18px;
+  border-radius: 15px;
+  line-height: 1.4;
+}
+.message--thumb {
+  background-color: transparent !important;
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 0px !important;
+}
+
+.text-bar {
+  height: 50px;
+  border-top: 1px solid #ccc;
+}
+.text-bar__field {
+  float: left;
+  width: calc(100% - 50px);
+  height: 100%;
+}
+.text-bar__field input {
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  border: none;
+  position: relative;
+  vertical-align: middle;
+  font-size: 14px;
+}
+.text-bar__thumb {
+  float: left;
+  width: 50px;
+  height: 100%;
+  padding: 10px;
+}
+.text-bar__thumb:hover {
+  opacity: 0.8;
+}
+.text-bar__thumb .thumb {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.thumb {
+  display: block;
+}
+
+.anim-wiggle {
+  -webkit-animation: wiggle 0.2s ease infinite;
+          animation: wiggle 0.2s ease infinite;
+}
+
+.anim-wiggle-2 {
+  -webkit-animation: wiggle2 0.2s ease infinite;
+          animation: wiggle2 0.2s ease infinite;
+}
+
+@-webkit-keyframes wiggle {
+  0% {
+    transform: rotateZ(5deg);
+  }
+  50% {
+    transform: rotateZ(-5deg);
+  }
+  100% {
+    transform: rotateZ(5deg);
+  }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotateZ(5deg);
+  }
+  50% {
+    transform: rotateZ(-5deg);
+  }
+  100% {
+    transform: rotateZ(5deg);
+  }
+}
+@-webkit-keyframes wiggle2 {
+  0% {
+    transform: rotateZ(10deg);
+  }
+  50% {
+    transform: rotateZ(-10deg);
+  }
+  100% {
+    transform: rotateZ(10deg);
+  }
+}
+@keyframes wiggle2 {
+  0% {
+    transform: rotateZ(10deg);
+  }
+  50% {
+    transform: rotateZ(-10deg);
+  }
+  100% {
+    transform: rotateZ(10deg);
+  }
+}
+.thumb-img, .thumb {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("https://dn790009.ca.archive.org/0/items/paige-acacia-facebook-2/IMG_3651.gif");
+}
+</style>
+<base src="/">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="screen">
+	<div class="conversation">
+
+	<div id="start" class="meta" style="color: blue; font-weight: bold; text-decoration: underline; font-size: 18px; ">Paigee Lewiis & Chelsea Walker</div>
+	  		<div style="text-decoration: underline; color: grey; font-weight: 700; float: right; margin-top: 0px; opacity: 0.6;" onclick="myFunction2()">Go to Gemma</div>
+	  		<br>	  		<div style="text-decoration: underline; color: grey; font-weight: 700; float: right; margin-top: 0px; opacity: 0.6;" onclick="myFunction()">Go to Wayne</div>
+	<div class="meta" style="margin-top: -15px;">Paige Facebook msgs - 2013</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">remember me 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Umm</div>
+     				<div class="message">met couple times in balga</div>
+     				<div class="message">i think last time i seen you was last christmas? did u move away?</div>
+     				<div class="message">Yeah I live in Victoria now 😞 and I remember you 🙂</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u look the same 🙂 just more mature</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Thanks 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ur same age as me?</div>
+     				<div class="message">im almost 14</div>
+      		</div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+     				<div class="message">I am turned 13 this year on 11/1/2000</div>
+     				<div class="message">Like your really pretty</div>
+     				<div class="message">Nice </div>
+     				<div class="message">Dislike I haven't seen you in a long time </div>
+     				<div class="message">Rate 10/10</div>
+     				<div class="message">K nah</div>
+     				<div class="message">H yeah</div>
+     				<div class="message">D nah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">10/10</div>
+     				<div class="message">ur hell hot 🙂</div>
+     				<div class="message">wish i had ur boobs, and ur body lol. is that u doing splits in that photo?</div>
+     				<div class="message">n ur 13 😞 younger than me. lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Awh thanks beautiful!! xx and what photo am I doing to splits? Aha and yep I am younger than you</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">standing up holding leg above ur head</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeah pretty much aha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">that hell cool</div>
+     				<div class="message">u must have all the boys chasing u lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeh I know i learnt how to do it last year at cheer </div>
+        				<div class="message">And </div>
+        				<div class="message">Na no boys are chasing me 😞 </div>
+        				<div class="message">I like someone but I dated him and he broke up with me to go out with my friend!! 😞</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">wat a loser. u shouldnt like a mean person like that</div>
+     				<div class="message">ur sexy, u can get any guy</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeh true! </div>
+        				<div class="message">And thanks but I can't</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u could lol, probly even girls</div>
+     				<div class="message">i dont want a bf or any thing till im older</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">That's smart ahah you probably have all the boys chasing you! 🙂</div>
+       		</div>
+		   <div class="messages messages--sent">
+     				<div class="message">some boys like me lol. but i dont want a bf</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">True aha!</div>
+       				<div class="message">Do you have snapchat?</div>
+      		</div>
+          
+		   <div class="messages messages--sent">
+     				<div class="message">nope</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Instagram??</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nope, wats that?</div>
+     				<div class="message">to send pictures?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">No it's were you like follow people and they post pictures of ransoms things and that this is what's its like</div>
+        				<div class="message">My profile</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">oh ok, is it a fb app?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">No</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">oh haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha yep</div>
+       				<div class="message">Do u have Skype??</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nope 😞</div>
+     				<div class="message">my laptops crap</div>
+     				<div class="message">n mum put my fone in the bin lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Oh okay I have it all on my iPod and phone!! 🙂</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">mum found silly pics of me n my friend lol, so she thru my fone out</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Oh really</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">just bra n knickers n stuff lol in the bathroom</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Oh okay than haha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">shes dumb, im pretty sure every girl takes half naked fotos lol.. but she probly thought i was sending to some1</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">or am i just wierd? lol</div>
+     				<div class="message">so u havent? lol, now i feel wierd</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Na your not weird I have a really short top I take photos in haha i have a password on my iPod and phone aha</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">bet u look hot as lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ehehe idk! Lol</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah i just get bored n take bra pics n stuff. me n my girl friends show our new clothes like that  hhaha</div>
+     				<div class="message">nah i bet u do</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Lol that's sounds fun lol and maybe! 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">:)</div>
+     				<div class="message">but have to use a camera now lol.. no more fone</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">That would suck! 😞</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">ill send u 1 later if want lol, i rekon its fun</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Aha if u want lol</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">maybe not in my bra but lol.. dont want to freak u out</div>
+     				<div class="message">is ur short top a bube tube or sumthing? every time i talk about clothes it makes me want to go shopping haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">True hahahah  </div>
+        				<div class="message">And yeah</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">send me a picture of it?</div>
+     				<div class="message">not u in it ofcourse lol</div>
+     				<div class="message">or dont u have a camera fone?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">It's short and black ahah</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nice</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">is it hell short? or like to ur belly button? hard to tell lol</div>
+     				<div class="message">i might buy 1 🙂</div>
+     				<div class="message">im a shop a holic lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeah same and this is it on I have abs but you can't see them and its above my belly button</div>
+        				<div class="message">Ehe</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">niceee</div>
+     				<div class="message">thats not u?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeah it is 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">wow</div>
+       				<div class="message">ur hot 😉</div>
+       				<div class="message">im not a lezzo n but u is hot lol</div>
+      		</div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Thanks ehe</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u sure its u? 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yes it is my</div>
+       				<div class="message">Me*</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">this is an old 1, the full pic is me n my friend lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Oh okay than lol</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ill send u 1 later of my real nice top 🙂 is cool</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Kl</div>
+      		</div>
+
+				   <div class="messages messages--sent">
+     				<div class="message">did u just take that pic u sent just then? or u already have it? man i miss my fone bahah</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hahah I took t this morning</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">pity cant see u fully, but it looks nice 🙂</div>
+     				<div class="message">im a bit jelous lol</div>
+     				<div class="message">wat u do on the weekend?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Oh really haha and well I am going to a party tonight and I had my dance practice today and yeah ehe</div>
+        				<div class="message">Wbu?</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nuthin much, went n slept at my mates but was gay..</div>
+     				<div class="message">ended up going home n playing n stuff by myself lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Oh sounds fun lol</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+      				<div class="message">not realy lol</div>
+      				<div class="message">watched movie n stuff by myself hah</div>
+           </div>
+
+		   <div class="messages messages--sent">
+      				<div class="message">well, im gonna have shower n use my little friend 😛</div>
+      				<div class="message">if u want ill send ya that pic later? lol, i prob buy some clothes lol, send me ya sizes if u want some.. i get loyalty credits i shop that much haha.. cyyyyyaaaaa</div>
+      				<div class="message">xx</div>
+              </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">oh wait sorry 😞 ur not in perth. cant give u clothes unless i mail em lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ahaa lol true</div>
+      		</div>
+
+				   <div class="messages messages--sent">
+     				<div class="message">u still goin party?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeah it's later on tho ahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u going to wear ur black top? 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Na I am wearing a dress ehe</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">is it ur friends? or u just goin to a popular party?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">High school party heaps of year 9,8,7 and some year 10s will be there ehe</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u wearin a dress? like a casual 1?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">This is me wearing my dress I wearing tonight ehe</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hope u have fun 🙂 and becareful, ur hot n guys definatily try n get in ur pants lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Lol true ahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">WOW.. u look ver pretty</div>
+     				<div class="message">lookin good 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Thanks 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">U going to have to fight guys away lol</div>
+     				<div class="message">i love ur hair. is it all real? or exstentions</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">My hair Is all real</div>
+        				<div class="message">And thanks and yeah I don't think so eheh</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u might get lucky tonight 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Na I am to young ahah</div>
+       				<div class="message">😏</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol aye</div>
+     				<div class="message">thats why im not huntin a bf 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">True </div>
+        				<div class="message">If you were to get a boyfriend what would you like him to be like</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">tall, not to metro sexual.. blue eyes, and funny</div>
+     				<div class="message">wbu?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Someone around my hight </div>
+        				<div class="message">Blue eyes</div>
+        				<div class="message">Brown or blonde hair</div>
+        				<div class="message">Sweet</div>
+        				<div class="message">Not pushy</div>
+        				<div class="message">And </div>
+        				<div class="message">A good hugger</div>
+        				<div class="message">Ehe</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol, ive had a bf for a while 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Really</div>
+       				<div class="message">?? 🙂</div>
+       				<div class="message">Who?</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nah haha.. was talkin about myself 😀 lmao</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ahahahahaha</div>
+       				<div class="message">Cool 🙂 😀 😜😉😏😁</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hahah</div>
+     				<div class="message">u shouldnt do it.. trust me lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Shouldn't do what ehe!?</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Okay aha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">become ur own bf 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Oh hahahaha. Na I won't 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">mmm, i do it a lot 😛 its how i dont think of guys haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hahah smart lol 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+       				<div class="message">n fun 😛</div>
+       				<div class="message">supprised uve never tryd lol..</div>
+       				<div class="message">u dressed 4 ya party yet?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">I don't know if it is or isn't but I believe you ehe </div>
+       				<div class="message">And yeah</div>
+          </div>
+					
+					
+		   <div class="messages messages--sent">
+     				<div class="message">lol, sorry for talkin silly 🙂 but ur hell easy to talk to. lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Lol thanks</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u all dressed up now? u did ur hair or anything?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeah I just have to put alittle bit of make up on ehe I will do that soon tho</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">r u going to drink?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">I don't know really ehe depends on If. I am going to be smart. And not drink underage or be stupid and do drink I don't know yet ehe </div>
+       				<div class="message">I have drinken before but I have t for a while so Idk </div>
+       				<div class="message">Have you ever tried ?</div>
+      		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">yeah, but only a little bit.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeah same</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">2 cruisers got me drunk, but not too drunk lol</div>
+     				<div class="message">but i was home</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeah true</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">well if u drink, dont try do the splits 😛</div>
+     				<div class="message">haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I won't ahah and I am wearing a dress I Won't do the splits ahah</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yep so how is life?</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">good 🙂 not much to do tonight 4 me tough</div>
+     				<div class="message">going to be bored</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ahaha try and find something to do ahaha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">for now im talkin to u 🙂 then probly shower play then fall asleep to amovie</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha </div>
+       				<div class="message">What do you mean play??</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">😉 lol playyy in the shower haha</div>
+     				<div class="message">shhhh haha.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ohh haha 😉 yep lol</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hehe</div>
+     				<div class="message">is that dress strapless?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeah its strapless</div>
+       		</div>
+		   <div class="messages messages--sent">
+     				<div class="message">u going to wear strapless bra? or no bra?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Strapless bra ahaha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">where u get it?" i cant find em any where lol</div>
+     				<div class="message">oh but i mean a sexy strapless bra</div>
+     				<div class="message">so nvm lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ok than ehe</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">so hows school n stuff going?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Its going good heaps of homework but i dont do it haha wbu??</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">same haha</div>
+     				<div class="message">i just hang out with my mates lol and do my work then home lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haahah sounds interesting lol</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">can i see how you look in ur goin out dress? or do u look the same as the other pic?</div>
+     				<div class="message">its not very interesting hahaha</div>
+     				<div class="message">my older sister bought me a vibrator bahaha, thats the most interesting thing thats happend to me latley 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Hahaha really and yeah i will send another picture soon ehe</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah lol, i think she bought it to shame me out haha</div>
+     				<div class="message">i cant even use it lmao</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Hahah really  that would be very weird</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah was a little bit lol, but its cool 🙂 shes teaching me about the birds n the bees lol. n thats why she got me it</div>
+     				<div class="message">even though i cant use it bahah</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Hhahhaahahhaah O k</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">🙂 yeah shes wierd but cool</div>
+     				<div class="message">u doin ur makup?</div>
+     				<div class="message">doing</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeh i am doing makeup</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">well, i gotta go for 20 mins or so.. send me that pic 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Oaky</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">and ill send my nice foto later 🙂 if u want it?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Well I still have a hour before I leave</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">kk so i see u back on soon</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Okay</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">xx talk to u soon</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Bye xx</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">heyy</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haiiii</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u havent left yet 🙂 yay now i can see wat u look like haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Okay I will send it in a minute</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">kk</div>
+     				<div class="message">did u want me to send my pic 😀</div>
+     				<div class="message">aww u must have went to tha party.. i bet u looked smoking hot anyways 🙂 xx have fun</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hey I am at the party but outside for a little</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ahh kk</div>
+     				<div class="message">now u cant take me picture lol.. wanted to see u with makeup n dolled up</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I am wearing a little bit of makeup and heaps of hair spray this is a little bit before I left ahah I don't look that different</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">is that tonights?</div>
+     				<div class="message">2 secs its loading</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ok</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">woah</div>
+     				<div class="message">very nice 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Thanks</div>
+        				<div class="message">:)</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u got the guys chasing u there yet? lol. u look stunning</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Four guys asked me to hook up with them hahahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+      				<div class="message">did u do everything urself?</div>
+      				<div class="message">wat did u say?</div>
+           </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeh I did</div>
+        				<div class="message">And I said yea to one because he is really cute</div>
+        				<div class="message">And said no thanks to the others</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol.. u hooked up with him? just kissing?</div>
+     				<div class="message">or did u n him get fun touchy feely</div>
+     				<div class="message">oooh</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Hooked up with him and hahaha</div>
+        				<div class="message">And he touched me didn't touch ahah</div>
+        				<div class="message">And kissing</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">:O</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hahahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">he woulda loved ur dress than haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha true</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yep eheheh</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">so he fingerd? lol 😞 now i feel like it haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">No he didn't finger ahah  and you feel like what? Aha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i feel like having sex with my man lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ahaa</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">at least it sounds like ur having fun 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeah I am ehe!!! xx</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">dont let him rub u to much lol, u know wat happens wen us girls get turned on lol</div>
+     				<div class="message">:P</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Hahah true </div>
+        				<div class="message">He is coming</div>
+        				<div class="message">Hang on</div>
+        				<div class="message">:)</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">oooh</div>
+     				<div class="message">let me know wat heppens hehe</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Wow back haha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol.. wat happend?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">He umm wow </div>
+       				<div class="message">He went alittle bit excited haha he is really good at kissing</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">haha</div>
+     				<div class="message">detaillllsssss? 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Well when he came my way he saw me and got a little bit excited and you know what happens when a gay gets excited lol</div>
+        				<div class="message">He hugged me and than we started to kiss and yeh!</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol.. ive never even seen a penis b4 lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">are u drinkin?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Maybe na I have had one</div>
+       				<div class="message">That's all</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">make sure u dont get pregnate 😛</div>
+     				<div class="message">i hope u wore some sexy knickers lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I won't get pregnate I am not allowing it to go that far aha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ahhh kk</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yehh has</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah has?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">It was mean to be ahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol</div>
+     				<div class="message">ur mad 🙂 glad we met again</div>
+     				<div class="message">now u can give me sexual advice lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ahaha true I am coming down to Perth soon aha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">cool 😀</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh it is haha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u know much people around here?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">any1 i might know?</div>
+     				<div class="message">nah nvm bout that haha.. u just keep ur hookin up lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ahah I will lol</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">show him ur gstring lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">What a gstring?</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol jokes</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Okay than lol</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">thought id guess wat underwear ur wearing lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Oh lol</div>
+       				<div class="message">No I am not wearing on of than</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">huh? ur not wearing any 😮 lol nah</div>
+     				<div class="message">so how far do u go? obviously not sex</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I am wearing them lol</div>
+        				<div class="message">And we have been to the bedroom but only make out not sex aha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol, yeah i meant u dont have sex? how far do u go?</div>
+     				<div class="message">like.. head? or hands?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">What do you mean head or hands</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">or grinding</div>
+     				<div class="message">like cause u dont have sex.. how far do u go with guys? head jobs? handjobs?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Hand and maybe head ahahahahaha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">does it feel good lol?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">It can at times aha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ur sooo cool haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha</div>
+       				<div class="message">Thanks</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">how come ur 13 n so hot n having mad fun haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Thanks </div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">does that mean uve probly had fun in the shower 😛 lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">No I haven't had fun in the shower</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">out of the shower? 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hmm</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">😀 thats a yes hehe</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Maybe lol ?</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hehe not our fault hey it feels so nice hey lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">What the... Have you?</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ummm with myself lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">have u?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">To a guy I have lol not myself tho</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">uve never.. 😕 i do it probly every day hahaha</div>
+     				<div class="message">feels awsome</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Really</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hell yeah</div>
+     				<div class="message">well i dont know compared to if a guy gets u off lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Lol well.. Sounds interesting aha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i told u u would have guys hanging off u 😀</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">True lol</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">its fun.. try it some time lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Maybe hahaha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol</div>
+     				<div class="message">that guy ur hooking up with must be hot lol</div>
+     				<div class="message">if u chose him out of all of em</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">He is really cute and hot ehe</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol, wats happening? u guys not going at it?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">We are we're hugging at the moment</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">:O</div>
+     				<div class="message">hehe</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeah</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hmm r u umm aroused lol</div>
+     				<div class="message">lol.. now thats the time 4 a picture</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">No</div>
+        				<div class="message">Haha</div>
+        				<div class="message">Maybe a picture later lol</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">did u want me to stop annoying u and let u party n hookin?</div>
+     				<div class="message">cause im probly just annoying u lol.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Your not annoying you awesome to talk to</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol</div>
+     				<div class="message">:)</div>
+     				<div class="message">so r u, but ur making me realy horny lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Hahaha really 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah lol.. dont know why haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha that's normal haa</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">is it? or u teasing me? lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">It is normal</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">for a girl to get horny over another girl?</div>
+     				<div class="message">hooking up</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">It is normal heaps of people do it it's alright ha</div>
+        				<div class="message">Haha this guy is my best mate and he said this to me</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">oooh</div>
+     				<div class="message">lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Aha yeah</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u gettin guys every where lol</div>
+     				<div class="message">see.. now u gotta admit ur hot as sex bomb lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha thanks and true ehe</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hmmm</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hmm</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">got any more sexy pics like ur mini top 1 lolz</div>
+     				<div class="message">haha</div>
+     				<div class="message">hehe</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Wow your so pretty</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hmmm</div>
+     				<div class="message">ty 🙂</div>
+     				<div class="message">i still think ur prettier</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">No you are</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">🙂 we both think other way lol</div>
+     				<div class="message">Before the party!! 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">True</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nice 🙂</div>
+     				<div class="message">very nice.. ur so beautiful.. n ur body is so hot</div>
+          </div>
+		
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">True and thanks princess</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hmmm so uve gotten horny over a girl b4 aswell? so its not that wierd? lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">I have kinda aha it's alright</div>
+       				<div class="message">It not weird</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah.. ur just hot, lol</div>
+     				<div class="message">dont worry im not gay 🙂 but i like getting ur pics haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha thanks and I know your not aha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">r u still hookin in with that guy?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Nope a different one now java</div>
+       				<div class="message">Haha*</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">truuu lol</div>
+     				<div class="message">ur crazy hahah</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yepp</div>
+        				<div class="message">And hahaha I know right lol</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">did u do anything with the other 1?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Make out that's all ha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">:/</div>
+     				<div class="message">i thought he was fingering u?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Aha</div>
+        				<div class="message">Maybe</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">lol 🙂</div>
+     				<div class="message">dont need to be shy lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I know ahaha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">awww lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ehe</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">im missing out</div>
+     				<div class="message">lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Awh I wish you were here</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nah, cause i probly try for u instead of guys 😛 haha</div>
+     				<div class="message">nah i wish aswell</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha your funny lol </div>
+        				<div class="message">And yeah we should meet up when I came to Perth next</div>
+        				<div class="message">?</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">for sure 🙂 that be cool</div>
+     				<div class="message">wen r u coming next?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Next school holidays or Maybe sooner</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">sweet lol</div>
+     				<div class="message">are u still hookin with that 2nd guy now?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh it is yeah but he went to go get drinks. Lol</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol, hehe</div>
+     				<div class="message">i can picture u in ur dress lol</div>
+     				<div class="message">man ud look so hot in ur dress with a hand up it haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">I will bring it down when I do lol</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol awsome</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hahhahaahaha</div>
+     				<div class="message">Yeah</div>
+     				<div class="message">It is loll</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">tell java i said take a picture 4 me 😛 nah jokes haha.</div>
+     				<div class="message">i bet 😉</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ahah 😜</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">is this guy fingering u? 😀</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Not yet ahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">but u want him 2 huh lolz</div>
+     				<div class="message">Yeh kinda lol</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">man u must be getting all kinds of wet lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ahaha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">how can u be quiet? dont u like, wiggle n make noises? lol. or u in a corner or sumthing</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Where in the bedroom ahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ahhhh makes sense</div>
+     				<div class="message">is he back yet? lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yep and yeah he is kissing me</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">mmm</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Mm</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">sexy picture time nah haha</div>
+     				<div class="message">well ill leave u alone for a little bit so u can enjoy him lol.. im pretty wet lol. im going to get off hahaha brb</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ahaha okay</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">unless u going to take a sexy pic.</div>
+     				<div class="message">nah haha bye for a couple mins</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Bye</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol, got to stop.</div>
+     				<div class="message">or slow down, im making to much noise bahaha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i want to see u in action lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">haha sorry paige ahah. i think u made me a lil bit to horny</div>
+     				<div class="message">haha im goning to stop lol, im sounding like a pervert haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha i dont care lol</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">let me know wen ur done at the party or somethin if u want ta chat</div>
+     				<div class="message">xxxx</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Alright xxx</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol, u dont care ur friend wants to see u in action and was asking for sexy pics lol</div>
+     				<div class="message">xxx bye cutie</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I used to it lol and bye princess xx</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">any sexy sexy pics 🙂 lol im still horny</div>
+          </div>
+
+		   <div class="messages messages--sent">
+      				<div class="message">u went sleep? lolz</div>
+      				<div class="message">im on mums fone cause shes got the laptop haha.did u go bed?</div>
+           </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">omg.. im so sorry paige lol. dont usually talk like that haha, but ur pics made me coo coo haha. u made me a lesbian for 1 night 😕 lol</div>
+     				<div class="message">but yeah, sorry for probly freaking u out.. i just got a little hot n excited lol.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+     				<div class="message">Haha yeah I slept at a mates and my phone died! 😞 ahaha and that's alright</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">heey</div>
+     				<div class="message">wat u been up to 🙂</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ur sister just msgd me. how have u been?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hi and I have been good thanks you?</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah good, how was that night? did u get off with a guy?</div>
+     				<div class="message">talked to your sister heaps. shes cool 🙂</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hiii</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hi</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">heeey</div>
+     				<div class="message">how have you been 🙂</div>
+          </div>
+		
+		   <div class="messages messages--sent">
+     				<div class="message">have you been doing much? when do you come to perth?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hey, I have been good and yeh I hav been doing heaps, I am not coming to Perth until next school holidays! 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">aww</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh!</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">was hoping you would come soon lol</div>
+     				<div class="message">got a bf yet?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ahah no</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">any good guy friends 😉</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">what happend to that pic of you on the window ledge?</div>
+     				<div class="message">lol, i remeber it from ages ago.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha I don't know!! 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">so how have u been? happy?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh I have been great,</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah i been good</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">That's good</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">:)</div>
+     				<div class="message">did u enjoy ur night the last time we talked? did u get off? lol ur sooo cool 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeh I injoyed the night haha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">did u orgasm? wats that like?</div>
+          </div>
+		   <div class="messages messages--sent">
+     				<div class="message">when some1 else makes you 🙂</div>
+     				<div class="message">or u dont like talking about it? hehe dont want to seem rude</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u and that thalia girl r soo hot!</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ahha thanks!! 😉</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">can i ask u that? lol</div>
+     				<div class="message">im curious 🙂 but dont want to make u feel wierd. lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Um.. Okay what is it?</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">did u orgasm that night? how does it feel?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">No I didn't</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">aww ok</div>
+     				<div class="message">damn. have u ever?</div>
+     				<div class="message">cause me and u both havent had sex hey? were good girls 😛 but i got no1 to ask that has "done stuff" cept u 😀</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">plzzz lol</div>
+     				<div class="message">want to know if its awsome 😀 or not as good as byurself lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">It's alright aha some people find it good it's alright for me</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+      				<div class="message">cool. is it better wen some1 makes you?</div>
+      				<div class="message">cause its already good alone 😛 how did u orgasm if no sex?? 😮</div>
+           </div>
+
+		   <div class="messages messages--sent">
+      				<div class="message">oh and i get my new iphone soon 🙂</div>
+      				<div class="message">i will beable to send u them pics of me in my bra n stuff 😉 if u want to lol</div>
+           </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ur mum says i might be able too move in with yous in december 😀</div>
+     				<div class="message">but i thought id ask u if i can 🙂</div>
+     				<div class="message">would it be alright? lol</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">but i wont if u dont feel cool with it 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">OMG I WOULD LEGIT LOVE FOR YOU TO MOVE IN!!! 🙂</div>
+       				<div class="message">And when you get your phone give me your number and I will give mine to you!!</div>
+              </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">cool</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh!! Are you allowed to move?</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">in december when theres no guys living there 🙂</div>
+     				<div class="message">my mum said i can</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Awesome!!</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hehe</div>
+     				<div class="message">what are you doing? im bored as</div>
+     				<div class="message">wish i had my fone now lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I'm just watching movies, I am really bored ahah. What about you what are you doing? True!</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">laying down. internet keeps dying</div>
+     				<div class="message">some1 must have crashed into a a pole or sumthing</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Awh true!!</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i want to take pictures lol. got new clothes</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Awesome!! Haha I have to go shopping when I get my money ahha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">shoppings fun as</div>
+     				<div class="message">and taking photos 😀</div>
+     				<div class="message">cant do either right now. soo bored, no phone is gay. cant even swap pics lol.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ahahah true!!</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">what movie you watching?</div>
+     				<div class="message">The hide out</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message" id="gem" onclick="myFunction1()">Hey gorgeous, haven't spoken in a while 🙂</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">sorry</div>
+     				<div class="message">im not in school so im working</div>
+     				<div class="message">how have you been?</div>
+     				<div class="message">and got in a bit of trouble with fb</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">im always tierd from work</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Awh its all good 🙂 how did you get introuble with facebook</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">well fb and other site</div>
+     				<div class="message">my mum found stuff in msgs from gem</div>
+     				<div class="message">oh soz pretend i never said that</div>
+     				<div class="message">:)</div>
+     				<div class="message">sorry im tierd. not supased 2 tell ppll</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hahaha its all good gorgeous</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">:)</div>
+     				<div class="message">waynes already warn me</div>
+     				<div class="message">lol</div>
+     				<div class="message">have you got bf?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh i have a bf 🙂 and what do you mean?</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ah thats nice, is it cool to have a bf</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh 🙂 especily if they actually like you 😉</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">im not supposed 2 tell</div>
+     				<div class="message">but ur gems sister. n ur cool</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeh i am gems sister and thanks haha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">gem gave me some stuff of her n wayne</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Awh true 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">well lots of stuff. n mum seen a msg 😞</div>
+     				<div class="message">yeah its killa</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Awhhh does she have your password?</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nah, i was talking 2 gem and scrolled up</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ohh</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">and their web site was in my web history 😞</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Oh thats not good</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">uve never heard of they had stuff</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">No i dont think so</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">oh 2 bad shes ur sister</div>
+     				<div class="message">its so cool</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha oh yeh 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hehe</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Your really pretty</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">but guess u wouldnt want to know 😕</div>
+     				<div class="message">oh ty</div>
+     				<div class="message">ur way prettier</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Probs not haha and welcome and na thats you 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u n ur bf do things?</div>
+     				<div class="message">or u just cuddly?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">We have only just started dated so not yet just cuddly 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">aw thats good</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh 🙂 it is</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah i want to so badly</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeh same 😉</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">seen ur photos lol want too see u in real life 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hahaha yeh same</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message" id="wayne" onclick="myFunction1()">lol only person i see around is wayne</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Awh yeh is he annoying somwtimes??</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">nah hes cool</div>
+     				<div class="message">just he knows gem let me have stuff</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Oh yeeeh 🙂 true</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">wierd after watchin him lol, not wierd with gem tho</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">What do you mean? Haha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">wish i could show u what i mean 😞</div>
+     				<div class="message">but if any1 heard u seen i would be in trubl</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ohhh okay than</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i can tell u if u want? but plz keep it a secret</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">I promise i will keep it a secret</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">gem and wayne have heaps of videos and pictures</div>
+     				<div class="message">i found them by accident on their site, but gem let me keep them and gave me more 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ohhh of disgusting things?</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">well..</div>
+     				<div class="message">i dont think their disgusting lol</div>
+     				<div class="message">u probly wouldnt either 😕</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Oh truee i probs wouldnt i dont find much disgusting</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">but now they deleted site n stuff</div>
+     				<div class="message">well of gem u would</div>
+     				<div class="message">might not of wayne 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Maybz</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">id show u cause ur cool, but id die if any knew lol</div>
+     				<div class="message">i think u might like it 🙂 its cool, but plz dont tell any1</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I wont you can tryst me</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ty 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">🙂 anytimee</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u probly dont want to see them?</div>
+     				<div class="message">n thats the sort of msg mum seen gem sending me 😞</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I dont know depends what it is</div>
+        				<div class="message">Ohh</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">that depends on u lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i think wayne n gem r hot so i like it all</div>
+     				<div class="message">but if u only want 2 see wayne? or both? lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha okay tham</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">huh</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">I dont know hahha</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">:)</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">:)</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">u look heaps more hotter</div>
+     				<div class="message">since we last talked, and u were hot then</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha thanks gorgeous</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">do u still have fun at partys n stuff?</div>
+     				<div class="message">oh u have a bf now 😕 lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Hahah yeh, the last party i went to was last month 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">aww almost time for work 😞</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Awh feel sorry for you 😞 where do you work?</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">so no more naughty stuff in ur little skirts? 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha na 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">my mums friend, she buys my pictures of school clothes, swim clothes n wierd stuff lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha cool 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah its mad</div>
+     				<div class="message">at first she payed me 20 bux for 3 photos</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Oh true 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">after i got good at taking them she sent me clothes and i get like 100 for 5 photos some times</div>
+     				<div class="message">but shes wierd, like a hippy</div>
+     				<div class="message">think its for like kmart or sumthin</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Oh true thats really good 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i just send them thru email 2 her lol, then i work at cafe for like hour a day</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Thats good i am getting a job at subway and gonna be doing 4-5 hours</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah its cool</div>
+     				<div class="message">ah thats good</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeh than i dont have to ask for money 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">the photo thing i do is just for when i need money realy quick lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha true</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">she would definatly pay u to model lol</div>
+     				<div class="message">its nothing stupid or dirty, n easy as haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Really haha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah but the signing things n legal stuff was annoying</div>
+     				<div class="message">but if u remeber i like clothes n takin self photos lol</div>
+     				<div class="message">perfect 4 me</div>
+     				<div class="message">when do u start at subway?</div>
+          </div>
+
+Haha yeh i remember and i dont know until a couple of weeks
+
+		   <div class="messages messages--sent">
+     				<div class="message">well, if u ever need money asap 4 w.e or some thing let me know 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Okay thanks babe 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">np</div>
+     				<div class="message">what are u doing 2day?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">:))</div>
+        				<div class="message">Nothing really</div>
+        				<div class="message">Wbu?</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">got to take some photos soon b4 coffe shop</div>
+     				<div class="message">:(</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Awhh</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">awwww, u have a bf 😞 now i wont get to see u in hot stuff lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha awhh :$</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">or not in hot stuff 😉 lol jks</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hahahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ur profile pic is realy hot</div>
+     				<div class="message">love ur head band</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha thanks gorgeous girl 😗</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">do u send ur bf stuff? 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Na ehe 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">🙂 atleast im not the only 1 missing out</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Aha 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hehe</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">🙂 do you have a phone yeet?.</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">the lady i work for is here, she said she would be happy to pay u as a model lol</div>
+     				<div class="message">nope 😞 after mum seen that dirty stuff it got worse</div>
+     				<div class="message">lol       she said to tell u if u end up wanting too model that if ur underage no full nudity allowed 🙂</div>
+     				<div class="message">she has to say it lol, but like cover ur self with ur hands n stuff is cool. 🙂</div>
+          </div>
+
+Haha i would but i live in victoria
+
+		   <div class="messages messages--sent">
+     				<div class="message">u just email it, u have bank? or she mails u cashiers checks or sumthin. cause she send u clothes 2 model aswell lol</div>
+     				<div class="message">its better if u dont tho, u might steal my job 😛</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Oh yeh true, yes i have a bank 🙂</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">its that easy 🙂 give bank accnt and when ever you send photos she will pay u lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Oh okay 🙂</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ummm she wont take naked photos but ill take em 😉</div>
+     				<div class="message">hehe</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Haha 😀</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">oh btw, did u want to see those things? forgot if u wanted 2 or not lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Na its all good</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ahh ok 🙂</div>
+     				<div class="message">ur missing out 😛</div>
+     				<div class="message">guess u dont find wayne attractive lol</div>
+     				<div class="message">or gem in my case hehe</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Haha naa 🙂</div>
+              </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah hes pretty hairy n ugly sorta huh</div>
+     				<div class="message">dont know why i think hes good looking lol'</div>
+     				<div class="message">but hes nice, and cool 🙂 but after watching him on videos i cant look at him with out remembering the sex lol</div>
+     				<div class="message">well babe, i can only go on the laptop wen i send photos 4 work 😞 hope 2 talk soon 😞</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Okay gorgeous all good :} i have to go anyway goodbye beautiful x</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ok cya</div>
+     				<div class="message">xx</div>
+     				<div class="message">was going to ask for a sexy photo or 2 to enjoy how hot u keep getting 😀</div>
+     				<div class="message">maybe next time? we can swap if u want 😀 ur too sexy 😉 byeee xx</div>
+          </div>
+
+		   <div class="messages messages--sent">
+      				<div class="message">hey paige xx</div>
+      				<div class="message">did you come to perth 😞</div>
+           </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hey gorgeous xx and yeh I did</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">aww pitty</div>
+       		</div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hey baby 🙂 xx haven't spoken for a while 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">hey gorgeous girl, I miss.talking.to you 😞  xx</div>
+          </div>
+
+            	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Chelsea I really want you to come online 😢 I have.something to tell you 😞</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Heey princess 🙂</div>
+       				<div class="message">I miss you ):</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">sorry</div>
+     				<div class="message">i miss you 2</div>
+     				<div class="message">bye</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Bye x</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i made people angry</div>
+     				<div class="message">my family and yours</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Aww how? </div>
+        				<div class="message">You dont make me angry ily</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i cant say</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Aw okaay well i'm always here for you! Ily</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">it had 2 do with me sending stuff 2 your mum</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Aw babe its okay xx</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">gems angry</div>
+     				<div class="message">only came on to delete facebook after all this.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Aww, dw ok babe xx just try and be happy</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">thx 🙂</div>
+     				<div class="message">want my email? cause i wont have facebook</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">I'm always gonna be here for you xx</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lucky i didnt send them to you that night you sent me stuff. would have been twice as worse</div>
+     				<div class="message">tiny_walker_chick@hotmail.co.uk</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Aw xx</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i only have snap chat and email</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">I have snapchat xx</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">well thankyou for being nice</div>
+     				<div class="message">email me.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Add me paigeeacia xx anytime.</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">ok 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Thats on snapchat xx</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">snapchats cool</div>
+     				<div class="message">ill add you today. xx love you</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Ty babe love you xx</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hey 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Hello</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">at work atm</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Aw yeah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">if i dont reply</div>
+     				<div class="message">how u been</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yeah pre good how about yourself?</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">not good, but better now</div>
+     				<div class="message">live in broom, therapist once a week 😞 but i like it here</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Aw that's good that you like it there</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">cause noone knows me 🙂 and i wirk at IGA so i get money</div>
+     				<div class="message">how have u been?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">nice, yeah I've been good but at the same time shit, a lot of family problems, I'm not really living at home so yeah aha</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">sorry 2 hear, hope it gets better.</div>
+     				<div class="message">i got family shit 2, it sux. i got kicked out by mum and moved to cousins in Esprence then forced 2 broome with family friends.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Aw that's shit.</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">worked out better, but now my cousin and me arnt allowed 2 talk.</div>
+     				<div class="message">but broome is wayyyyy good</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Aw yeah aha </div>
+        				<div class="message">Where I'm living it's a shit hole.</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">do bad stuff like me and they'll send you else where</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">I do enough to bad shit ahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hahah</div>
+     				<div class="message">so thats not a good plan lol</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Nahhh i think if I was to do more bad shit id be in lock up.</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">well, dont know wats going on. but i had or still have a problem with girly porn 🙂</div>
+     				<div class="message">and got me sent away lol</div>
+     				<div class="message">are u alright?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Awh ahah yeah I'll be all sweet</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">or just hate the area</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">It's alright I suppose ah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">find sumthing to take ur mind off. like work 😕</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Yeah pot</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">noooooo</div>
+     				<div class="message">that makes u think, or stress when u dont have any</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Nah I always weed ahah I get a lot of weed cause of my mates</div>
+       		</div>
+			
+		   <div class="messages messages--sent">
+     				<div class="message">like basketball or work or alot of sex haha</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ahahah</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">best stress release and relaxer, is 2 solo it haha my therapist said keep doin wat im doin just not asmuch cause its good for u</div>
+     				<div class="message">not that u would want to hear that 😕 sorry lol</div>
+     				<div class="message">well boss seen me haha. talk soon 🙂</div>
+     				<div class="message">be good 😀 😀</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Ahah nah I don't really mind about it b</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">cool 🙂 lunch break soon 😀</div>
+          </div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">how have u been 🙂</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">Great yourself!?</div>
+      		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">yeah good</div>
+     				<div class="message">moved back to perth 🙂</div>
+     				<div class="message">at mums again lol, she being nice 2 me</div>
+     				<div class="message">but now i have no job</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">That's good then hopefully it stays that way n I think you should be able to get a job easy</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">hopefully lol</div>
+     				<div class="message">for both. are you doing well?</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yes indeed, clean off of drugs n now just chilling back at a mates for his birthday 😊</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">wow.</div>
+     				<div class="message">good on you! so good 2 hear 😀</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Yes yes</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">i dont know where to look for a job haha\</div>
+     				<div class="message">broome was so small.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+         		   <div class="messages messages--received">
+        				<div class="message">Niether do i tbh I'm on Centrelink tbh ahah n aw yeah</div>
+       		</div>
+
+		   <div class="messages messages--sent">
+     				<div class="message">lol moneys money.</div>
+          </div>
+
+           	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
+        		   <div class="messages messages--received">
+       				<div class="message">i just need to take up time so i dont relapse</div>
+      		</div>
+
+	</div>
+	<!--
+	<div class="text-bar">
+		<form class="text-bar__field" id="form-message">
+			<input type="text" placeholder="Type or thumb up ;)"/>
+		</form>
+		<div class="text-bar__thumb"> 
+			<div class="thumb"></div>
+		</div>
+	</div>	
+	-->
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
+  <script>
+  import * as npm from "https://cdn.skypack.dev/npm";
+"use strict";
+
+//elements
+var conversation = $('.conversation');
+var lastSentMessages = $('.messages--sent:last-child');
+var textbar = $('.text-bar__field input');
+var textForm = $('#form-message');
+var thumber = $('.text-bar__thumb');
+
+var scrollTop = $(window).scrollTop();
+
+var Message = {
+	currentText: "test",
+	init: function(){
+		var base = this;
+		base.send();
+	},
+	send: function(){
+		var base = this;
+		textForm.submit(function( event ) {
+		  	event.preventDefault();
+			base.createGroup();
+			base.saveText();
+			if(base.currentText != ''){
+				base.createMessage();
+				base.scrollDown();
+			}
+		});
+	},
+	saveText: function(){
+		var base = this;
+		base.currentText = textbar.val();
+		textbar.val('');
+	},
+	createMessage: function(){
+		var base = this;
+		lastSentMessages.append($('<div/>')
+								.addClass('message')
+								.text(base.currentText));
+	},
+	createGroup: function(){
+		if($('.messages:last-child').hasClass('messages--received')){
+			conversation.append($('<div/>')
+							.addClass('messages messages--sent'));
+			lastSentMessages = $('.messages--sent:last-child');
+		}
+	},
+	scrollDown: function(){
+		var base = this;
+		//conversation.scrollTop(conversation0.scrollHeight);
+		conversation.stop().animate({
+			scrollTop: conversation0.scrollHeight
+		}, 500);
+	}
+};
+
+var Thumb = {
+	init: function(){
+		var base = this;
+		base.send();
+	},
+	send: function(){
+		var base = this;
+		thumber.on("mousedown", function(){
+			Message.createGroup();
+			base.create();
+			base.expand();
+		});
+	},
+	expand: function(){
+		var base = this;
+		var thisThumb = lastSentMessages.find('.message:last-child');
+		var size = 20;
+		
+		var expandInterval = setInterval(function(){ expandTimer() }, 30);
+		
+		function stopExpand(){
+			base.stopWiggle();
+			clearInterval(expandInterval);
+		}
+		
+		var firstExpand = false;
+		function expandTimer() {
+			
+			if(size >= 130){
+				stopExpand();
+				base.remove();
+			}
+			else{
+				if(size>50){
+					size += 2;
+					thisThumb.removeClass('anim-wiggle');
+					thisThumb.addClass('anim-wiggle-2');
+				}
+				else{
+					size += 1;
+					thisThumb.addClass()
+				}
+				thisThumb.width(size);
+				thisThumb.height(size);
+				if(firstExpand){
+					conversation.scrollTop(conversation0.scrollHeight);
+				}
+				else{
+					Message.scrollDown();
+					firstExpand = true;
+				}
+			}
+		}
+		
+		thumber.on("mouseup", function(){
+			stopExpand();
+		});
+	},
+	create: function(){
+		lastSentMessages.append(
+			$('<div/>').addClass('message message--thumb thumb anim-wiggle')
+		);
+	},
+	remove: function(){
+		lastSentMessages.find('.message:last-child').animate({
+			width: 0,
+			height: 0
+		}, 300);
+		setTimeout(function(){
+			lastSentMessages.find('.message:last-child').remove();
+		}, 300);
+	},
+	stopWiggle: function(){
+		lastSentMessages.find('.message').removeClass('anim-wiggle');
+		lastSentMessages.find('.message').removeClass('anim-wiggle-2');
+	},
+},
+
+var newMessage = Object.create(Message);
+newMessage.init();
+
+var newThumb = Object.create(Thumb);
+newThumb.init();
+
+  </script>
+
+		<script>
+			function myFunction() {
+				location.href = "#wayne";
+			}
+			function myFunction2() {
+				location.href = "#gem";
+			}
+			function myFunction1() {
+				location.href = "#start";
+			}
+		</script>
+</body>
+</html>
