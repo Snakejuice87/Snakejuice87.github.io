@@ -35,5 +35,69 @@
             window.speechSynthesis.speak(speech);
         }
     </script>
+<br>
+	<br>
+  </body>
+</html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Synthesis</title>
+</head>
+<body>
+    <h1>Speech Synthesis Example</h1>
+    
+    <label for="text1">Text 1 (Female Voice):</label>
+    <input type="text" id="text1" placeholder="Enter text here">
+    <br>
+    
+    <label for="text2">Text 2 (Male Voice):</label>
+    <input type="text" id="text2" placeholder="Enter text here">
+    <br>
+    
+    <button onclick="speakTexts()">Speak Texts</button>
+
+    <script>
+        function speakTexts() {
+            // Get the text inputs
+            const text1 = document.getElementById('text1').value;
+            const text2 = document.getElementById('text2').value;
+
+            // Initialize speech synthesis
+            const synth = window.speechSynthesis;
+            
+            // Fetch voices
+            let voices = synth.getVoices();
+
+            // Function to find the correct voice
+            function findVoice(name) {
+                return voices.find(voice => voice.name === name);
+            }
+
+            // Speak the first text with a female voice
+            const utterance1 = new SpeechSynthesisUtterance(text1);
+            utterance1.voice = findVoice('Karen'); // en-AU female
+            utterance1.lang = 'en-AU';
+
+            // Speak the second text with a male voice
+            const utterance2 = new SpeechSynthesisUtterance(text2);
+            utterance2.voice = findVoice('Daniel'); // en-AU male
+            utterance2.lang = 'en-AU';
+
+            // Speak the texts sequentially
+            synth.speak(utterance1);
+            utterance1.onend = function() {
+                synth.speak(utterance2);
+            }
+        }
+
+        // Ensure voices are loaded before finding them
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => {
+                voices = speechSynthesis.getVoices();
+            };
+        }
+    </script>
 </body>
 </html>
