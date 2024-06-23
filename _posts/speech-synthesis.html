@@ -1,14 +1,50 @@
-<html lang="en"><head>
+<html lang="en">
+    <head>
+    <meta name="theme-color" content="#1e1e1e">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width">
-
+    <meta name="language" content="en">
+    <base href="https://snakejuice87.github.io/"></base>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://snakejuice87.github.io/_posts/Style.css">
+    
     <title>Speech synthesiser</title>
 
     <link rel="stylesheet" href="https://snakejuice87.github.io/_posts/speech.css">
- </head>
-
+    
+  </head>
   <body>
+	      <!-- Placeholder for the navigation -->
+    <div id="nav-placeholder"></div>
+
+    <script>
+        // Function to load the shared navigation
+        function loadNav() {
+            fetch('/_posts/nav.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav-placeholder').innerHTML = data;
+                    highlightCurrentPage();
+                })
+                .catch(error => console.error('Error loading navigation:', error));
+        }
+
+        // Function to highlight the current page
+        function highlightCurrentPage() {
+            const navLinks = document.querySelectorAll('#main-nav a');
+            const currentPage = window.location.pathname.pop();
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.setAttribute('id', 'current-page');
+                }
+            });
+        }
+
+        // Load the navigation when the page loads
+        document.addEventListener('DOMContentLoaded', loadNav);
+    </script>
+      <br>
+
     <h1>Speech synthesiser</h1>
 
     <p>
@@ -36,5 +72,6 @@
     </form>
 
     <script src="https://snakejuice87.github.io/_posts/speech.js"></script>
+      
   </body>
 </html>
