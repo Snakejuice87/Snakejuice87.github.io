@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Jacinta - Facebook Messenger Chat Emulation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.meta {
+  padding: 10px 10px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: grey;
+}
+
+ .meta:hover {
+  text-decoration: underline;
+  }
+
+.clearfix:after, .messages:after {
+  content: "";
+  display: table;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+
+body {
+  zoom: 1.1; 
+  overflow: hidden;
+  background-color: black;
+  padding: 0px;
+}
+
+.screen {
+  background-color: #fff;
+  height: 680px; /* 740px */
+  width: 750px; /* 350px */
+  margin: 0 auto;
+  overflow-y: scroll;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.conversation {
+  overflow-y: scroll;
+  height: calc(100% - 0px);
+  overflow: auto;
+  padding: 10px;
+  padding-bottom: 0;
+}
+
+.messages {
+  margin-bottom: 10px;
+}
+
+.b4 {
+  display: flex;
+  height: 0px;
+}
+
+.b4 {
+  top: 0px; 
+  left: -5px;
+  display: block;
+  float: left;
+  position: relative;
+  height: 26px;
+  width: 26px;
+  background-image: url('https://dn790009.ca.archive.org/0/items/paige-acacia-facebook-2/IMG_3651.gif');
+  background-position: -5px 0px;
+  background-repeat: repeat;
+  background-size: 130%;
+  border-radius: 50px;
+  background-color: grey;
+}
+
+.prof {
+	display: none;
+	visibility: hidden;
+}
+
+.messages--received .message {
+  float: left;
+  background-color: #ddd;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.messages--received .message:first-child {
+  margin-top: -30px;
+  border-top-left-radius: 15px;
+}
+.messages--received .message:last-child {
+  border-bottom-left-radius: 15px;
+}
+.messages--sent .message {
+  float: right;
+  background-color: #1998e6;
+  color: #fff;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.messages--sent .message:first-child {
+  border-top-right-radius: 15px;
+}
+.messages--sent .message:last-child {
+  border-bottom-right-radius: 15px;
+}
+
+.message {
+  max-width: 650px;
+  margin-left: 29px;
+  display: inline-block;
+  margin-bottom: 2px;
+  clear: both;
+  padding: 7px 13px;
+  font-size: 18px;
+  border-radius: 15px;
+  line-height: 1.4;
+}
+.message--thumb {
+  background-color: transparent !important;
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 0px !important;
+}
+
+.text-bar {
+  height: 50px;
+  border-top: 1px solid #ccc;
+}
+.text-bar__field {
+  float: left;
+  width: calc(100% - 50px);
+  height: 100%;
+}
+.text-bar__field input {
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  border: none;
+  position: relative;
+  vertical-align: middle;
+  font-size: 14px;
+}
+.text-bar__thumb {
+  float: left;
+  width: 50px;
+  height: 100%;
+  padding: 10px;
+}
+.text-bar__thumb:hover {
+  opacity: 0.8;
+}
+.text-bar__thumb .thumb {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.thumb {
+  display: block;
+}
+
+.anim-wiggle {
+  -webkit-animation: wiggle 0.2s ease infinite;
+          animation: wiggle 0.2s ease infinite;
+}
+
+.anim-wiggle-2 {
+  -webkit-animation: wiggle2 0.2s ease infinite;
+          animation: wiggle2 0.2s ease infinite;
+}
+
+@-webkit-keyframes wiggle {
+  0% {
+    transform: rotateZ(5deg);
+  }
+  50% {
+    transform: rotateZ(-5deg);
+  }
+  100% {
+    transform: rotateZ(5deg);
+  }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotateZ(5deg);
+  }
+  50% {
+    transform: rotateZ(-5deg);
+  }
+  100% {
+    transform: rotateZ(5deg);
+  }
+}
+@-webkit-keyframes wiggle2 {
+  0% {
+    transform: rotateZ(10deg);
+  }
+  50% {
+    transform: rotateZ(-10deg);
+  }
+  100% {
+    transform: rotateZ(10deg);
+  }
+}
+@keyframes wiggle2 {
+  0% {
+    transform: rotateZ(10deg);
+  }
+  50% {
+    transform: rotateZ(-10deg);
+  }
+  100% {
+    transform: rotateZ(10deg);
+  }
+}
+.thumb-img, .thumb {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("https://dn790009.ca.archive.org/0/items/paige-acacia-facebook-2/IMG_3651.gif");
+}
+</style>
+<base src="/">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="screen">
+	<div class="conversation">
+
+	<div id="start" href="#wayne" class="meta" style="color: blue; font-weight: bold; text-decoration: underline; font-size: 18px; ">Jacinta Hardegen</div>
+	<div onclick="scrollToElement()" class="meta" style="margin-top: -15px;">Jacinta FB messages</div>
+     
+     <div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">wats happenin? lol</div>
+     <div class="message">no response? or dont wanna talk to me haha</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">huh? what??</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">lol, sent msg while ago n asked wat u been upgo</div>
+     <div class="message">upto</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">sorry been busy n shiz. not much really, just work n seeing friends u?</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">fkall, been partying and sittin back chillin...</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">fair enough lol. i hear un gemma not together anymore?:(</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">yeah, we split.. she kicked me out twice from vic lol</div>
+     <div class="message">how run that asain guy goin?</div>
+     <div class="message">her off oi.. not bein wierd or any hing but did u say anything to gern that time we seen her bout me? lol, ol, about satasfying guys needs? Imao just wonderin if wat she said was tru</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">aww that's not good what were u doing wrong? lol what asian guy?? lol u talkin bout my mate daryle that came out with us that night to the dollhouse? he only my mate lol umm what u talkin bout? I'm confused</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">nah we just didnt get along wen i arived in vic, she adjusted to her vic life n i didnt fit in i n gem told me u asked if u u could guess.. n gem t keep me company while she wasnt there n take care of my urges until i moved to vic lol. im dead serious 2, not tryna be wierd lol.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">ohhh k fair enough.</div>
+     <div class="message">WTF!! i neverrm said that!!</div>
+     <div class="message">I'll ask her tomoro about that</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">fair enough lol, think she prob wanted to make us not talk while she wasnt here Imao... yeah ask her, but try do it so i wont get into trouble haha, she might not let me keep talkin to allerah</div>
+     <div class="message">wat u doin any ways? how u been?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">haha i think ur just sayin that i said that, bcoz i never said that!! not much really, like i said just work n seeing friends. got a if now</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">cool cool, well either way u prob gonna ask gemso meh. she'll prob chip me 4 talkin to ya but i swear im not talkin shit imao</div>
+     <div class="message">all the best then to u n ur man holla some time maybe?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">haha dnt worry i won't let her chop u too much lol. thanks dude) yeh no worries, but no</div>
+     <div class="message">naughty stuff booz yeh i have a man now lol</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">lol no naughty stuff even if i were to try cause im not ur type remeber?) wanna chuck me ur number then?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">hahaha ill give u my number when we organise to catch up lol</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">lol, shouldnt u give it so we can organise to catch up? haha</div>
+     <div class="message">wat u doin tomorrow?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">haha shhh u. well i meant I'll give it to u when we have more of an idea when we gona catch up in the meantime just chat on here lol</div>
+     <div class="message">tomoro i have a family get together for my younger cousins birthdays</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">ahhh kk cool, ill send you mine soon any ways if ya want, its new i dont remeber it lol</div>
+     <div class="message">u goin sleep? we'll catch up</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">let me know wen ur free n</div>
+     <div class="message">Yeh will let ya kno when i'm free. goin to bed in a sec fol</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">spewin.. im bored as ahaha, got work in hour</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">oh nooo ur gona be overly tired at work then! ha</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">I rekon haha</div>
+     <div onclick="speakText3();" class="message">oi just a question... were u on a contraseptive that night with gemma? pill or anything?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div onclick="speakText2();" class="message">haha nope i wasn't. but u didn't cum so that's good!!!</div>
+     <div onclick="speakText2();" class="message">I dnt even wana talk about that nite lol. past is the pasttttt!!</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">well i did a bit haha, lucky u :)</div>
+     <div class="message">but did u enjoy it at all? n sorry for bare backing Imao</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">wayne, i don'tttttt wana talk about it, it's the past!!</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">kk ill not talk bout it :) but dont be shame or awkward bout lol.</div>
+     <div class="message">i had fun n its nuthin for any1 to be ashamed of</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">never said I was ashamed of it lol, just dont wana talk about it.</div>
+     <div class="message">I have a bf now n he is all that matters to me now</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">aww. yeah thats all good., just, I know me n Gem had fun during it just If u did or didnt or if i should appolagize to u or sumthin or if u enjoyd it i can drop it n leave it in my memory where it belongs :P</div>
+     <div class="message">just curious</div>
+     <div class="message">i wont bring it up again</div>
+</div>
+<!--
+<div class="messages messages--received" >
+<button onclick="speakText();" type="button">speak</button>
+</div>
+-->
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div onclick="speakText();" class="message">farkkk, FINE then i'll answer u lol, yes i had fun at the time even though I felt very bad bcoz of mine n gems close friendship, but anyway its never going to happen again n i don't want it to ahppen again booz i'm happy with my man I'm with now</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">kk the glad u had fun :D.. n i understand</div>
+     <div class="message">thats why ill drop it or id ask u all questions haha</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">lol nite</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">nite</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">heyyy wat u do?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">What?</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">huh? i asked u wat u doin lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">sorts of</div>
+     <div class="message">Just at a friends place in rocko, going home</div>
+     <div class="message">soon booz got work</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">u got work on long holiday? haha sucker</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">Yep unfortunately lol</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">good luck haha.. guess ill ask to catch up another day</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">lol yeh</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">meh, me n my mates hurtin long weekend...</div>
+     <div class="message">holla, paks a ppl at mine</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">Haha true</div>
+     <div class="message">Talk another time, my fone bout to die</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">come from adventure world hah</div>
+     <div class="message">so when u knock off work?</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">haha what did u delete me 4</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">didnt know u knew felicia wood lol, ive known her 4 ages</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+<div class="messages messages--received" name="Jacinta">
+     <div class="message">True. I've known her for a fair while too.</div>
+     <div class="message">Anyway why are u talkin to me for Wayne? U kno I'm still best friends with Gemma</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">ahah ilaght ignorant</div>
+     <div class="message">btw, why now? u was talkin to me b4 did i do sumthin lol, or u just decided to dissown me now?</div>
+     <div class="message">just in march we was talkin? meh, weil either way.. ur choice i guess</div>
+</div>
+<div class="messages messages--sent" name="Wayne Johns">
+     <div class="message">hey, how have u been?</div>
+     <div class="message">i remeber u know felicia wood, was wondering if u know neve? m if so do u know jasmin gallo?</div>
+     <div class="message">lof u there?</div>
+</div>
+	</div>
+	<!--
+	<div class="text-bar">
+		<form class="text-bar__field" id="form-message">
+			<input type="text" placeholder="Type or thumb up ;)"/>
+		</form>
+		<div class="text-bar__thumb"> 
+			<div class="thumb"></div>
+		</div>
+	</div>	
+	-->
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
+  <script>
+  import * as npm from "https://cdn.skypack.dev/npm";
+"use strict";
+
+//elements
+var conversation = $('.conversation');
+var lastSentMessages = $('.messages--sent:last-child');
+var textbar = $('.text-bar__field input');
+var textForm = $('#form-message');
+var thumber = $('.text-bar__thumb');
+
+var scrollTop = $(window).scrollTop();
+
+var Message = {
+	currentText: "test",
+	init: function(){
+		var base = this;
+		base.send();
+	},
+	send: function(){
+		var base = this;
+		textForm.submit(function( event ) {
+		  	event.preventDefault();
+			base.createGroup();
+			base.saveText();
+			if(base.currentText != ''){
+				base.createMessage();
+				base.scrollDown();
+			}
+		});
+	},
+	saveText: function(){
+		var base = this;
+		base.currentText = textbar.val();
+		textbar.val('');
+	},
+	createMessage: function(){
+		var base = this;
+		lastSentMessages.append($('<div/>')
+								.addClass('message')
+								.text(base.currentText));
+	},
+	createGroup: function(){
+		if($('.messages:last-child').hasClass('messages--received')){
+			conversation.append($('<div/>')
+							.addClass('messages messages--sent'));
+			lastSentMessages = $('.messages--sent:last-child');
+		}
+	},
+	scrollDown: function(){
+		var base = this;
+		//conversation.scrollTop(conversation0.scrollHeight);
+		conversation.stop().animate({
+			scrollTop: conversation0.scrollHeight
+		}, 500);
+	}
+};
+
+var Thumb = {
+	init: function(){
+		var base = this;
+		base.send();
+	},
+	send: function(){
+		var base = this;
+		thumber.on("mousedown", function(){
+			Message.createGroup();
+			base.create();
+			base.expand();
+		});
+	},
+	expand: function(){
+		var base = this;
+		var thisThumb = lastSentMessages.find('.message:last-child');
+		var size = 20;
+		
+		var expandInterval = setInterval(function(){ expandTimer() }, 30);
+		
+		function stopExpand(){
+			base.stopWiggle();
+			clearInterval(expandInterval);
+		}
+		
+		var firstExpand = false;
+		function expandTimer() {
+			
+			if(size >= 130){
+				stopExpand();
+				base.remove();
+			}
+			else{
+				if(size>50){
+					size += 2;
+					thisThumb.removeClass('anim-wiggle');
+					thisThumb.addClass('anim-wiggle-2');
+				}
+				else{
+					size += 1;
+					thisThumb.addClass()
+				}
+				thisThumb.width(size);
+				thisThumb.height(size);
+				if(firstExpand){
+					conversation.scrollTop(conversation0.scrollHeight);
+				}
+				else{
+					Message.scrollDown();
+					firstExpand = true;
+				}
+			}
+		}
+		
+		thumber.on("mouseup", function(){
+			stopExpand();
+		});
+	},
+	create: function(){
+		lastSentMessages.append(
+			$('<div/>').addClass('message message--thumb thumb anim-wiggle')
+		);
+	},
+	remove: function(){
+		lastSentMessages.find('.message:last-child').animate({
+			width: 0,
+			height: 0
+		}, 300);
+		setTimeout(function(){
+			lastSentMessages.find('.message:last-child').remove();
+		}, 300);
+	},
+	stopWiggle: function(){
+		lastSentMessages.find('.message').removeClass('anim-wiggle');
+		lastSentMessages.find('.message').removeClass('anim-wiggle-2');
+	},
+},
+
+var newMessage = Object.create(Message);
+newMessage.init();
+
+var newThumb = Object.create(Thumb);
+newThumb.init();
+
+  </script>
+
+		<script>
+			function myFunction() {
+				location.href = "#wayne";
+			}
+			function myFunction2() {
+				location.href = "#gem";
+			}
+			function myFunction1() {
+				location.href = "#start";
+			}
+		</script>
+				<script>
+        function speakText3() {
+            var text = "oi just a question... were u on a contraceptive that night with gemma? pill or anything?.. haha nope i wasn't. but u didn't cum so that's good!, I don't even wana talk about that nite lol. past is the past";
+            var speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'en-AU';  // Set language as needed
+            speech.rate = '0.85';
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+    				<script>
+        function speakText2() {
+            var text = "haha nope i wasn't. but u didn't cum so that's good!";
+            var speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'en-AU';  // Set language as needed
+            // speech.rate = '0.85';
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+		<script>
+        function speakText() {
+            var text = "farkkk, FINE then i'll answer u laugh out loud, yes i had fun at the time even though I felt very bad because of mine n Gemma's close friendship, but anyway its never going to happen again n i don't want it to happen again because i'm happy with my man I'm with now";
+            var speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'en-AU';  // Set language as needed
+            // speech.rate = '0.85';
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+</html>
