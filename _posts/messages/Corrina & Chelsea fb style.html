@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+	<meta charset="UTF-8">
+	<title>Corrina fb with Chelsea</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+	<style>
+	       .header {
+	            display: block;
+	            position: fixed;
+	            width: 500px;
+	            margin-left: -15px;
+	            margin-top: -85px;
+	            background-color: #fff;
+	            z-index: 999;
+		    height: 65px;
+		    border-bottom: solid grey 1px;
+	       }
+	       html {
+	            zoom: 1.2;
+	            overscroll: hidden;
+	            background-color: black;
+	       }
+	       
+		* {
+			box-sizing: border-box;
+		}
+
+		.meta {
+			padding: 10px 10px;
+			display: block;
+			width: 100%;
+			text-align: center;
+			color: grey;
+			opacity: 0.7;
+			text-decoration: underline;
+		}
+
+		.clearfix:after, .messages:after {
+			content: "";
+			display: table;
+			clear: both;
+			height: 0;
+			visibility: hidden;
+		}
+
+		body {
+		      overscroll: hidden;
+			background-color: #fff;
+			width: 500px;
+			padding: 0px;
+			margin: 0 auto;
+			padding-top: 85px;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+		}
+
+		.screen {
+			background-color: #fff;
+			height: 940px;
+			width: 500px;
+			margin: 0 auto;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+		}
+
+		.conversation {
+			height: calc(100% - 0px);
+			overflow: auto;
+			padding: 0px 12px 0px 15px;
+			padding-bottom: 0px;
+		}
+
+		.messages {
+			margin-bottom: 10px;
+		}
+		.b4 {
+			display: flex;
+			height: 0px;
+		}
+		.prof {
+		      zoom: 0.8;
+			top: 2px;
+			left: -8px;
+			display: block;
+			float: left;
+			position: relative;
+			height: 35px;
+			width: 35px;
+			background-image: url("");
+			background-position: -9px 0px;
+			background-repeat: repeat;
+			background-size: 160%;
+			border-radius: 50px;
+			background-color: black;
+		}
+		.messages--received .message {
+		      padding: 5px;
+		      padding-left: 10px;
+		      padding-right: 10px;
+			float: left;
+			background-color: #ddd;
+			border-bottom-left-radius: 5px;
+			border-top-left-radius: 5px;
+		}
+		.messages--received .message:first-child {
+			border-top-left-radius: 15px;
+		}
+		.messages--received .message:last-child {
+			border-bottom-left-radius: 15px;
+		}
+		.messages--sent .message {
+		      padding: 5px;
+		      padding-left: 10px;
+		      padding-right: 10px;
+			float: right;
+			background-color: #1998e6;
+			color: #fff;
+			border-bottom-right-radius: 5px;
+			border-top-right-radius: 5px;
+		}
+		.messages--sent .message:first-child {
+			border-top-right-radius: 15px;
+		}
+		.messages--sent .message:last-child {
+			border-bottom-right-radius: 15px;
+		}
+
+		.message {
+			margin-left: 35px;
+			display: inline-block;
+			margin-bottom: 2px;
+			clear: both;
+			padding: 10px 15px;
+			font-size: 18px;
+			border-radius: 15px;
+			line-height: 1.4;
+		}
+		.message--thumb {
+			background-color: transparent !important;
+			padding: 0;
+			margin-top: 5px;
+			margin-bottom: 10px;
+			width: 20px;
+			height: 20px;
+			border-radius: 0px !important;
+		}
+
+		.text-bar {
+			height: 50px;
+			border-top: 1px solid #ccc;
+		}
+		.text-bar__field {
+			float: left;
+			width: calc(100% - 50px);
+			height: 100%;
+		}
+		.text-bar__field input {
+			width: 100%;
+			height: 100%;
+			padding: 0 20px;
+			border: none;
+			position: relative;
+			vertical-align: middle;
+			font-size: 14px;
+		}
+		.text-bar__thumb {
+			float: left;
+			width: 50px;
+			height: 100%;
+			padding: 10px;
+		}
+		.text-bar__thumb:hover {
+			opacity: 0.8;
+		}
+		.text-bar__thumb .thumb {
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+		}
+
+		.thumb {
+			display: block;
+		}
+
+		.anim-wiggle {
+			-webkit-animation: wiggle 0.2s ease infinite;
+			animation: wiggle 0.2s ease infinite;
+		}
+
+		.anim-wiggle-2 {
+			-webkit-animation: wiggle2 0.2s ease infinite;
+			animation: wiggle2 0.2s ease infinite;
+		}
+
+@-webkit-keyframes wiggle {
+			0% {
+				transform: rotateZ(5deg);
+			}
+			50% {
+				transform: rotateZ(-5deg);
+			}
+			100% {
+				transform: rotateZ(5deg);
+			}
+		}
+
+@keyframes wiggle {
+			0% {
+				transform: rotateZ(5deg);
+			}
+			50% {
+				transform: rotateZ(-5deg);
+			}
+			100% {
+				transform: rotateZ(5deg);
+			}
+		}
+@-webkit-keyframes wiggle2 {
+			0% {
+				transform: rotateZ(10deg);
+			}
+			50% {
+				transform: rotateZ(-10deg);
+			}
+			100% {
+				transform: rotateZ(10deg);
+			}
+		}
+@keyframes wiggle2 {
+			0% {
+				transform: rotateZ(10deg);
+			}
+			50% {
+				transform: rotateZ(-10deg);
+			}
+			100% {
+				transform: rotateZ(10deg);
+			}
+		}
+		.thumb-img, .thumb {
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-image: url("");
+		}
+	</style>
+	<style>
+[data-tooltip] {
+    display: inline-block;
+    position: relative;
+    cursor: help;
+    padding: 4px;
+}
+/* Tooltip styling */
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    display: none;
+    position: absolute;
+    background: #000;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    min-width: 100px;
+    text-align: center;
+    border-radius: 4px;
+}
+/* Dynamic horizontal centering */
+[data-tooltip-position="top"]:before,
+[data-tooltip-position="bottom"]:before {
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+/* Dynamic vertical centering */
+[data-tooltip-position="right"]:before,
+[data-tooltip-position="left"]:before {
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+[data-tooltip-position="top"]:before {
+    bottom: 100%;
+    margin-bottom: 6px;
+}
+[data-tooltip-position="right"]:before {
+    left: 100%;
+    margin-left: 6px;
+}
+[data-tooltip-position="bottom"]:before {
+    top: 100%;
+    margin-top: 6px;
+}
+[data-tooltip-position="left"]:before {
+    right: 100%;
+    margin-right: 6px;
+}
+
+/* Tooltip arrow styling/placement */
+[data-tooltip]:after {
+    content: '';
+    display: none;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+/* Dynamic horizontal centering for the tooltip */
+[data-tooltip-position="top"]:after,
+[data-tooltip-position="bottom"]:after {
+    left: 50%;
+    margin-left: -6px;
+}
+/* Dynamic vertical centering for the tooltip */
+[data-tooltip-position="right"]:after,
+[data-tooltip-position="left"]:after {
+    top: 50%;
+    margin-top: -6px;
+}
+[data-tooltip-position="top"]:after {
+    bottom: 100%;
+    border-width: 6px 6px 0;
+    border-top-color: #000;
+}
+[data-tooltip-position="right"]:after {
+    left: 100%;
+    border-width: 6px 6px 6px 0;
+    border-right-color: #000;
+}
+[data-tooltip-position="bottom"]:after {
+    top: 100%;
+    border-width: 0 6px 6px;
+    border-bottom-color: #000;
+}
+[data-tooltip-position="left"]:after {
+    right: 100%;
+    border-width: 6px 0 6px 6px;
+    border-left-color: #000;
+}
+/* Show the tooltip when hovering */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+    display: block;
+    z-index: 50;
+}
+</style>
+	<base src="/">
+</head>
+
+<body>
+	<!-- partial:index.partial.html -->
+<!--	<div class="screen"> -->
+		<div class="conversation">
+		<div class="header">
+	<div class="meta" style="color: blue; font-weight: bold; text-decoration: underline; font-size: 18px; ">Conversation with Corrina Clark & Chelsea Walker</div>
+			<div class="meta">Thursday, May 23, 2013 at 7:45pm</div>
+			</div>
+
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:09pm UTC+08">hello</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:34pm UTC+08">Hey</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:35pm UTC+08">how are you :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:35pm UTC+08">im friends with gem and paige</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:36pm UTC+08">are yous moving back to perth?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:36pm UTC+08">No why hun</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:37pm UTC+08">I am good</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:38pm UTC+08">cause i live here :)</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:39pm UTC+08">Sorry u move here then</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:40pm UTC+08">i wish</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:40pm UTC+08">im to young</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:40pm UTC+08">Paige said u should</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:40pm UTC+08">id love to\</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:40pm UTC+08">i dont know anyone but lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:41pm UTC+08">and my mum wouldnt let me live with gemma. i asked lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:41pm UTC+08">Come live with us your welcome</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:41pm UTC+08">:D</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:41pm UTC+08">you have a spare room?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:41pm UTC+08">but do guys live there?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:42pm UTC+08">Yes we live here and paige has a spare bed in her room</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:42pm UTC+08">cool</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:42pm UTC+08">i can ask my mum. are you sure?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:43pm UTC+08">she wont let me though if guys live there.</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:44pm UTC+08">Yeah but one thing u have to go to school only paiges step brothers live with us</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:44pm UTC+08">:(</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:44pm UTC+08">Dont do that</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:44pm UTC+08">im not allowed guys in my house</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:44pm UTC+08">are they realy old?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:45pm UTC+08">21,18 and 6</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:45pm UTC+08">The 21-and 18 moving out in december</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:46pm UTC+08">awww</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:46pm UTC+08">maybe i can move over in december</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:46pm UTC+08">lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:47pm UTC+08">Sounds good hunni will always have a room if needed</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:47pm UTC+08">she took my fone off me and thinks i was sending pics to guys. but i wasnt</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:47pm UTC+08">and now im in strict lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:48pm UTC+08">Sometimes us mums do go over board but its for your own good its cause we care</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:48pm UTC+08">Its not to be mean</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:49pm UTC+08">i know :(</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:49pm UTC+08">but i wansnt sending naughty things to guys</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:49pm UTC+08"></div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:50pm UTC+08">it was to my chick mates. we were just being silly</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:50pm UTC+08">just nickers n stuff. not stupid</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:52pm UTC+08">Hey hun we all do silly things dont worry about it</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:52pm UTC+08">:(</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:52pm UTC+08">dont think so</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:53pm UTC+08">im the only girl i know that has been caught or done that</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:54pm UTC+08">stopped going to school because people started talking :(</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:55pm UTC+08">Trust your not the only one you just need need to know is watching your fb and who knows your family who may tell on you people will talk but dont let them get to you dont let them win hun</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:58pm UTC+08">it was cause mum took my fone. then people started lying why she took it</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:58pm UTC+08">so i told them why cause the lies were way worse :(</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:59pm UTC+08">saying i was pregnate and stuff. when it was just me and my friend swapping self fotos</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:01pm UTC+08">Not good hun if it was paige id ask her for her side of it. And take it from there cause there is always 2 sides but i here were your coming from feeling not trusted is a big thing</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:02pm UTC+08">but she even seen the msgs. and knew i only sent pics to her n recieved.</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:02pm UTC+08">and mum said no normal girls swap pics or anything stupid</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:03pm UTC+08">Omg yes they do</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:05pm UTC+08">not that i know of</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:07pm UTC+08">Hunni dont stress alot of my friends have girls your age and things they do and send to each is nothing to shoot you for</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:15pm UTC+08">:)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:15pm UTC+08">i wish lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:16pm UTC+08">Hey hun i am always here if you need someone i dont judge ok</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:17pm UTC+08">Talking is sooo much better</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:25pm UTC+08">cool :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:26pm UTC+08">have to watch wat i say lol :) might make u not want me to move</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:26pm UTC+08">lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:26pm UTC+08">All good hun</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:27pm UTC+08">im not getting a bf till im 16 :) havent even kissed a guy lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:34pm UTC+08">but im got heaps of questions</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:34pm UTC+08">lol</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:37pm UTC+08">i asked my mum, she said for me to call you in november and see if i can still live with u. and to check for how long and stuff :)</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:44pm UTC+08">Sounds good hun</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:45pm UTC+08">ummm</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:45pm UTC+08">does losing ur viginity realy hurt?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:46pm UTC+08">sorry to ask lol, but it seems to not tell me honestly</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:50pm UTC+08">Depends hun if your with a guy u can trust and he really cares for you he will ask if he is hurting u and will stop mist guys dont give a shit but with me no it did'nt cause my bf at the was great but it depends hun mist say yes it does</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:50pm UTC+08">thanks for answering like a friend.</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:51pm UTC+08">most people just say no or yes and avoid the question</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:51pm UTC+08">But in saying that dont be quick to give it away cause its the one thing you car'nt get back and your welcome</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:53pm UTC+08">im not going to untill im over 16 :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:53pm UTC+08">but, is it wierd that to like girls? even though i like guys?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:54pm UTC+08">not that i do</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:55pm UTC+08">No hunni you can like both thats fine really</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:56pm UTC+08">not realy like both</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:56pm UTC+08">more like i like guys. but girls seem fun? hard to explain</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:58pm UTC+08">No its not its something that you will figure out yourself in your own time</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:59pm UTC+08">You can like both even if you have a stronger feeling for one more than the other but u can still like both</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:01pm UTC+08">so ur not gay if u have sex with a girl? and can still get married to a guy?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:03pm UTC+08">Liking both is bi sexual which is fine yes you can have sex with a girl and still marry a guy its fine</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:06pm UTC+08">alot of girls get with other girls for fun. ive only ever gone to 2nd base? i think lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:06pm UTC+08">is that normal?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:07pm UTC+08">Depends second base? And yes its normal</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:08pm UTC+08">umm. kissing and rubbing and dfry hump?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:08pm UTC+08">rubbing under clothes but</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:10pm UTC+08">Thats fine your allow to explore your only human hun</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:14pm UTC+08">so its normal :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:14pm UTC+08">have u ever? or just know its normal</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:15pm UTC+08">Yes normal and yes i have its fine trust me</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:18pm UTC+08">did u when u were young?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:18pm UTC+08">my mum thinks im a freak i think. shes realy strict about churchy stuff</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:19pm UTC+08">Yes i did and your not a freak your normal</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:20pm UTC+08">And i tried it again in my 20's as well just see</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:22pm UTC+08">:)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:22pm UTC+08">i guess u didnt like it lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:24pm UTC+08">I dont mine but i guys more but i like both dont tell paige lol</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:26pm UTC+08">its ok i wont :)</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:26pm UTC+08">I know</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:27pm UTC+08">not when ur the only person giving me acctual advise lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:27pm UTC+08">I tell the truth i dont bullshit no point truth is always the way to go</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:28pm UTC+08">:)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:29pm UTC+08">your still young :) u like both but ur last time was when u were 20?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:29pm UTC+08">maybe u dont like girls any more :P</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:30pm UTC+08">I still like both</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:32pm UTC+08">Its just at this point in my life i am with a great guy and he makes me happy but thats not to say that i would'nt ever go back to a girl if things did'nt work out with him</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:32pm UTC+08">ah</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:32pm UTC+08">u been with him since u were 20?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:33pm UTC+08">oh sorry no, cause paige comes here to visit her dad. sorry forgot</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:34pm UTC+08">No i have been with muzz for almost 2 years now i was with paiges dad for 15 years</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:34pm UTC+08">wow</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:35pm UTC+08">that ages</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:35pm UTC+08">Yeah why to long with him (paiges dad) big mistake</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:35pm UTC+08">did u start young? with guys or girls? am i younger than u wen u started with girls?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:36pm UTC+08">was he a mistake?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:37pm UTC+08">He was an arse. I was 16 with my first girl i was with just b4 my first bf</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:38pm UTC+08">was that all the way? cause im scared to even let another paerson "in" lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:39pm UTC+08">is it normal to be scared?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:39pm UTC+08">All the way with the girl and my 1st bf i made him wait 8 months b4 we went the whole way but he was so good and gentle and promised to stop if it hurt</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:40pm UTC+08">i mean, im not scared too do stuff alone. but seems scary when some1 else trys</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:40pm UTC+08">Yes normal to be scared</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:40pm UTC+08">Its all about trusting the other person</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:41pm UTC+08">And y have to trust them 100%</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:41pm UTC+08">U i meant</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:43pm UTC+08">its easy to play around with another girl.</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:43pm UTC+08">but they always try too go further, i feel i want to but cant</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:43pm UTC+08">its dumb</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:44pm UTC+08">It is very easy u will if and when your ready its not dumb</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:45pm UTC+08">i can do it myself. and to other girls. and feels nice. but its like a bad dream 4 me, like its going to be like at the dentists</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:46pm UTC+08">lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:46pm UTC+08">have u been with girls latley? lol.</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:46pm UTC+08">will i grow out of it?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:49pm UTC+08">U need to relax to enjoy it been done back to u ......no not in a long time ....i car'nt answer that only you yourself will answer that maybe not now maybe later maybe never you are the only one who will know hunni</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:52pm UTC+08">k</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:52pm UTC+08">i like girls, but i want to be normal.</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:52pm UTC+08">You are normal hun</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:52pm UTC+08">ppl think im wierd, and no girl wants too and if they do they avoid u after :(</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:54pm UTC+08">U are'nt weird they avoid cause they may think someone will say something they are more worried about others finding out thats all thats also nornal</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:55pm UTC+08">really?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:55pm UTC+08">Yes hun</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:55pm UTC+08">cause the only girl that talks to me is my cousin, but i guess she has too love me</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:56pm UTC+08">did u raise gemma?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:56pm UTC+08">Sure did</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:57pm UTC+08">Why</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:57pm UTC+08">shes just really cool</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:57pm UTC+08">i met paige in blaga, just met gemma on fb. but shes realy cool.</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:57pm UTC+08">Shes like her mum lol</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:57pm UTC+08">realy? lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:57pm UTC+08">u look the same :)</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:58pm UTC+08">Paige said u meet in balga</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:58pm UTC+08">Gem is real cool</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:58pm UTC+08">yeah, paige was a nice girl :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:59pm UTC+08">so u have naughty stuff? lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:59pm UTC+08">She is like me honest</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:59pm UTC+08">Like</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:59pm UTC+08">oops. please forget i said that</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:59pm UTC+08">lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:59pm UTC+08">Its ok</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:59pm UTC+08">You can ask</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:59pm UTC+08">pics vids n toys lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:00pm UTC+08">Vids and toys yes</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:01pm UTC+08">And i guess one day u will as well all girls have there toys</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:01pm UTC+08">gems buying me 1 soon :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:01pm UTC+08">can i tell u a secret?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:02pm UTC+08">Oh course u can it wont say a thing promise</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:02pm UTC+08">What u say to me stays with me</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:03pm UTC+08">ok but its about gemma?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:03pm UTC+08">Thats ok</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:03pm UTC+08">and shed hate me if u told her..</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:03pm UTC+08">I wont say anything</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:03pm UTC+08">Promise</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:04pm UTC+08">she has toys, n heaps of pics n vids online of herslelf and her ex.</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:04pm UTC+08">he found out, and told me to delete them n stuff, but gemma let me dl them again :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:05pm UTC+08">sorry if you didnt want to know. please dont tell her</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:05pm UTC+08">your the only person ive told. and the only 1 i can tell :( lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:07pm UTC+08">I knew hun she told me and gem and i have are very open when we talk and we talk about everything like i said to i am honest and thats how i am with my kids they want to know something i tell them just i like i am honest with u</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:08pm UTC+08">:) thats so cool.. wish i had a mum like u</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:08pm UTC+08">U can always adopt me</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:08pm UTC+08">mine is like an evil churchy. gets mad if i get knickers that look cheeky lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:08pm UTC+08">nope :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:08pm UTC+08">u look like gem :D i dont want a hot mum n sister</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:09pm UTC+08">Gee thanks</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:09pm UTC+08">:)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:10pm UTC+08">would be wierd to have a mum that looks like her daughter after watching stuff lol.</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:10pm UTC+08">:D</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:11pm UTC+08">Your funny</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:11pm UTC+08">plus u look to similar, ill probly think silly lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:11pm UTC+08">i know :)</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:11pm UTC+08">Whos to say you wont think silly now joking</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:11pm UTC+08">lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:12pm UTC+08">i do :) thats why i have gems vids and already feel wierd that u look alike :D</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:12pm UTC+08">she lets me use her vids cause im staying a virgin till 16 and hard to get girls lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:14pm UTC+08">Just to let u know our hair colour is so different and i am older .....and your not of legal age it 17 so if you do it b4 dont let to many people know</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:15pm UTC+08">yeah she told me :) ur the only 1 i told</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:15pm UTC+08">oh and my girl cousin, gem said she could though.</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:15pm UTC+08">how old are u?</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:15pm UTC+08">u dont look old?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:16pm UTC+08">42 i am</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:16pm UTC+08">oh. gems over 21, so ur older than her</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:16pm UTC+08">wow, u dont look it</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:16pm UTC+08">I had gem at 21 and thanks</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:17pm UTC+08">do u have ur vids online? how old do i have to be to watch them?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:19pm UTC+08">Noooo i dont depends some sites are free to watch</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:21pm UTC+08">:(</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:21pm UTC+08">thought id get too download them</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:21pm UTC+08">:P jokes lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:22pm UTC+08">I dont take things serious all good</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:22pm UTC+08">:D</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:22pm UTC+08">are ur vids from before?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:23pm UTC+08">No with my man now no one else</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:24pm UTC+08">ohh. i had some lol. but by myself :(</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:25pm UTC+08">and with my cousin :P but just us laughing in the shower lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:25pm UTC+08">Thats ok your allow</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:25pm UTC+08">Allowed</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:26pm UTC+08">i like solo vids of girls lol.</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:26pm UTC+08">Nothing wrong with that</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:27pm UTC+08">do u have any?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:27pm UTC+08">haha</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:28pm UTC+08">Of me or other girls</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:28pm UTC+08">wow! realy?</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:28pm UTC+08">i realy want them lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:29pm UTC+08">No one gets yo see them not even my partner lol</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:30pm UTC+08">aww</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:30pm UTC+08">pity ur not exactly like gem :P</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:31pm UTC+08">jokes lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:31pm UTC+08">That i am not mine are just private all good hun</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:31pm UTC+08">woah. have u ever seen any of them?!</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:31pm UTC+08">Noooo</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:31pm UTC+08">oops stupid question. ofcourse u wouldnt lol</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:32pm UTC+08">gem sent me heaps, and her ex n her.</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:33pm UTC+08">she said he was big and best but in vids it looks too big :O like fake</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:33pm UTC+08">Lol thats funy</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:33pm UTC+08">and didnt want to ask her lol, but i dont think it can be real ???</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:33pm UTC+08">Funny</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:34pm UTC+08">but she said it was biggest and best she had??? but still looks fake</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:34pm UTC+08">There are guys out there that are huge seen them and on the porn sites</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:34pm UTC+08">hmm</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:34pm UTC+08">can i send u a pic of it? with out gem in it? cause i want to know if its real??</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:35pm UTC+08">u can delete it straight away</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:35pm UTC+08">lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:35pm UTC+08">Yeah ok</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:35pm UTC+08">I will delete it</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:36pm UTC+08">cool. i wouldnt ask, but cause ur gems mum i can trust u more :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:36pm UTC+08">other wise i wouldnt show any1</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:36pm UTC+08">2 mins. illl send it ok.</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:37pm UTC+08">Yeah i know u would'nt just show anyone</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:38pm UTC+08">kk, and dont hate me if u feel awkward lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:38pm UTC+08">I wont hate u</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:56pm UTC+08">Well my lovely its 1am and i am up early but will talk to u tomorrow xxxxx always here for u</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:57pm UTC+08">thanks :)</div>
+    <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:57pm UTC+08">should i send the pic? n u can look tomoz?</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">dont know wich 1 to send lol</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:23am UTC+08">spam</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:24am UTC+08">spam</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:24am UTC+08">sorry, my laptop accidently sent other pictures that were in the same folder</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:25am UTC+08">its nothing too bad :/ but u might not want to scroll up. so sorry</div>
+  </div>
+sorry about that
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:35am UTC+08">Chelsea WalkerWednesday, July 3, 2013 at 7:31am UTC+08</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:37am UTC+08">good moring :)</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:39am UTC+08">is it fake? lol</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:40am UTC+08">maybe i shouldnt have sent them? did i make u feel wierd?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:40am UTC+08">Morning hunni How did u sleep .....well the photos his cock to seems normal have seen way bigger and they always look biggger cliae up in photos no not fake .... Nope dont feel weird</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:41am UTC+08">Close up</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:41am UTC+08">i slept good :)</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:41am UTC+08">thanks. how about you?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:44am UTC+08">Yeah not to bad</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:44am UTC+08">are you going to work?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:44am UTC+08">Noooo normal i work night shifts</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:44am UTC+08">oh</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:44am UTC+08">so free day? :)</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:45am UTC+08">Sure have</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:47am UTC+08">What u up to today</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:47am UTC+08">nothing :(</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:47am UTC+08">going to be bored</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:47am UTC+08">lol, you?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:49am UTC+08">Really boring stuff like washing get paiges arse out she can do the dishes</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:50am UTC+08">i dont even have stuff like that to do</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:50am UTC+08">wish i had cool stuff. my house is boring</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:51am UTC+08">Clean your room lol like what cool stuff</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:51am UTC+08">my rooms clean lol</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:51am UTC+08">dunno, just like. clothes and stuff</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:52am UTC+08">be cool if i had a vibrator lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:53am UTC+08">Lol they can get boring at times lol</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:53am UTC+08">realy?</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:53am UTC+08">id dress sexy too spice it up lol. do u have 1?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:57am UTC+08">Yeah unless u have heaps of different ones</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:58am UTC+08">differnet vibrators?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:58am UTC+08">Yep</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:58am UTC+08">do i need more than 1?</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:58am UTC+08">how many do u have?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:59am UTC+08">I have 4different ones</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 7:59am UTC+08">do they all look different? :) im curious now lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:00am UTC+08">Yes all different shaped and different speeds</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:00am UTC+08">are they for differnt things? or do u use more than 1 at a time?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:02am UTC+08">Depends on my mood and if my partner also wants ti involve them when we are messing around</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:02am UTC+08">aww</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:02am UTC+08">now i want 1 even more</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:03am UTC+08">didnt even know there were more than 1 kind</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:03am UTC+08">wonder what yours look like lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:03am UTC+08">You can buy them on line and they come in a plain brown box</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:04am UTC+08">yeah :) im going to send gem money and shes going to buy 1 for me</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:05am UTC+08">Brb</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:05am UTC+08">k</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:36am UTC+08">hmmm, his penis isnt even big? wow</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 8:36am UTC+08">if his is small i dont think ill ever lose my virginity lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 9:03am UTC+08">You will they look scary but they are'nt but you have to be very relaxed</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 9:56am UTC+08">hmm</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 9:56am UTC+08">but still. if his is small :/ then thats crazy</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 9:59am UTC+08">what do your toys look like? any advise on what i should get?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:21am UTC+08">Clear , silver,purple, and pink with rotating beads in it small to start of with</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:23am UTC+08">huh. hard to imagine what that would look like lol</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:24am UTC+08">a necklace wrapped around a vibrator? lolz</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:24am UTC+08">yeah, ill go with a small 1 :)</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:25am UTC+08">Noo the beads are in the inside of it</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:25am UTC+08">oh haha</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:26am UTC+08">now i look dumb haha</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:27am UTC+08">No u dont search sexyland.com.au and have look on there site at the vibs</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:27am UTC+08">ahh ok</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:28am UTC+08">are yours on there 2?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:29am UTC+08">They have heaps yes got mine from there my pink one with beads is called the rabbit</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:30am UTC+08">wow that looks high tech</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:30am UTC+08">But fun</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:32am UTC+08">My clear one is is just normal purple is the basic rabbit with no multi speed silver is the plain bullet one</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:32am UTC+08">bullet?</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:32am UTC+08">oh yeah</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:33am UTC+08">Lots to look at hey</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:33am UTC+08">are they realy that fun?</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:33am UTC+08">yep</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:34am UTC+08">so it is worth getting 1?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:34am UTC+08">Yes</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:35am UTC+08">cool</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:36am UTC+08">i want a small 1 like gems pink 1</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:36am UTC+08">dont know what it is though</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:36am UTC+08">Ask her</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:37am UTC+08">shes going to buy it for me any way :)</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:37am UTC+08">Ohh ok cool</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:37am UTC+08">ill ask her to get the same as hers</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:38am UTC+08">Yep</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:39am UTC+08">that rabbit looks interesting, but i think i would want to try it out</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:40am UTC+08">Thats one is great</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:40am UTC+08">b4 buying it</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:41am UTC+08">You would have to find someone with it but not good to share those things</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:43am UTC+08">oh. well i dont know any1 with 1 let alone that would let me try it</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:44am UTC+08">do you use your much?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:45am UTC+08">Depends what mood i am in and if my partner wants to use it on me as foreplay</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:46am UTC+08">oh. you dont use it byurself?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:47am UTC+08">Yeah i do</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:47am UTC+08">oh lol</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:48am UTC+08">must be cool. cant wait</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:50am UTC+08">But just remember your young and you dont need to rush into everything you have a long life to enjoy things and to experiment in things</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:50am UTC+08">ok :)</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:50am UTC+08">thats why i want 1 hehe cause i dont want to have sex</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:52am UTC+08">Will fair enough i guess at least this way you want catch anything nasty</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:53am UTC+08">yep</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:53am UTC+08">and people share stuff with me lol.</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:54am UTC+08">Just make sure its always clean</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:54am UTC+08">huh?</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:54am UTC+08">i meant pictures and stuff :)</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 10:56am UTC+08">well, used too. but now i dont have a phone to swap stuff. and now i have no1 to swap with aswell haha</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:05am UTC+08">Ohhh ok with you now</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:05am UTC+08">Why no phone</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:05am UTC+08">cause mum took it and threw it out</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:06am UTC+08">she thought i was sending pics to guys. but it was my chick friend</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:06am UTC+08">Ohh ok not good</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:06am UTC+08">it wasnt bad pics</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:06am UTC+08">just posing n stuff in bikinis n stuff.</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:07am UTC+08">she never found my stuff. i hide it on a usb :)</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:10am UTC+08">and it was only us 2 friends swapping stuff for fun, we wernt posting them or anything</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:10am UTC+08">Bikinis are nothing wrong</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:11am UTC+08">shes strict, and she wouldnt believe it was a girl</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:11am UTC+08">lol. shes a church nut</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:12am UTC+08">Not good at all but i believe u</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:13am UTC+08">i dont think theres anything wrong if girls send me naughty stuff. not like im sending stuff back lol. and i keep it to myself</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:14am UTC+08">i like it acctualy :P i think its hot, and i enjoy them lol</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:15am UTC+08">well i used too lol. no1 wants to share</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:16am UTC+08">Well thats it nothing wrong and if you like it . Its up to you what you want to look at</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:17am UTC+08">:) i think its cool. it doesnt hurt any 1 and its fun</div>
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:20am UTC+08">dont worry :) its mostly like undies n sexy stuff,. not porno style. not much people share that.</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Wednesday, July 3, 2013 at 11:21am UTC+08">All good hun</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:45am UTC+08">:(</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:46am UTC+08">u told gem, wayne was angry</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:47am UTC+08">When I haven't mentioned Wayne in over a year</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:48am UTC+08">i meant about the pics i sent. he told me off. n gem hates me</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:48am UTC+08">do u hate me? i made every 1 mad</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:49am UTC+08">No I don't hate you</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:49am UTC+08">:)</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:50am UTC+08">thought was our secret :/ did u feel guilty seeing them?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:50am UTC+08">I never mentioned them</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:50am UTC+08">gemma said u told her that i sent u them?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:51am UTC+08">You said you were going to send them I never got them</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:51am UTC+08">huh? wierd.</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:51am UTC+08">i thought i sent them?</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:51am UTC+08">Yeah</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:52am UTC+08">If you did wasn't to me</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:52am UTC+08">but gemma and wayne said u said.</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:52am UTC+08">i can see it in our chat history? must have stuffed up</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:53am UTC+08">its ok, i got in trouble for somthing u never got 2 see :/ lol</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:53am UTC+08">Ummmm ok</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 11:54am UTC+08">ages ago, when we talked. its all good now either way</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 12:00pm UTC+08">wayne said its sorta hot and doesnt care if it was just of him lol, but gem hates my guts. can u tell her im sorry, i dont expect forgiveness.</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 12:29pm UTC+08">are u sure u dont hate me?</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 12:29pm UTC+08">see</div>
+  </div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 12:30pm UTC+08">No I don't hate you sorry can't txt driving</div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip=" <div class="message" data-tooltip="Friday, December 11, 2015 at 12:32pm UTC+08">im not going to be destructive i swear, i wont cause u problems</div>"></div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 12:32pm UTC+08">i took screenshot, was long ago so yeah. probly forgot</div>
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 12:36pm UTC+08"></div>
+  </div>
+   <div class="messages messages--sent">
+    <div class="message" data-tooltip="Friday, December 11, 2015 at 12:36pm UTC+08">either way, i love yous all. xx bye</div>
+  </div>
+<!-- </div> -->
+<!--
+	<div class="text-bar">
+		<form class="text-bar__field" id="form-message">
+			<input type="text" placeholder="Type or thumb up ;)"/>
+		</form>
+		<div class="text-bar__thumb">
+			<div class="thumb"></div>
+		</div>
+	</div>
+	-->
+</div>
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
+
+</body>
+</html>
