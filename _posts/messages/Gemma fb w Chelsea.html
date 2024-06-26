@@ -1,0 +1,2686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Gemma SMS - Facebook Messenger style</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+	<style>
+	       .header {
+	            display: block;
+	            position: fixed;
+	            width: 700px;
+	            margin-left: -15px;
+	            margin-top: -85px;
+	            background-color: #fff;
+	            z-index: 999;
+	       }
+	       html {
+	            zoom: 1.2;
+	            overscroll: hidden;
+	            background-color: black;
+	       }
+	       
+		* {
+			box-sizing: border-box;
+		}
+
+		.meta {
+			padding: 10px 10px;
+			display: block;
+			width: 100%;
+			text-align: center;
+			color: grey;
+			opacity: 0.7;
+			text-decoration: underline;
+		}
+
+		.clearfix:after, .messages:after {
+			content: "";
+			display: table;
+			clear: both;
+			height: 0;
+			visibility: hidden;
+		}
+
+		body {
+		      overscroll: hidden;
+			background-color: #fff;
+			width: 700px;
+			padding: 0px;
+			margin: 0 auto;
+			padding-top: 85px;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+		}
+
+		.screen {
+			background-color: #fff;
+			height: 940px;
+			width: 500px;
+			margin: 0 auto;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+		}
+
+		.conversation {
+			height: calc(100% - 0px);
+			overflow: auto;
+			padding: 0px 12px 0px 15px;
+			padding-bottom: 0px;
+		}
+
+		.messages {
+			margin-bottom: 10px;
+		}
+		.b4 {
+			display: flex;
+			height: 0px;
+		}
+		.prof {
+			top: 2px;
+			left: -8px;
+			display: block;
+			float: left;
+			position: relative;
+			height: 35px;
+			width: 35px;
+			background-image: url("https://github-production-user-asset-6210df.s3.amazonaws.com/117030692/253752128-ada338c5-e824-4120-8315-816bbde33754.PNG?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240626%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240626T195614Z&X-Amz-Expires=300&X-Amz-Signature=38e144b1ea1347e8e656b31c69d42a5e78405cbb1b243d47a9c08c48d6f494c9&X-Amz-SignedHeaders=host&actor_id=117030692&key_id=0&repo_id=662465471");
+			background-position: -9px 0px;
+			background-repeat: repeat;
+			background-size: 160%;
+			border-radius: 50px;
+			background-color: black;
+		}
+		.messages--received .message {
+		      padding: 5px;
+		      padding-left: 10px;
+		      padding-right: 10px;
+			float: left;
+			background-color: #ddd;
+			border-bottom-left-radius: 5px;
+			border-top-left-radius: 5px;
+		}
+		.messages--received .message:first-child {
+			border-top-left-radius: 15px;
+		}
+		.messages--received .message:last-child {
+			border-bottom-left-radius: 15px;
+		}
+		.messages--sent .message {
+		      padding: 5px;
+		      padding-left: 10px;
+		      padding-right: 10px;
+			float: right;
+			background-color: #1998e6;
+			color: #fff;
+			border-bottom-right-radius: 5px;
+			border-top-right-radius: 5px;
+		}
+		.messages--sent .message:first-child {
+			border-top-right-radius: 15px;
+		}
+		.messages--sent .message:last-child {
+			border-bottom-right-radius: 15px;
+		}
+
+		.message {
+			margin-left: 35px;
+			display: inline-block;
+			margin-bottom: 2px;
+			clear: both;
+			padding: 10px 15px;
+			font-size: 16px;
+			border-radius: 15px;
+			line-height: 1.4;
+		}
+		.message--thumb {
+			background-color: transparent !important;
+			padding: 0;
+			margin-top: 5px;
+			margin-bottom: 10px;
+			width: 20px;
+			height: 20px;
+			border-radius: 0px !important;
+		}
+
+		.text-bar {
+			height: 50px;
+			border-top: 1px solid #ccc;
+		}
+		.text-bar__field {
+			float: left;
+			width: calc(100% - 50px);
+			height: 100%;
+		}
+		.text-bar__field input {
+			width: 100%;
+			height: 100%;
+			padding: 0 20px;
+			border: none;
+			position: relative;
+			vertical-align: middle;
+			font-size: 14px;
+		}
+		.text-bar__thumb {
+			float: left;
+			width: 50px;
+			height: 100%;
+			padding: 10px;
+		}
+		.text-bar__thumb:hover {
+			opacity: 0.8;
+		}
+		.text-bar__thumb .thumb {
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+		}
+
+		.thumb {
+			display: block;
+		}
+
+		.anim-wiggle {
+			-webkit-animation: wiggle 0.2s ease infinite;
+			animation: wiggle 0.2s ease infinite;
+		}
+
+		.anim-wiggle-2 {
+			-webkit-animation: wiggle2 0.2s ease infinite;
+			animation: wiggle2 0.2s ease infinite;
+		}
+
+@-webkit-keyframes wiggle {
+			0% {
+				transform: rotateZ(5deg);
+			}
+			50% {
+				transform: rotateZ(-5deg);
+			}
+			100% {
+				transform: rotateZ(5deg);
+			}
+		}
+
+@keyframes wiggle {
+			0% {
+				transform: rotateZ(5deg);
+			}
+			50% {
+				transform: rotateZ(-5deg);
+			}
+			100% {
+				transform: rotateZ(5deg);
+			}
+		}
+@-webkit-keyframes wiggle2 {
+			0% {
+				transform: rotateZ(10deg);
+			}
+			50% {
+				transform: rotateZ(-10deg);
+			}
+			100% {
+				transform: rotateZ(10deg);
+			}
+		}
+@keyframes wiggle2 {
+			0% {
+				transform: rotateZ(10deg);
+			}
+			50% {
+				transform: rotateZ(-10deg);
+			}
+			100% {
+				transform: rotateZ(10deg);
+			}
+		}
+		.thumb-img, .thumb {
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-image: url("");
+		}
+	</style>
+	<style>
+[data-tooltip] {
+    display: inline-block;
+    position: relative;
+    cursor: help;
+    padding: 4px;
+}
+/* Tooltip styling */
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    display: none;
+    position: absolute;
+    background: #000;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    min-width: 100px;
+    text-align: center;
+    border-radius: 4px;
+}
+/* Dynamic horizontal centering */
+[data-tooltip-position="top"]:before,
+[data-tooltip-position="bottom"]:before {
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+/* Dynamic vertical centering */
+[data-tooltip-position="right"]:before,
+[data-tooltip-position="left"]:before {
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+[data-tooltip-position="top"]:before {
+    bottom: 100%;
+    margin-bottom: 6px;
+}
+[data-tooltip-position="right"]:before {
+    left: 100%;
+    margin-left: 6px;
+}
+[data-tooltip-position="bottom"]:before {
+    top: 100%;
+    margin-top: 6px;
+}
+[data-tooltip-position="left"]:before {
+    right: 100%;
+    margin-right: 6px;
+}
+
+/* Tooltip arrow styling/placement */
+[data-tooltip]:after {
+    content: '';
+    display: none;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+/* Dynamic horizontal centering for the tooltip */
+[data-tooltip-position="top"]:after,
+[data-tooltip-position="bottom"]:after {
+    left: 50%;
+    margin-left: -6px;
+}
+/* Dynamic vertical centering for the tooltip */
+[data-tooltip-position="right"]:after,
+[data-tooltip-position="left"]:after {
+    top: 50%;
+    margin-top: -6px;
+}
+[data-tooltip-position="top"]:after {
+    bottom: 100%;
+    border-width: 6px 6px 0;
+    border-top-color: #000;
+}
+[data-tooltip-position="right"]:after {
+    left: 100%;
+    border-width: 6px 6px 6px 0;
+    border-right-color: #000;
+}
+[data-tooltip-position="bottom"]:after {
+    top: 100%;
+    border-width: 0 6px 6px;
+    border-bottom-color: #000;
+}
+[data-tooltip-position="left"]:after {
+    right: 100%;
+    border-width: 6px 0 6px 6px;
+    border-left-color: #000;
+}
+/* Show the tooltip when hovering */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+    display: block;
+    z-index: 50;
+}
+</style>
+	<base src="/">
+</head>
+
+<body>
+	<!-- partial:index.partial.html -->
+<!--	<div class="screen"> -->
+		<div class="conversation">
+		<div class="header">
+	<div class="meta" style="color: blue; font-weight: bold; text-decoration: underline; font-size: 18px; ">Conversation with Gemma Clark & Chelsea Walker</div>
+			<div class="meta">Thursday, May 23, 2013 at 7:45pm</div>
+			</div>
+
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Thursday, May 23, 2013 at 7:45pm" data-tooltip-position="bottom">hi im gemma and apprently u know my sister paige... was just wondering how u know me and how you got vids of me ???</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 10:54am" data-tooltip-position="bottom">sorry</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 10:54am" data-tooltip-position="bottom">me and my friend seen them and downloaded them</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 10:54am" data-tooltip-position="bottom">but i swear no1 else had seen them</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 10:55am" data-tooltip-position="bottom">the guy in them came to my friends house and we deleted them. i swear i didnt pass them aruond</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 10:58am" data-tooltip-position="bottom">ur paiges sister? i met u in balga ages ago</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 10:58am" data-tooltip-position="bottom">i swear i deleted them</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 10:59am" data-tooltip-position="bottom">ur man made sure and changed stuff</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 10:59am" data-tooltip-position="bottom">i swear to god. i didnt show anyone or anything</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:00am" data-tooltip-position="bottom">its ok stop stressing babe im not angry</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:02am" data-tooltip-position="bottom">no i swear me and my friend was the only people.</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:02am" data-tooltip-position="bottom">then ur man the guy in them watched me delete them</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:03am" data-tooltip-position="bottom">babe i believe you im not angry ok</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:03am" data-tooltip-position="bottom">you sure</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:03am" data-tooltip-position="bottom">i was so scared wen he came around</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:03am" data-tooltip-position="bottom">now your staring up. making me more scared</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:04am" data-tooltip-position="bottom">makes me feel im going to get bashed</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:05am" data-tooltip-position="bottom">yea im sure babe doesnt bother me as long as u dont or didnt pass it around...yea his protective so just dont do it again babe</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:05am" data-tooltip-position="bottom">i swear i used them for my own reasons</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:05am" data-tooltip-position="bottom">hey ur not going to get bashed i promise</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:05am" data-tooltip-position="bottom">u sure?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:05am" data-tooltip-position="bottom">hey go for gold babe i honestly dont carw if u used them, babe i promise nothing will happen to you</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:06am" data-tooltip-position="bottom">i wanted to use them not share them. i swear</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:06am" data-tooltip-position="bottom">now they r deleted and gone</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:07am" data-tooltip-position="bottom">ok babe no probs its cool hey but now u know me personally please in the future dont tell anyone who knows me k</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:07am" data-tooltip-position="bottom">ofcourse</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:07am" data-tooltip-position="bottom">i swear</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:08am" data-tooltip-position="bottom">i would die before i would</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:08am" data-tooltip-position="bottom">ur man said it was private and everyone i know would die if it was found out</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:08am" data-tooltip-position="bottom">i wouldnt tell any1</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:09am" data-tooltip-position="bottom">what are you serious? just so you his my ex now so dont stress babe, but just make sure not to tell the same people babe :) i believe u hunni</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:09am" data-tooltip-position="bottom">dont stress nothing is going to happen to you</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:10am" data-tooltip-position="bottom">he didnt seem like your ex :( was hell angry about if your stuff were to be spread</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:10am" data-tooltip-position="bottom">i was scared</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:11am" data-tooltip-position="bottom">all i wanted was to keep them for myself :(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:12am" data-tooltip-position="bottom">really ?? yeah nar we havnt been together for a while now, he doesnt want people we know to find out and you being young thought u would spread it around</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:12am" data-tooltip-position="bottom">i didnt i swear</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:13am" data-tooltip-position="bottom">me and paige get along good</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:13am" data-tooltip-position="bottom">and she doesnt even know</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:13am" data-tooltip-position="bottom">well thats good because i dont want anyone knowing about my past hun please</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:13am" data-tooltip-position="bottom">ofcourse</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:14am" data-tooltip-position="bottom">i swear</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:14am" data-tooltip-position="bottom">ive done stuff</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:14am" data-tooltip-position="bottom">i would hate 4 people 2 know</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:15am" data-tooltip-position="bottom">yeah we have our own littlw secreta</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:15am" data-tooltip-position="bottom">little secrets</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:15am" data-tooltip-position="bottom">i will keep yours i swear</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:16am" data-tooltip-position="bottom">i just used them</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:16am" data-tooltip-position="bottom">watched i mean</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:16am" data-tooltip-position="bottom">i swear</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:17am" data-tooltip-position="bottom">thanks hun! its ok hun, my ex is gonna let you have them again if u want rhem</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:17am" data-tooltip-position="bottom">them*</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:17am" data-tooltip-position="bottom">but what if he thinks i spread them?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:19am" data-tooltip-position="bottom">ive already spoken to him and if u can keep your word n not show anyone u can have them :)??? but just dont do wrong by me kay cause i know girls that go to your school! but thats if u lie to ke</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:19am" data-tooltip-position="bottom">and where i got them from is gone</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:19am" data-tooltip-position="bottom">me*</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:19am" data-tooltip-position="bottom">what do u mean</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:20am" data-tooltip-position="bottom">i had the site bookmarded and now the videos and stuff arnt there</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:20am" data-tooltip-position="bottom">id like to have them but im scared</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:22am" data-tooltip-position="bottom">ive added ur ex</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:23am" data-tooltip-position="bottom">dont add him please</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:23am" data-tooltip-position="bottom">should i ask if he cares or is going to hurt me?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:23am" data-tooltip-position="bottom">ok i wont</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:23am" data-tooltip-position="bottom">just promise me u wont add him and u will ignore him</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:23am" data-tooltip-position="bottom">why?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:24am" data-tooltip-position="bottom">will he bash me :(</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:24am" data-tooltip-position="bottom">u said i could have your stuff? will he not like it?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:24am" data-tooltip-position="bottom">cause his 26 and could be going to jail and u dont need to know or be aroud the kinds trouble he gets in</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:24am" data-tooltip-position="bottom">he has let me let you have the vids only because i asked</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:24am" data-tooltip-position="bottom">oh</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:25am" data-tooltip-position="bottom">so i can have them?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:26am" data-tooltip-position="bottom">i still feel scared</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:26am" data-tooltip-position="bottom">yeah u can hun! umm trying to think cause his changed the settings to private i might have to give u out login details but u have to promise to download what i want and then log out and not go back on it</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:27am" data-tooltip-position="bottom">ok i swear</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:27am" data-tooltip-position="bottom">are you sure?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:27am" data-tooltip-position="bottom">i trust you i hope u can promise to not brake that</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:27am" data-tooltip-position="bottom">i swear</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:28am" data-tooltip-position="bottom">login name: snakejuice87 password: wayneandgemma</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:28am" data-tooltip-position="bottom">ok thankyou</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:28am" data-tooltip-position="bottom">2secs</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:28am" data-tooltip-position="bottom">your welcome</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:29am" data-tooltip-position="bottom">it worked :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:29am" data-tooltip-position="bottom">cool</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:29am" data-tooltip-position="bottom">can i take pictures and videos?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:29am" data-tooltip-position="bottom">sure why not</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:30am" data-tooltip-position="bottom">if you want i have some :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:30am" data-tooltip-position="bottom">wow</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:31am" data-tooltip-position="bottom">your hot</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:31am" data-tooltip-position="bottom">Hahaha thanks :) really do you</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:31am" data-tooltip-position="bottom">yep :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:31am" data-tooltip-position="bottom">those vid n pics r me when i was 18 im 21</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:31am" data-tooltip-position="bottom">now</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:31am" data-tooltip-position="bottom">with myself like you</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:31am" data-tooltip-position="bottom">really :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:32am" data-tooltip-position="bottom">i sort of copied your bath thing and pillow lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:32am" data-tooltip-position="bottom">and used toys :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:32am" data-tooltip-position="bottom">lol thats awesome :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:32am" data-tooltip-position="bottom">if you want?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:32am" data-tooltip-position="bottom">r u saying u want to to share them with me</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:32am" data-tooltip-position="bottom">i feel bad just taking all your stuff</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:33am" data-tooltip-position="bottom">if you want :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:33am" data-tooltip-position="bottom">hey i dont mind babe if u want my stuff i plenty of new stuff he doesnt have on there</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:34am" data-tooltip-position="bottom">you can send them if u like</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:34am" data-tooltip-position="bottom">you have stuff not on the site?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:35am" data-tooltip-position="bottom">i do</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:35am" data-tooltip-position="bottom">but i cant get it then</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:35am" data-tooltip-position="bottom">i cant txt them to you mayb</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:36am" data-tooltip-position="bottom">cant :( like i told paige my mum threw my phone out cause that guy scared me and my freind so she threw my phone away</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:36am" data-tooltip-position="bottom">omg really :( im so sorry</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:36am" data-tooltip-position="bottom">she thought i was sexting people</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:37am" data-tooltip-position="bottom">what...im so sorry he scared you both like that</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:37am" data-tooltip-position="bottom">but just had your stuff and she went over bored</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:37am" data-tooltip-position="bottom">yeah it was scary</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:37am" data-tooltip-position="bottom">but he was nice sort of</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:38am" data-tooltip-position="bottom">just wanted your videos out of the area or something</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:38am" data-tooltip-position="bottom">im so sorry :( yeah we just dont want people in the local area knowing we know to many people</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:39am" data-tooltip-position="bottom">i understand</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:39am" data-tooltip-position="bottom">but you are hot in them</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:40am" data-tooltip-position="bottom">i want to see the other ones :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:40am" data-tooltip-position="bottom">hahaha thanks</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:40am" data-tooltip-position="bottom">sorry to ask this</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:40am" data-tooltip-position="bottom">but is the camera on a wierd angle or is his thing realy that big?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:41am" data-tooltip-position="bottom">doesnt look real</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:41am" data-tooltip-position="bottom">hahahaha no weird angles he really that big and defiantly real babe</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:41am" data-tooltip-position="bottom">for real?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:41am" data-tooltip-position="bottom">its huge</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:41am" data-tooltip-position="bottom">thats crazy lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:42am" data-tooltip-position="bottom">for real</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:42am" data-tooltip-position="bottom">biggest youve had?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:42am" data-tooltip-position="bottom">sure is :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:43am" data-tooltip-position="bottom">lol thought so. ur in pain in some of the vidoes</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:43am" data-tooltip-position="bottom">i love your solo videos btw :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:43am" data-tooltip-position="bottom">lol u noticed .. hah thanks :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:44am" data-tooltip-position="bottom">yes i noticed :) u look like you both loved it lol.</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:44am" data-tooltip-position="bottom">can we share through fb?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:51am" data-tooltip-position="bottom">hahahahaha they were good time.. Sure we can share trough facebook</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:51am" data-tooltip-position="bottom">not to sound dirty</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:52am" data-tooltip-position="bottom">but ive seen all your web stuff :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:52am" data-tooltip-position="bottom">hehe</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:53am" data-tooltip-position="bottom">hahahah really 󾌵 thats cool</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:54am" data-tooltip-position="bottom">umm i cant send mine till my mum gets off the laptop</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:54am" data-tooltip-position="bottom">but i can still download</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:55am" data-tooltip-position="bottom">thats ok darl :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:57am" data-tooltip-position="bottom">sending some pics till i can get on my laptop to send vids</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 11:59am" data-tooltip-position="bottom">two of them i didnt mean to send</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:00pm" data-tooltip-position="bottom">wow</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:00pm" data-tooltip-position="bottom">your hot babe</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:01pm" data-tooltip-position="bottom">thanks babe</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:05pm" data-tooltip-position="bottom">i got some ill send later</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:05pm" data-tooltip-position="bottom">but some are naughty lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:06pm" data-tooltip-position="bottom">thats ok :) i over 300 photos</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:07pm" data-tooltip-position="bottom">wish u could send them all :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:07pm" data-tooltip-position="bottom">hahahahaha u can a fair few of them ill show you</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:07pm" data-tooltip-position="bottom">:)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:08pm" data-tooltip-position="bottom">realy?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:08pm" data-tooltip-position="bottom">you sure? no 1 will hurt me?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:08pm" data-tooltip-position="bottom">i promise no one will hurt it will b our little secret k</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:09pm" data-tooltip-position="bottom">ok :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:09pm" data-tooltip-position="bottom">ive got a few nude photos and me using thiings if you want?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:10pm" data-tooltip-position="bottom">ok :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:11pm" data-tooltip-position="bottom">sweet. u want me to send u my stuff</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:11pm" data-tooltip-position="bottom">yeah ok</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:12pm" data-tooltip-position="bottom">but cant till mums not near laptop</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:15pm" data-tooltip-position="bottom">can i have more? lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:16pm" data-tooltip-position="bottom">do u still love ur ex? are u getting back with him n stuff? or u with some1 else and not getting back together?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:18pm" data-tooltip-position="bottom">ok no worries :) sure ill send u more :) i still love him but his in WA and im in Victoria we have tryd to work thing out but we want different thing so we are just friends</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:20pm" data-tooltip-position="bottom">ok, so u have a man?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:21pm" data-tooltip-position="bottom">or r yous wanting to get back together?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:24pm" data-tooltip-position="bottom">no im single</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:24pm" data-tooltip-position="bottom">i dont think we are gettin back togetha</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:25pm" data-tooltip-position="bottom">in that viddeo did you realy come on the pillow?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:27pm" data-tooltip-position="bottom">and ive logged out now :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:32pm" data-tooltip-position="bottom">of your pornhub</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:36pm" data-tooltip-position="bottom">yeah i really did i usig a vibrator as well</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:37pm" data-tooltip-position="bottom">ok cool :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:37pm" data-tooltip-position="bottom">soz delayed reply my phone died</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:38pm" data-tooltip-position="bottom">4 real :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:39pm" data-tooltip-position="bottom">im going to try it</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:39pm" data-tooltip-position="bottom">i just made a video with camera with myself watching you ride ur ex :) its nice</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:40pm" data-tooltip-position="bottom">want me to send it? through facebook?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:40pm" data-tooltip-position="bottom">yeh it nice with a vibe :) aww really</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:40pm" data-tooltip-position="bottom">yeah if u can</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:41pm" data-tooltip-position="bottom">the bathtub 1 isnt there?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:42pm" data-tooltip-position="bottom">:9</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:42pm" data-tooltip-position="bottom">:(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:42pm" data-tooltip-position="bottom">isnt where ??</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:44pm" data-tooltip-position="bottom">on the site</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:44pm" data-tooltip-position="bottom">the 1 where your under the tap in tub</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:44pm" data-tooltip-position="bottom">really ill have a look</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:44pm" data-tooltip-position="bottom">i got all</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:44pm" data-tooltip-position="bottom">its not lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:45pm" data-tooltip-position="bottom">i watched that 1 heaps b4 ur ex made me delete</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:46pm" data-tooltip-position="bottom">that 1 was cool</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:46pm" data-tooltip-position="bottom">you have any videos not on the site? lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:49pm" data-tooltip-position="bottom">yea i have vids ill how u later... and ur right it is gone i dont knw why tho</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:51pm" data-tooltip-position="bottom">my ex will reload it up but i didnt tell him anything bout u</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:51pm" data-tooltip-position="bottom">ok cool</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:51pm" data-tooltip-position="bottom">i didnt keep the details</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:52pm" data-tooltip-position="bottom">got any videos? or harcore pics? hehe</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:53pm" data-tooltip-position="bottom">if u want just say yes and ill send my porn to u :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:54pm" data-tooltip-position="bottom">ok cool :) ill c what i can send u</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:55pm" data-tooltip-position="bottom">:)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 12:56pm" data-tooltip-position="bottom">sorry bout the bubba pic :/</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:00pm" data-tooltip-position="bottom">u are hot as</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:01pm" data-tooltip-position="bottom">wish u had naighty like vidoes lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:01pm" data-tooltip-position="bottom">naughty pictures the ones im sending you later are full blown</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:02pm" data-tooltip-position="bottom">you sure you want me to send them?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:03pm" data-tooltip-position="bottom">only if ur comfy hun :) in gettin to the naughty one i have so many to go trough</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:03pm" data-tooltip-position="bottom">through</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:03pm" data-tooltip-position="bottom">u sending?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:03pm" data-tooltip-position="bottom">lol :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:04pm" data-tooltip-position="bottom">shortly hun</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:05pm" data-tooltip-position="bottom">u have heaps? lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:05pm" data-tooltip-position="bottom">much videos?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:06pm" data-tooltip-position="bottom">have you got porn with outher guys? or have u sent naughty stuff to ppl? lol you and paige are my firsts lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:06pm" data-tooltip-position="bottom">but me n paige just trade clothes photos</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:08pm" data-tooltip-position="bottom">yeah i have alot :) yeah i have vids... but none with me n guys :(</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:09pm" data-tooltip-position="bottom">awww really</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:09pm" data-tooltip-position="bottom">ur ex loves u i think</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:10pm" data-tooltip-position="bottom">whys that</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:10pm" data-tooltip-position="bottom">my friends brother says hes turned emo and hates everyone</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:10pm" data-tooltip-position="bottom">awwww really :/</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:10pm" data-tooltip-position="bottom">pretty much bashs anyone of his mates just to be alone</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:10pm" data-tooltip-position="bottom">whos ur friends brother</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:10pm" data-tooltip-position="bottom">allan</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:11pm" data-tooltip-position="bottom">knew him from high schiool</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:11pm" data-tooltip-position="bottom">oor something</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:11pm" data-tooltip-position="bottom">awww ok then i dont thin ive met allan</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:11pm" data-tooltip-position="bottom">dont know</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:11pm" data-tooltip-position="bottom">does he really ditch his mates to be alone</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:12pm" data-tooltip-position="bottom">but he says hes trying to foget you but its not working and hes getting heel angry and depressed at everything</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:12pm" data-tooltip-position="bottom">swearing at allan and his mates</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:12pm" data-tooltip-position="bottom">really wtf ? :(</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:12pm" data-tooltip-position="bottom">yeha</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:13pm" data-tooltip-position="bottom">apparently he keeps to himself</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:13pm" data-tooltip-position="bottom">didnt think it was that bad</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:13pm" data-tooltip-position="bottom">and hes at a mates house cause hes almost kicked out of home</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:14pm" data-tooltip-position="bottom">yeah apperently hes stupid.</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:14pm" data-tooltip-position="bottom">thats what allan says</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:14pm" data-tooltip-position="bottom">what this is crazy :/ ??</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:14pm" data-tooltip-position="bottom">somthing about not having his kids and his wife. gone mad everyone says</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:14pm" data-tooltip-position="bottom">i feel so bad</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:14pm" data-tooltip-position="bottom">just thought i would tell you.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:15pm" data-tooltip-position="bottom">thanks hun</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:15pm" data-tooltip-position="bottom">dont feel bad</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:15pm" data-tooltip-position="bottom">you dont love him so its natural</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:15pm" data-tooltip-position="bottom">its hard cause i care so much for him but he cant give me what i need</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:15pm" data-tooltip-position="bottom">shit now im crying</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:16pm" data-tooltip-position="bottom">sorry</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:16pm" data-tooltip-position="bottom">apparent;y he cant get drunk as like usual</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:16pm" data-tooltip-position="bottom">cause he goes psycho and tears up and walks to no where and smashes everything</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:16pm" data-tooltip-position="bottom">its ok ive stopped</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:17pm" data-tooltip-position="bottom">really omg :(</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:17pm" data-tooltip-position="bottom">sorry to bring you down</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:18pm" data-tooltip-position="bottom">its ok hunni dont worry about it i cant change him no matter what id have to give up everything family and friends to have him in my life n i cant do that</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:19pm" data-tooltip-position="bottom">i need to b single and have a life i never had one with him i was at home 24/7 cooking n cleaning doing nothing</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:19pm" data-tooltip-position="bottom">even after our daughter was home he was still out drinking parting</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:19pm" data-tooltip-position="bottom">partying</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:20pm" data-tooltip-position="bottom">yeah that would suck</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:20pm" data-tooltip-position="bottom">it did</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:20pm" data-tooltip-position="bottom">plus u couldnt send me hardcore pictures</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:20pm" data-tooltip-position="bottom">lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:21pm" data-tooltip-position="bottom">hahaahaha true lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:22pm" data-tooltip-position="bottom">found them? lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:22pm" data-tooltip-position="bottom">are you coming perth any time?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:23pm" data-tooltip-position="bottom">yeah i am actually probs in november or early</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:23pm" data-tooltip-position="bottom">i took these pics yesterday</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:24pm" data-tooltip-position="bottom">is that a cumcumber?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:24pm" data-tooltip-position="bottom">yeah lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:24pm" data-tooltip-position="bottom">that is oooo hot</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:24pm" data-tooltip-position="bottom">soooo</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:25pm" data-tooltip-position="bottom">󾌵</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:25pm" data-tooltip-position="bottom">did it feel nice?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:28pm" data-tooltip-position="bottom">t looks nice :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:32pm" data-tooltip-position="bottom">so u and that snake guy arnt goin to make any more porn?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:32pm" data-tooltip-position="bottom">lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:34pm" data-tooltip-position="bottom">yeah it dis actualy</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:34pm" data-tooltip-position="bottom">nar no more porn :(</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:35pm" data-tooltip-position="bottom">it felt nice? :) cool</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:36pm" data-tooltip-position="bottom">yeah it did :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:36pm" data-tooltip-position="bottom">how can i send u a movie?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:36pm" data-tooltip-position="bottom">i was going to say it looks pretty nice but bi</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:37pm" data-tooltip-position="bottom">but ur ex was about same size or bigger lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:37pm" data-tooltip-position="bottom">i dont know how to send vids :/</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:37pm" data-tooltip-position="bottom">my ex was the bout the same size</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:37pm" data-tooltip-position="bottom">yeah he looks big as</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:37pm" data-tooltip-position="bottom">scary big</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:37pm" data-tooltip-position="bottom">yeah it is</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:38pm" data-tooltip-position="bottom">i can tell :) watching now</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:38pm" data-tooltip-position="bottom">lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:38pm" data-tooltip-position="bottom">so dont know how to send? do u even want them? lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:39pm" data-tooltip-position="bottom">sure :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:39pm" data-tooltip-position="bottom">can u email :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:39pm" data-tooltip-position="bottom">kk so u want my photos? i can send them soon</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:39pm" data-tooltip-position="bottom">and yeah ill email</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:39pm" data-tooltip-position="bottom">videos?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:39pm" data-tooltip-position="bottom">yeah photos</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:40pm" data-tooltip-position="bottom">email vids the only way i think we can since u dont have a phone</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:40pm" data-tooltip-position="bottom">im still a virgin :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:40pm" data-tooltip-position="bottom">good girl</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:40pm" data-tooltip-position="bottom">i lost my virginty when i was 17</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:40pm" data-tooltip-position="bottom">your bi?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:40pm" data-tooltip-position="bottom">yes im bi have been since i was 12</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:41pm" data-tooltip-position="bottom">i know im 14. pretty young</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:41pm" data-tooltip-position="bottom">but do think we could do sumthing when you come to perth?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:41pm" data-tooltip-position="bottom">yeah thats young but u cant help how u feel its natural</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:41pm" data-tooltip-position="bottom">dont want a guy till im older.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:41pm" data-tooltip-position="bottom">what did u wanna do</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:42pm" data-tooltip-position="bottom">umm</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:42pm" data-tooltip-position="bottom">thats a good girl i kinda hate men aye lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:42pm" data-tooltip-position="bottom">full stuff :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:42pm" data-tooltip-position="bottom">dont know. what can we do?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:43pm" data-tooltip-position="bottom">well when we catch up we will take it from there dont want u to do anything u dont want to</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:43pm" data-tooltip-position="bottom">im asking because i want to have sex but with a girl</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:44pm" data-tooltip-position="bottom">but i dont know what we can do</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:44pm" data-tooltip-position="bottom">and i definetly want it</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:45pm" data-tooltip-position="bottom">have a look at some leabian porn and see what u like and what interests you</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:45pm" data-tooltip-position="bottom">lesbian*</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:46pm" data-tooltip-position="bottom">i have :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:46pm" data-tooltip-position="bottom">but i dont know what we can do if you will even</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:48pm" data-tooltip-position="bottom">i will if your comfy with it :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:49pm" data-tooltip-position="bottom">:) im comfy</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:49pm" data-tooltip-position="bottom">im scared of guys</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:49pm" data-tooltip-position="bottom">ive seen your stuff and like it. would you want to?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:49pm" data-tooltip-position="bottom">ok thats good :) and we all are hun :) i prefer girls anyday over men</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:50pm" data-tooltip-position="bottom">i would want to</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:50pm" data-tooltip-position="bottom">what about your ex?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:50pm" data-tooltip-position="bottom">your movies are cool</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:50pm" data-tooltip-position="bottom">i still care bout my ex he saved me from a horrid past i had but i still love girls more always have always will</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:51pm" data-tooltip-position="bottom">you would want to do me? :) im 14 so i might be pretty crap</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:51pm" data-tooltip-position="bottom">hahaha thanks im glad u like them</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:51pm" data-tooltip-position="bottom">i would want to do you :) i was crap my first time with a girl but that how we learn have experiences</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:52pm" data-tooltip-position="bottom">i love them. your hot. your ex is good in them 2.</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:52pm" data-tooltip-position="bottom">so what do we do? just curious so i know when it happens lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:55pm" data-tooltip-position="bottom">thats good. and thanks hun :) i dont know hun what do u want to do</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:55pm" data-tooltip-position="bottom">i want to come lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:55pm" data-tooltip-position="bottom">and make you</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:56pm" data-tooltip-position="bottom">but obviously porn videos cant be done in real life</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:56pm" data-tooltip-position="bottom">they can be done in real life</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:58pm" data-tooltip-position="bottom">Facebook says me n u have 149 mutual friends ?? lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:58pm" data-tooltip-position="bottom">lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:58pm" data-tooltip-position="bottom">can it be done?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:59pm" data-tooltip-position="bottom">it can b done</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:59pm" data-tooltip-position="bottom">ill leave it up to you?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 1:59pm" data-tooltip-position="bottom">do you realy want to do me?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:00pm" data-tooltip-position="bottom">ok hun, sure babe</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:00pm" data-tooltip-position="bottom">can we make a porno lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:00pm" data-tooltip-position="bottom">it would be my first sex</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:01pm" data-tooltip-position="bottom">hahahahaha if u like hun u can have your little porn vid...</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:01pm" data-tooltip-position="bottom">:)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:01pm" data-tooltip-position="bottom">4 sure we can do this when you come?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:02pm" data-tooltip-position="bottom">yeah if u like</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:02pm" data-tooltip-position="bottom">yay</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:02pm" data-tooltip-position="bottom">:)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:03pm" data-tooltip-position="bottom">but remeber, im 14 and i come quick lol so take it easy on me</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:03pm" data-tooltip-position="bottom">of cause</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:03pm" data-tooltip-position="bottom">and i dont think you should go down on me cause i get very wet</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:04pm" data-tooltip-position="bottom">and i scream a little so cant do it at my mums. probly scream more with sex</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:05pm" data-tooltip-position="bottom">kk its a plan :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:05pm" data-tooltip-position="bottom">ill be back on later when my mums laptop is free to send you stuff</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:05pm" data-tooltip-position="bottom">kk its a plan lol</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:05pm" data-tooltip-position="bottom">ok no worries</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:06pm" data-tooltip-position="bottom">you can put on your pornhub if you want :P</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:06pm" data-tooltip-position="bottom">lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:06pm" data-tooltip-position="bottom">hope you enjoy my stuff</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:06pm" data-tooltip-position="bottom">i will when i c them</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:06pm" data-tooltip-position="bottom">probly not cause im 14 lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:06pm" data-tooltip-position="bottom">will have to wait n c</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:07pm" data-tooltip-position="bottom">im going to watch yours byeeee :)</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:07pm" data-tooltip-position="bottom">c u soon</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:07pm" data-tooltip-position="bottom">byeee c u soon</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 2:09pm" data-tooltip-position="bottom">hey babe do me a favour n delete this inbox dont want anyone gettin in trouble</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 8:53pm" data-tooltip-position="bottom">mums using laptop, im borroeing her phone</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 8:53pm" data-tooltip-position="bottom">in trouble?</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 8:55pm" data-tooltip-position="bottom">what do you mean? will some1 find out? i dont want any trouble :(</div>
+        <div class="message" data-tooltip="Friday, May 24, 2013 at 8:58pm" data-tooltip-position="bottom">ill delete it right now :) just want to know why? am i in trouble?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 8:50am" data-tooltip-position="bottom">hi</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 8:51am" data-tooltip-position="bottom">sorry i couldnt send stuff</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 8:52am" data-tooltip-position="bottom">my mum keeps an eye on me some times now</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 8:52am" data-tooltip-position="bottom">so she would only let me use her phone</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:27am" data-tooltip-position="bottom">no ur not in trouble just because im older i dont want us to get in trouble babe</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:28am" data-tooltip-position="bottom">thats ok hunni :) awww really does she that sucks</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:32am" data-tooltip-position="bottom">cause ur older?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:32am" data-tooltip-position="bottom">yeah cause im 21 i dont want us to get older</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:32am" data-tooltip-position="bottom">to get older?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:33am" data-tooltip-position="bottom">to get in trouble ?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:33am" data-tooltip-position="bottom">you look young for 21 :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:33am" data-tooltip-position="bottom">stupid phone lol</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:33am" data-tooltip-position="bottom">awww thanks hun</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:33am" data-tooltip-position="bottom">so are you sure we can still make video and stuff? lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:34am" data-tooltip-position="bottom">yeah we can lol just be your personal vid</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:34am" data-tooltip-position="bottom">cool</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:34am" data-tooltip-position="bottom">im glad we talked</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:35am" data-tooltip-position="bottom">awwww xx</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:35am" data-tooltip-position="bottom">i was scared to death before. now its cool and more</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:35am" data-tooltip-position="bottom">mums home all day today :(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:36am" data-tooltip-position="bottom">awwww dont be scared hun :) awww is she</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:36am" data-tooltip-position="bottom">do you still want some photos and a video?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:36am" data-tooltip-position="bottom">yeah but no rush hun</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:36am" data-tooltip-position="bottom">:)</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:37am" data-tooltip-position="bottom">pretty wierd looking at your facebook lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:37am" data-tooltip-position="bottom">whys that lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:38am" data-tooltip-position="bottom">well i mean while i have your stuff lol</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:38am" data-tooltip-position="bottom">like</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:39am" data-tooltip-position="bottom">awww really lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:39am" data-tooltip-position="bottom">watching your body naked lol and ontop of that guy having sex lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:40am" data-tooltip-position="bottom">hahahaha</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:41am" data-tooltip-position="bottom">its hot :) that guy dick looks huge.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:41am" data-tooltip-position="bottom">hahahaha cause it actually i</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:41am" data-tooltip-position="bottom">is*</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:41am" data-tooltip-position="bottom">10inchs</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:41am" data-tooltip-position="bottom">looks too big. painful lol.</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:41am" data-tooltip-position="bottom">is realy big?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:41am" data-tooltip-position="bottom">is it realy big?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:42am" data-tooltip-position="bottom">looks too big. painful lol.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:42am" data-tooltip-position="bottom">yeah its 10inchs long</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:42am" data-tooltip-position="bottom">realy?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:42am" data-tooltip-position="bottom">yep</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:42am" data-tooltip-position="bottom">but it looks fat as too</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:43am" data-tooltip-position="bottom">yeah it is :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:43am" data-tooltip-position="bottom">and you can take it? does it hurt?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:44am" data-tooltip-position="bottom">yeah i was with him for 4 years...it didn't hurt, sometimes it did tho</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:45am" data-tooltip-position="bottom">yeha you get hurt alot in your videos</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:45am" data-tooltip-position="bottom">is it normal for a guy to come that much? in that video and you lay there as he comes</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:46am" data-tooltip-position="bottom">some of those where from like 2-3 months after i had my daughter so was a little painful</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:46am" data-tooltip-position="bottom">it must be fake</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:46am" data-tooltip-position="bottom">wow realy?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:46am" data-tooltip-position="bottom">you look amazing</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:46am" data-tooltip-position="bottom">nar its not fake babe. men come come alot</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:46am" data-tooltip-position="bottom">awww thanka babe ur a sweetheart</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:47am" data-tooltip-position="bottom">but in other porn they dont. he sprays you and the bed and pillow?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:47am" data-tooltip-position="bottom">heaps</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:47am" data-tooltip-position="bottom">yeah the with heaps was cause i just had bubba and couldnt have sex for 3 months</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:48am" data-tooltip-position="bottom">what does that mean?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:48am" data-tooltip-position="bottom">i used a cucumber last night :)</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:49am" data-tooltip-position="bottom">small one</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:49am" data-tooltip-position="bottom">made photos lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:49am" data-tooltip-position="bottom">that all the cum was built up inside him thats why there was so much</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:49am" data-tooltip-position="bottom">awww really did u</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:49am" data-tooltip-position="bottom">thats hot</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:50am" data-tooltip-position="bottom">was going to ask you if you had any more videos and stuff lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:51am" data-tooltip-position="bottom">yeah i do hun :) i can show u later</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:51am" data-tooltip-position="bottom">cool :) i love you</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:52am" data-tooltip-position="bottom">:) nawwww love you to</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:52am" data-tooltip-position="bottom">not to sound wierd but you and your ex are pretty hot. pitty.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:53am" data-tooltip-position="bottom">hahaha thats ok m</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:53am" data-tooltip-position="bottom">x*</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:54am" data-tooltip-position="bottom">is it wierd if i ask if you have porn of your ex? dont want to sound wierd</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:54am" data-tooltip-position="bottom">unfortantly no i dont</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:55am" data-tooltip-position="bottom">well i guess it would be wierd if i asked for some any way</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:56am" data-tooltip-position="bottom">oh</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:56am" data-tooltip-position="bottom">it woulnt be weird! but i dont have anybsorry</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:56am" data-tooltip-position="bottom">any sorry*</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:57am" data-tooltip-position="bottom">its ok</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:57am" data-tooltip-position="bottom">does it feel good to lesbian out?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:57am" data-tooltip-position="bottom">will it feel good when we do it?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:58am" data-tooltip-position="bottom">yeah its great! its a lot more passionate with a girl then it is with guy</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 9:59am" data-tooltip-position="bottom">ive been fingerd and played with. but was awkward as hell</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:00am" data-tooltip-position="bottom">realy creepy but good. way to wierd but lol</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:02am" data-tooltip-position="bottom">was with my best friend. shes same age :) to your videos lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:04am" data-tooltip-position="bottom">awww really thats hot</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:04am" data-tooltip-position="bottom">but thats how we got caught</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:05am" data-tooltip-position="bottom">sorry. im just curious now i have someone to talk about this stuff with</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:07am" data-tooltip-position="bottom">so if i ever sleep with a guy. will it hurt?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:08am" data-tooltip-position="bottom">thats ok im here to answer any questions! sometimes it will hurt depends on how big the guy is</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:10am" data-tooltip-position="bottom">would that snake hurt?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:11am" data-tooltip-position="bottom">just a question.is his normal size? you think his would hurt me?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:16am" data-tooltip-position="bottom">am i annoying?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:17am" data-tooltip-position="bottom">dont want to get bashed or started on</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:17am" data-tooltip-position="bottom">yes he would hurt u alot... please dont do that</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:18am" data-tooltip-position="bottom">do what?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:18am" data-tooltip-position="bottom">ur not annoying just dont go near my ex babe thats not a good idea babe</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:18am" data-tooltip-position="bottom">oh ok</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:19am" data-tooltip-position="bottom">Are you goin to get with him anymore?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:19am" data-tooltip-position="bottom">i dont knw he wants to work things out but see what happens</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:19am" data-tooltip-position="bottom">and dont worry. hes scary</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:19am" data-tooltip-position="bottom">i meant sleep with him</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:20am" data-tooltip-position="bottom">like when you come here</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:20am" data-tooltip-position="bottom">hahahaha he is scary if use did anything he would go to jail? i dont know mayb</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:21am" data-tooltip-position="bottom">he go to jail?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:21am" data-tooltip-position="bottom">for me being young?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:21am" data-tooltip-position="bottom">yeah</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:21am" data-tooltip-position="bottom">so are you sure you will still fuck me?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:22am" data-tooltip-position="bottom">ur not legal to have sex till ur 16</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:22am" data-tooltip-position="bottom">cause im 14 and your 21</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:22am" data-tooltip-position="bottom">i know that id it was me no one would find out</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:22am" data-tooltip-position="bottom">realy? 16? oh well i dont want a guy lol</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:23am" data-tooltip-position="bottom">i wanted to have you and your guy. but doesnt seem good.</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:23am" data-tooltip-position="bottom">so you will still do me :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:24am" data-tooltip-position="bottom">yeah 16 :) it wouldnt be a good idea we get inalot of trouble with u being 14 , but yes i would still do u</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:25am" data-tooltip-position="bottom">hehe so im worth it? :P thank you :) cant wait</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:25am" data-tooltip-position="bottom">howw would we in trouble?</div>
+        <div class="message" data-tooltip="Saturday, May 25, 2013 at 10:27am" data-tooltip-position="bottom">ive goto go. bye x</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:33pm" data-tooltip-position="bottom">hello :) long time no see</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:33pm" data-tooltip-position="bottom">hey hunni :) how r ya</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:35pm" data-tooltip-position="bottom">not bad :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:35pm" data-tooltip-position="bottom">my friend came from newzealand</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:36pm" data-tooltip-position="bottom">we went to broom with my older cousin</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:39pm" data-tooltip-position="bottom">awesome :) sounds like u had fun</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:40pm" data-tooltip-position="bottom">sure did lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:40pm" data-tooltip-position="bottom">ill post pics soon lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:40pm" data-tooltip-position="bottom">lol thats good</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:40pm" data-tooltip-position="bottom">and i almost have enough money to buy my own iphone :) no more mum</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:41pm" data-tooltip-position="bottom">ummm btw should i delete ur ex? hes being nice and not being perverted. but i accidently keep talking about you lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:42pm" data-tooltip-position="bottom">and he stops talking. like i said you dyd your hair red. and he gets hell sad. but hes seems funny n cool? just realy sad</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:44pm" data-tooltip-position="bottom">well if ur gonna talk to him can u delete me</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:44pm" data-tooltip-position="bottom">he does nothing but talk to me like shit call me names and yell at me i cry everyday</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:45pm" data-tooltip-position="bottom">he doesnt even say hello to me im sick of being nice and getting treated like shit in return</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:49pm" data-tooltip-position="bottom">ok ill delete him :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:49pm" data-tooltip-position="bottom">but he loves you?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:49pm" data-tooltip-position="bottom">no he doesnt... he treat me like dirt and talks me like im nothing his never nice to me anymore</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:50pm" data-tooltip-position="bottom">he even said, that he didnt care about your porn being seen. he was doing it so you wouldnt get hurt</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:50pm" data-tooltip-position="bottom">he says only nice things about u to me lmao</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:51pm" data-tooltip-position="bottom">but we dont talk realy, he said he was going to delete me so you wouldnt be angry.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:51pm" data-tooltip-position="bottom">his such a lair ... i told him i didnt want to bw put on the internet and he went behind my back and did it anyway :(</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:52pm" data-tooltip-position="bottom">he talks shit...his 26 n he shldnt be flirting or want to hang out with a 14 yr old</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:52pm" data-tooltip-position="bottom">??</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:52pm" data-tooltip-position="bottom">he make me so angry</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:52pm" data-tooltip-position="bottom">but you have the password? and you knew?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:52pm" data-tooltip-position="bottom">nvm</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:52pm" data-tooltip-position="bottom">i dont want trouble :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:52pm" data-tooltip-position="bottom">yous are both cool, but your my friend :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:52pm" data-tooltip-position="bottom">yeah after he went behind my back and did it i found out</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:53pm" data-tooltip-position="bottom">atleast you let him keep it on there :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:53pm" data-tooltip-position="bottom">yea his very lucky</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:54pm" data-tooltip-position="bottom">but meh he dont tlk to me no more he just treats me like shit</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:54pm" data-tooltip-position="bottom">me and him :) or me and you wouldnt have become good friends :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:55pm" data-tooltip-position="bottom">true..but i delete anyone out of my life who is involved with him in any way cause he has nothing nice to say to me</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 6:59pm" data-tooltip-position="bottom">my brother said hes not friends with some of his mates cause he stuck up for you?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:00pm" data-tooltip-position="bottom">remeber when i told you he was fighting his friends? apparently it was an indian and his good mate arron king</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:00pm" data-tooltip-position="bottom">really? why?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:00pm" data-tooltip-position="bottom">dont know. my bro said he wants to dintance from everyone and let you have your own life and not get in the way :) your lucky</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:01pm" data-tooltip-position="bottom">arron king?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:01pm" data-tooltip-position="bottom">i dont know them</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:01pm" data-tooltip-position="bottom">kings?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:01pm" data-tooltip-position="bottom">azzra or someone</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:01pm" data-tooltip-position="bottom">azza really</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:01pm" data-tooltip-position="bottom">stuck up for me??</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:02pm" data-tooltip-position="bottom">apparently he cut sick and told them to fuck themselfs and has hardly any friends</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:02pm" data-tooltip-position="bottom">yep</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:02pm" data-tooltip-position="bottom">my bro said thats why hes been so angry and sad</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:02pm" data-tooltip-position="bottom">cause he loves you and now he has no friends</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:04pm" data-tooltip-position="bottom">oh wow... im shock azza stood up for me? well mayb if he treated me the way i deserved he would still have me but he didnt n i was sick or crying n hurtin n havin no friends i was suffering from depression hard that i was cutting my wrist n he never stopped me</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:04pm" data-tooltip-position="bottom">he has no friends cause thats his choice??</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:04pm" data-tooltip-position="bottom">i would love to tlk to ur brother aye ?? lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:08pm" data-tooltip-position="bottom">noooo</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:08pm" data-tooltip-position="bottom">he stuck up for you</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:08pm" data-tooltip-position="bottom">against his friends</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:09pm" data-tooltip-position="bottom">not azzra</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:09pm" data-tooltip-position="bottom">wayne yelled at his mates</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:09pm" data-tooltip-position="bottom">lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:09pm" data-tooltip-position="bottom">:/</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:09pm" data-tooltip-position="bottom">sorry for confusing you</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:20pm" data-tooltip-position="bottom">oh ok</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:21pm" data-tooltip-position="bottom">why would wayne stick up for me when wayne calls me a cheating lying slut and everything else under the sun... why would his mate dog me i never did anything wrong... wYne got everything he wanted</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:21pm" data-tooltip-position="bottom">n i got nothing</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:22pm" data-tooltip-position="bottom">dont know</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:22pm" data-tooltip-position="bottom">my bro says he wants you to be happy so hes trying to let you live your life??</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:22pm" data-tooltip-position="bottom">he said waynes addicted to you lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:22pm" data-tooltip-position="bottom">so hes got too</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:23pm" data-tooltip-position="bottom">so making me feel worthless and stomping on me like dirt is making my life happier ok then</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:24pm" data-tooltip-position="bottom">i dont know :(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:25pm" data-tooltip-position="bottom">can we not talk about him it really fucks my day</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:25pm" data-tooltip-position="bottom">but i know hes sad for doing it. and hes trying to avoid you so he doesnt annoy you?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:25pm" data-tooltip-position="bottom">ok :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:25pm" data-tooltip-position="bottom">should i delete him now?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:26pm" data-tooltip-position="bottom">sad for doing what?? treating me like shit??</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:26pm" data-tooltip-position="bottom">yes please hun</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:26pm" data-tooltip-position="bottom">ok.</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:28pm" data-tooltip-position="bottom">oh and he also msgd me after you let me download the videos. and said he knows im allowd to have them but please dont share them :/ he said you said i was cool and wouldnt want to hurt me if i ruinded ur life</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:28pm" data-tooltip-position="bottom">and after that he just says hi. but im deleting now ok :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:30pm" data-tooltip-position="bottom">there</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:30pm" data-tooltip-position="bottom">thanks hunni</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:32pm" data-tooltip-position="bottom">and no Krystal never dated wayne she is my cousin n i use to look after her on the weekend</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:33pm" data-tooltip-position="bottom">oh lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:33pm" data-tooltip-position="bottom">lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:33pm" data-tooltip-position="bottom">yeah i just thought she was way older lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:33pm" data-tooltip-position="bottom">she was taller than you</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:33pm" data-tooltip-position="bottom">no she is the same age as u</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:33pm" data-tooltip-position="bottom">wow</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:33pm" data-tooltip-position="bottom">everyone is taller then me</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:34pm" data-tooltip-position="bottom">she looks so mature. wish i did</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:34pm" data-tooltip-position="bottom">awww w</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:34pm" data-tooltip-position="bottom">noone thinks of me sexually cause im small and young looking</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:35pm" data-tooltip-position="bottom">i was the same hunni</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:35pm" data-tooltip-position="bottom">tho i have a tiny body n big boobs</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:36pm" data-tooltip-position="bottom">i know :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:36pm" data-tooltip-position="bottom">lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:36pm" data-tooltip-position="bottom">ur the only person besides my friend that would have sex with me</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:37pm" data-tooltip-position="bottom">like my new hair</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:37pm" data-tooltip-position="bottom">awww really</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:37pm" data-tooltip-position="bottom">oh, and i wanted to ask. my cousin wants to watch ur videos? for herself. but not keep just watch them with me. i told her i had to ask you or i might get in trouble</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:37pm" data-tooltip-position="bottom">wow cool</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:38pm" data-tooltip-position="bottom">you look hot</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:38pm" data-tooltip-position="bottom">your eyes look sexy in every thing :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:38pm" data-tooltip-position="bottom">thanks babe :) yea she can watch but not keep</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:45pm" data-tooltip-position="bottom">cool :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:45pm" data-tooltip-position="bottom">we use her phone when she sleeps over :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:46pm" data-tooltip-position="bottom">she will love yours :) gaurentee</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:46pm" data-tooltip-position="bottom">hahaha let me know :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:47pm" data-tooltip-position="bottom">:)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:47pm" data-tooltip-position="bottom">any new videos :) or pics lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:48pm" data-tooltip-position="bottom">and ill post my broom pics, and send you those pics of me if u still want them :) when i get my new iphone</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:51pm" data-tooltip-position="bottom">nar no new vids soz bub :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:51pm" data-tooltip-position="bottom">yeah id babe Sure awesome babe</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:52pm" data-tooltip-position="bottom">me and my cousin have some new stuff together :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:52pm" data-tooltip-position="bottom">not together together lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:53pm" data-tooltip-position="bottom">i knw what u ment</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:54pm" data-tooltip-position="bottom">lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:55pm" data-tooltip-position="bottom">shes same age :) do u want me to send them as well? cause she wants to share with u like me lmao</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:55pm" data-tooltip-position="bottom">oh really lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:55pm" data-tooltip-position="bottom">theres a cool 1 with us in shower and we kissing :D but not being dirty</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:56pm" data-tooltip-position="bottom">yeah ill get her to add u on fb :D</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:56pm" data-tooltip-position="bottom">hers is hidden from public</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:56pm" data-tooltip-position="bottom">oh really ok no probs</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:57pm" data-tooltip-position="bottom">ummm. do u still have that site?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:57pm" data-tooltip-position="bottom">for when i buy new iphone :D</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 7:59pm" data-tooltip-position="bottom">k think so i think wayn still ha it up</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:00pm" data-tooltip-position="bottom">oh is it his? can i download them when i have my new fone? or wont he let me?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:00pm" data-tooltip-position="bottom">maybe i shouldnt have delete him till i downloaded them :/</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:00pm" data-tooltip-position="bottom">jokes lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:00pm" data-tooltip-position="bottom">nar u can hun</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:01pm" data-tooltip-position="bottom">i have the password</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:01pm" data-tooltip-position="bottom">sweet</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:02pm" data-tooltip-position="bottom">no new pics?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:03pm" data-tooltip-position="bottom">i have new pics</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:05pm" data-tooltip-position="bottom">:D</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:09pm" data-tooltip-position="bottom">could i have some?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:09pm" data-tooltip-position="bottom">lol, acctually. maybe not :P</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:09pm" data-tooltip-position="bottom">i sound like a sicko always asking</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:10pm" data-tooltip-position="bottom">hahahahah</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:26pm" data-tooltip-position="bottom">ur mum said i can move in hers in decmeber :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:26pm" data-tooltip-position="bottom">hope my mum will let me</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:30pm" data-tooltip-position="bottom">oh really? how come</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:31pm" data-tooltip-position="bottom">no reason lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:31pm" data-tooltip-position="bottom">i left school. n stuff</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:32pm" data-tooltip-position="bottom">ppl made stories up about me gettig my fone taken off me</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:32pm" data-tooltip-position="bottom">oh true that sucks... u know my mum n the kids n my mums fiance are moving in me with me in december</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:33pm" data-tooltip-position="bottom">really?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:33pm" data-tooltip-position="bottom">into 1 house</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:34pm" data-tooltip-position="bottom">yep :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:34pm" data-tooltip-position="bottom">does that mean we shouldnt have sex? :(</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:34pm" data-tooltip-position="bottom">i meant we cant</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:34pm" data-tooltip-position="bottom">?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:35pm" data-tooltip-position="bottom">yeah if ur gonna b living with us not a good idea</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:35pm" data-tooltip-position="bottom">:(</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:35pm" data-tooltip-position="bottom">cause if we live together? i wont beable to not want too lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:35pm" data-tooltip-position="bottom">ummm, i already use uyr videos and pictures heaps.</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:35pm" data-tooltip-position="bottom">and u might use mine :P probly not lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:36pm" data-tooltip-position="bottom">awwwww :) do u really</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:37pm" data-tooltip-position="bottom">yep :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:37pm" data-tooltip-position="bottom">its cool</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:38pm" data-tooltip-position="bottom">why do you think we went through all that scary stuff lol. and me re downloading them :D</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:41pm" data-tooltip-position="bottom">awww ok :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:41pm" data-tooltip-position="bottom">could we do it secretly?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:41pm" data-tooltip-position="bottom">you know i keep secrets good :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:46pm" data-tooltip-position="bottom">?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:46pm" data-tooltip-position="bottom">can i send u pics still? or do u not want them now? :(</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:50pm" data-tooltip-position="bottom">lol, my cousin said if she can get a video and a pic off you? she said she would even buy it lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:59pm" data-tooltip-position="bottom">hahahah we can do things secretly :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:59pm" data-tooltip-position="bottom">hahahha reallly thats funny... soz i keep falling asleep</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 8:59pm" data-tooltip-position="bottom">its ok :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:00pm" data-tooltip-position="bottom">me and my cousin are watching your stuff :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:00pm" data-tooltip-position="bottom">oh really</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:00pm" data-tooltip-position="bottom">so badly wants to know if she can keep 1 or 2 lol. she lives in esperance and leaves tomorrow</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:02pm" data-tooltip-position="bottom">and i got no internet. and no school because of stuff</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:07pm" data-tooltip-position="bottom">my cousin says im a freak for liking girls lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:08pm" data-tooltip-position="bottom">but always does naughty girly stuff and things and also wants your stuff. LOL</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:09pm" data-tooltip-position="bottom">LMAO that make no sense she cant say your a freak if she wants n does naughty stuff lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:09pm" data-tooltip-position="bottom">she can have 1 vid but if anyone else sees ill be pretty upset aye</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:10pm" data-tooltip-position="bottom">she does it as fun lol, but always denys lol. even to me straight after we have a pics in shower together lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:10pm" data-tooltip-position="bottom">nah. she knows ill get bashed</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:10pm" data-tooltip-position="bottom">and were close as</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:10pm" data-tooltip-position="bottom">but arnt use cousins</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:10pm" data-tooltip-position="bottom">u wouldnt get bashed babe i promised u that.. thats why i told u stop talking to my ex</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:15pm" data-tooltip-position="bottom">:)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:17pm" data-tooltip-position="bottom">btw i msgd him, told him why i deleted and blocked him. and he msgd back that he doesnt care that i or other people see him in porn, but will kill people if you ever got upset about people seeing them</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:17pm" data-tooltip-position="bottom">not in a mean way. he was making sure, and said he understands :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:18pm" data-tooltip-position="bottom">wtf why would tell him</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:18pm" data-tooltip-position="bottom">great so now his gonna show everyone and make it so everyone can see</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:19pm" data-tooltip-position="bottom">no i just said im deleting u cause its wierd, and im friends with u :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:19pm" data-tooltip-position="bottom">i wanted it hidden out of respect for my daughter</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:19pm" data-tooltip-position="bottom">?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:19pm" data-tooltip-position="bottom">u said he said he dosent care if everyone sees the porn?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:20pm" data-tooltip-position="bottom">so now his make sure everyone can put me to shame</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:20pm" data-tooltip-position="bottom">we didnt say anything? just that i was deleting him. i didnt respond</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:20pm" data-tooltip-position="bottom">after that dong stuff. and trust me, he doesnt want to shame u :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:20pm">read whAt u wrote u said " data-tooltip-position="bottom"btw i msgd him, told him why i deleted and blocked him. and he msgd back that he doesnt care that i or other people see him in porn, but will kill people if you ever got upset about people seeing them</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:21pm" data-tooltip-position="bottom">he secretly loves u. well thats wat me and my bro think</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:21pm" data-tooltip-position="bottom">he doesnt love him he hurts me and treats me like shito</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:21pm" data-tooltip-position="bottom">yeah, he just gave me a last warning before i deleted him</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:21pm" data-tooltip-position="bottom">i think he loves u.</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:22pm" data-tooltip-position="bottom">when his mates arnt around or when he looks sad when ur name gets bought up</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:22pm" data-tooltip-position="bottom">but he said he will kill me if i get upset about people seeing them???</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:23pm" data-tooltip-position="bottom">no. kill the ppl that seen them if you get supset</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:23pm" data-tooltip-position="bottom">lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:23pm" data-tooltip-position="bottom">was wondering wat was going on lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:23pm" data-tooltip-position="bottom">but people shouldnt because they should be all private??</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:23pm" data-tooltip-position="bottom">sorry, i confused us again :(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:23pm" data-tooltip-position="bottom">im still stressed</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:23pm" data-tooltip-position="bottom">yeah. he was hinting at me, making sure i wouldnt share them</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:24pm" data-tooltip-position="bottom">u and ur mum look the same :)_</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:24pm" data-tooltip-position="bottom">and paige a little bit but only in some pics</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:24pm" data-tooltip-position="bottom">hahahha yea true</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:25pm" data-tooltip-position="bottom">just please stop tlkig to him it causing me trouble now</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:27pm" data-tooltip-position="bottom">i have :) i blocked him</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:27pm" data-tooltip-position="bottom">oh, do u have a credit card?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:28pm" data-tooltip-position="bottom">was wondering if i sent you money could you buy me a vibrator :D my mum wont, and im to young</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:34pm" data-tooltip-position="bottom">or is that too much to ask for?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:34pm" data-tooltip-position="bottom">dont have too :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:34pm" data-tooltip-position="bottom">dont need it badly lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:36pm" data-tooltip-position="bottom">ummmm how would u get it with out ur mum knowing</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:37pm" data-tooltip-position="bottom">just deliverd lol.</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:37pm" data-tooltip-position="bottom">cause mum works and ive got no school :D</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:39pm" data-tooltip-position="bottom">and probly get it when my cousin comes to stay again in 2 months. she looks older but is only 1 year older than me :) :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:45pm" data-tooltip-position="bottom">oh ok awesome :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:46pm" data-tooltip-position="bottom">well i can get u one just need to send me money n ur address</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:46pm" data-tooltip-position="bottom">cool :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:47pm" data-tooltip-position="bottom">she took the 1 where u use 4 fingers then have sex :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:47pm" data-tooltip-position="bottom">ok cool no probs</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:48pm" data-tooltip-position="bottom">my account details Commonwealth Bank Gemma Clark BSB: 062692 ACCOUNT: 1117 1266</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 9:51pm" data-tooltip-position="bottom">how much are they? can i choose it? or can u pick me a good 1?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:04pm" data-tooltip-position="bottom">ur mums so cool :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:14pm" data-tooltip-position="bottom">ur whole family is cool</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:35pm" data-tooltip-position="bottom">$50 +</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 10:35pm" data-tooltip-position="bottom">i can find u a cool one hun nothing to crazy</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:13pm" data-tooltip-position="bottom">why is ur bum swallon?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:22pm" data-tooltip-position="bottom">i got a needle done today at the doctors</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:22pm" data-tooltip-position="bottom">ouch.</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:22pm" data-tooltip-position="bottom">lol, thought some thing else happend :P</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:32pm" data-tooltip-position="bottom">wow ur awake late :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:32pm" data-tooltip-position="bottom">lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:32pm" data-tooltip-position="bottom">hows ur daughter been?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:32pm" data-tooltip-position="bottom">yea im slowly fallin asleep</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:32pm" data-tooltip-position="bottom">yeah Alle is great</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:33pm" data-tooltip-position="bottom">oh and my cousin wants to add u on fb wen she gets back home.</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:33pm" data-tooltip-position="bottom">we recorded each other :) she said she wants to send to u for giving her urs lmao</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:34pm" data-tooltip-position="bottom">ok she can add me lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:34pm" data-tooltip-position="bottom">hahahah really</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:34pm" data-tooltip-position="bottom">yep :)</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:35pm" data-tooltip-position="bottom">and we took a picture of us. but she doesnt know if u want it lol. cause it might be gross</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:35pm" data-tooltip-position="bottom">why would it be groSS?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:35pm" data-tooltip-position="bottom">cause its me and her lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:36pm" data-tooltip-position="bottom">not fully, but doing stuff in shower. :/ i was her first n she was mine</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:37pm" data-tooltip-position="bottom">doing?? arnt use cousins ??</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:37pm" data-tooltip-position="bottom">but we dont have sex. if girls even can lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:37pm" data-tooltip-position="bottom">yea girls can lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:37pm" data-tooltip-position="bottom">how? lol, they cant get their vaginas into each other? lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:38pm" data-tooltip-position="bottom">yeah, thats why she thought u might find it gross.. cause were cousins.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:38pm" data-tooltip-position="bottom">lol its called rimming</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:38pm" data-tooltip-position="bottom">and there are other terms look it up on porn sites n watch</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:38pm" data-tooltip-position="bottom">but we only play n stuff, we usualy just take hald nude pics</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:39pm" data-tooltip-position="bottom">fair enough</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:39pm" data-tooltip-position="bottom">rimming? sounds wierd? is it fun?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:39pm" data-tooltip-position="bottom">have u done it?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:39pm" data-tooltip-position="bottom">yea it is</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:39pm" data-tooltip-position="bottom">yes</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:40pm" data-tooltip-position="bottom">licking bums?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:40pm" data-tooltip-position="bottom">no</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:40pm" data-tooltip-position="bottom">thats wat google said lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:40pm" data-tooltip-position="bottom">tribbing</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:40pm" data-tooltip-position="bottom">what is it? how do girls rimming?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:40pm" data-tooltip-position="bottom">kk</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:41pm" data-tooltip-position="bottom">wow</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:41pm" data-tooltip-position="bottom">rubbing together?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:41pm" data-tooltip-position="bottom">that looks hot :) have u done that?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:44pm" data-tooltip-position="bottom">i dont think i could do that haha</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:48pm" data-tooltip-position="bottom">dont think a girl would do that with me and like it lol, i have a bad problem of getting way to wet :(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:52pm" data-tooltip-position="bottom">some girls like that</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:53pm" data-tooltip-position="bottom">realy?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:53pm" data-tooltip-position="bottom">do u?</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:53pm" data-tooltip-position="bottom">lol :P</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:53pm" data-tooltip-position="bottom">i do</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:54pm" data-tooltip-position="bottom">? u wouldnt think its gross if it went all over u lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:54pm" data-tooltip-position="bottom">well, i guess ive never been with a girl :) id probly like some1 elses stuff 2 lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:55pm" data-tooltip-position="bottom">oh 1 question.</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:55pm" data-tooltip-position="bottom">what does sperm taste like?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:56pm" data-tooltip-position="bottom">in ur videos u catch heaps of his lol. cant tell if u liked it or not</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:56pm" data-tooltip-position="bottom">his tasted like mint</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:57pm" data-tooltip-position="bottom">mint? like minties?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:57pm" data-tooltip-position="bottom">yea</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:58pm" data-tooltip-position="bottom">is that normal?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:58pm" data-tooltip-position="bottom">idk lol</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:58pm" data-tooltip-position="bottom">i like minties lol :/</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:58pm" data-tooltip-position="bottom">u dont know? lol</div>
+        <div class="message" data-tooltip="Tuesday, July 2, 2013 at 11:59pm" data-tooltip-position="bottom">what does girls stuff taste like?</div>
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:01am" data-tooltip-position="bottom">so have u trbbinged before? can we do it lol. i watched a video and looks fun</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:06am" data-tooltip-position="bottom">lol, staying awake at night on holidays. need to get to normal</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:07am" data-tooltip-position="bottom">sorry hunni falling asleep tlk soon k</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:09am" data-tooltip-position="bottom">kk goodnight</div>
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:09am" data-tooltip-position="bottom">hope your bum gets better :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:10am" data-tooltip-position="bottom">thsnks hunni goodnite</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:10am" data-tooltip-position="bottom">is the new pics on your site?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:10am" data-tooltip-position="bottom">nope</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:10am" data-tooltip-position="bottom">damn</div>
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:10am" data-tooltip-position="bottom">:(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:11am" data-tooltip-position="bottom">night</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:12am" data-tooltip-position="bottom">does ur ex have these?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:12am" data-tooltip-position="bottom">nope</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:12am" data-tooltip-position="bottom">cool :)</div>
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:12am" data-tooltip-position="bottom">do u send them to ppl?</div>
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:12am" data-tooltip-position="bottom">or just me :P</div>
+        <div class="message" data-tooltip="Wednesday, July 3, 2013 at 12:13am" data-tooltip-position="bottom">and thankyou for that pic :) im wet already! soo hot</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:34am" data-tooltip-position="bottom">heyyy</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:35am" data-tooltip-position="bottom">Hey hun</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:36am" data-tooltip-position="bottom">u got a bf?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:36am" data-tooltip-position="bottom">whys that ??</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:36am" data-tooltip-position="bottom">congradulations :)</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:36am" data-tooltip-position="bottom">no reason</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:36am" data-tooltip-position="bottom">just havent been on fb for a while lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:37am" data-tooltip-position="bottom">where does it say i have a bf</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:39am" data-tooltip-position="bottom">ou dont? sorry</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:39am" data-tooltip-position="bottom">thats ok</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:40am" data-tooltip-position="bottom">thought u did</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:41am" data-tooltip-position="bottom">mum said wayne told her or sumthin</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:41am" data-tooltip-position="bottom">how have you been :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:41am" data-tooltip-position="bottom">ummm ok whys is everyone talking about me</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:42am" data-tooltip-position="bottom">thats the only time i heard about you</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:43am" data-tooltip-position="bottom">and i guess because mum probly asked how things were i guess</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:43am" data-tooltip-position="bottom">no offence but your mum doesnt need to know bout my life</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:43am" data-tooltip-position="bottom">im having a hard time at the moment</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:44am" data-tooltip-position="bottom">oh sorry to hear</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:44am" data-tooltip-position="bottom">its ok</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:44am" data-tooltip-position="bottom">are you alright?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:44am" data-tooltip-position="bottom">yeah ill b ok</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:54am" data-tooltip-position="bottom">thats good</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:54am" data-tooltip-position="bottom">ummm if i send you some money can you still buy my a thing</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:55am" data-tooltip-position="bottom">ummm yeah</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:55am" data-tooltip-position="bottom">cool :)</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 10:59am" data-tooltip-position="bottom">how has your daughter been?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:07am" data-tooltip-position="bottom">yeah she is great darl</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:08am" data-tooltip-position="bottom">thats good :)</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:16am" data-tooltip-position="bottom">had much excitment latly?</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:16am" data-tooltip-position="bottom">my life is boring :(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:23am" data-tooltip-position="bottom">nope my life's pretty boring as well</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:40am" data-tooltip-position="bottom">ummm</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:40am" data-tooltip-position="bottom">did yous delete that site?</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:41am" data-tooltip-position="bottom">dont know why i check it when there obviously wont be new stuff lol</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 11:59am" data-tooltip-position="bottom">umm are you angry at me or some thing? im sorry if i did some thing :(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:01pm" data-tooltip-position="bottom">i dont knw what going on with it hun! i dont have access to it</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:01pm" data-tooltip-position="bottom">no im not angry with i was just have a shower</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:02pm" data-tooltip-position="bottom">ah k :)</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:02pm" data-tooltip-position="bottom">well no point realy any way</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:02pm" data-tooltip-position="bottom">not like your add anything lol</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:03pm" data-tooltip-position="bottom">you dont have access?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:03pm" data-tooltip-position="bottom">yeah nothing gets added to it any more</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:03pm" data-tooltip-position="bottom">yeah i dont have access to the site babe</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:04pm" data-tooltip-position="bottom">why dont you have access?</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:04pm" data-tooltip-position="bottom">oh cause theres no point? :P</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:05pm" data-tooltip-position="bottom">no i dont knw the password</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:06pm" data-tooltip-position="bottom">?</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:07pm" data-tooltip-position="bottom">did he change it on you?</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:12pm" data-tooltip-position="bottom">or are you retireing? :(</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:14pm" data-tooltip-position="bottom">im retiring</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:15pm" data-tooltip-position="bottom">awww that sucks lol</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:16pm" data-tooltip-position="bottom">just of respect or my body and my daughter</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:16pm" data-tooltip-position="bottom">yeah thats good</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:17pm" data-tooltip-position="bottom">yeah</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:18pm" data-tooltip-position="bottom">well have a good day :)</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:18pm" data-tooltip-position="bottom">ive got to get off while mum comes home for lunch :(</div>
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:19pm" data-tooltip-position="bottom">talk to you if your still on after lunch <3</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 18, 2013 at 12:21pm" data-tooltip-position="bottom">ok no worries darl xx</div>
+        <div class="message" data-tooltip="Sunday, May 18, 2014 at 4:46pm" data-tooltip-position="bottom">Just letting you know i know your sending around photos of me if you do not stop I'll be going to the police</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:17pm" data-tooltip-position="bottom">i dont have them anymore. and it was only to corina</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:18pm" data-tooltip-position="bottom">Why the hell would you send them to my mother?? I told you not to send them to anyone??</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:18pm" data-tooltip-position="bottom">the police will put us both in jail. you were sharing porn with a minor and getting</div>
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:19pm" data-tooltip-position="bottom">and we both wanted to have sex</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:19pm" data-tooltip-position="bottom">I said thy because i wa angry!! Why would send them to my mum thats why im angry??</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:19pm" data-tooltip-position="bottom">im sorry</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:20pm" data-tooltip-position="bottom">Thats not cool i trusted you</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:21pm" data-tooltip-position="bottom">she said she wouldnt tell. i asked her about his penis. and she gave me advice and helped me cause it was alright and she said send them cause she didnt mind seeing them</div>
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:22pm" data-tooltip-position="bottom">if she didnt say she would look and tell me i wouldnt have</div>
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:22pm" data-tooltip-position="bottom">sorry</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:23pm" data-tooltip-position="bottom">Are you kidding my mum was disgusted and why ask my mum abou his penis</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:23pm" data-tooltip-position="bottom">im deleting facebook. my life and everything is ruined</div>
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:23pm" data-tooltip-position="bottom">but i promise</div>
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:24pm" data-tooltip-position="bottom">she wasnt. i have the msgs. im sorry</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:29pm" data-tooltip-position="bottom">I dont care about the msg i thought i could trust you</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:31pm" data-tooltip-position="bottom">im sorry</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:34pm" data-tooltip-position="bottom">I hope they are all gone and you havnt sent to anyone else</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:34pm" data-tooltip-position="bottom">i swear i havent</div>
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:34pm" data-tooltip-position="bottom">im so sorry</div>
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:35pm" data-tooltip-position="bottom">she was just so cool and fun like you</div>
+        <div class="message" data-tooltip="Tuesday, May 20, 2014 at 2:35pm" data-tooltip-position="bottom">i regret it and my life</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Tuesday, September 22, 2015 at 8:05pm" data-tooltip-position="bottom">hi Chelsea how are you?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 7:18am" data-tooltip-position="bottom">not bad</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 7:19am" data-tooltip-position="bottom">and how are you? im soooooooo sorry</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 9:40am" data-tooltip-position="bottom">That's good :) yeah I'm great</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 10:14am" data-tooltip-position="bottom">ummm</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 10:14am" data-tooltip-position="bottom">hello :) but dont u hate me?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 10:19am" data-tooltip-position="bottom">No I don't hate you, I hate what my ex put you through</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 10:25am" data-tooltip-position="bottom">oh</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 10:25am" data-tooltip-position="bottom">i dont live in perth any more</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 10:26am" data-tooltip-position="bottom">he came over angry and mum made me move for a bit</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 10:26am" data-tooltip-position="bottom">he wasnt being mean tho</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:03am" data-tooltip-position="bottom">Oh don't you? Where are you living now :) He wanted to have you hurt badly.</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:06am" data-tooltip-position="bottom">broome</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:06am" data-tooltip-position="bottom">he came over and told me off.</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:07am" data-tooltip-position="bottom">he deleted me and your msgs on fb :) so hes not that bad</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:07am" data-tooltip-position="bottom">Oh awesome. Yeah I was told! Hahaha if you say so,</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:09am" data-tooltip-position="bottom">well i thought i was deleting our convos but they were going to archives</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:10am" data-tooltip-position="bottom">mum and him got me to log in so he could make sure i didnt send nuthing else. seen our convo n deleted it so noone would get in trouble.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:10am" data-tooltip-position="bottom">Oh really!</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:10am" data-tooltip-position="bottom">Fair enough then</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:10am" data-tooltip-position="bottom">yeah thank god :/</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:10am" data-tooltip-position="bottom">how have you and allerah been?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:11am" data-tooltip-position="bottom">Yeah we are great darl life's been fantastic</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:15am" data-tooltip-position="bottom">thats good :)</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:16am" data-tooltip-position="bottom">and again im so sorry i swear im sorry</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:18am" data-tooltip-position="bottom">It's ok Hun it's in the past :) Yeah my life has change heaps</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:39am" data-tooltip-position="bottom">thats good :)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:40am" data-tooltip-position="bottom">How's things going for you?</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:40am" data-tooltip-position="bottom">same old</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:40am" data-tooltip-position="bottom">auntys house and mums preached to them</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:40am" data-tooltip-position="bottom">so house strict home rules</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:41am" data-tooltip-position="bottom">bearly go out.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:43am" data-tooltip-position="bottom">Oh that's sucks darl!</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:51am" data-tooltip-position="bottom">atleast u are going good :)</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:52am" data-tooltip-position="bottom">got away from wayne. he told me how u were scared of him and almost forced u to make that stuff</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:52am" data-tooltip-position="bottom">hes evil</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 11:54am" data-tooltip-position="bottom">i plan 2 stay in broome till im old and gray haha.</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:27pm" data-tooltip-position="bottom">Yea he scared me so much he almost killed me a few times & almost broke my legs, he made me do things that I hated and made me hate myself! I'm glad I left him. Just think once your 18 you can do whatever you want.</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:32pm" data-tooltip-position="bottom">:)</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:32pm" data-tooltip-position="bottom">thats awful</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:32pm" data-tooltip-position="bottom">sorry for always wanting stuff and talking about it.. didnt know u were forced to make them :(</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:33pm" data-tooltip-position="bottom">and im sorta getting myself under control now ;)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:34pm" data-tooltip-position="bottom">Yeah life then was horrible! You don't need to be sorry it's ok. that's good Hun :)</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:34pm" data-tooltip-position="bottom">any ways had to get that out of the way, now i wont talk about it</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:35pm" data-tooltip-position="bottom">so is allerah in school?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:46pm" data-tooltip-position="bottom">No worries, Alle starts school next year</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:48pm" data-tooltip-position="bottom">oh wow how old is she?</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:49pm" data-tooltip-position="bottom">She is 4 but because she is born in April the start the year she is 4 turning 5</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:59pm" data-tooltip-position="bottom">cool</div>
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 12:59pm" data-tooltip-position="bottom">im getting a job :) hopefully</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 1:00pm" data-tooltip-position="bottom">That will be good for you</div>
+</div>
+   <div class="messages messages--sent">
+        <div class="message" data-tooltip="Friday, October 2, 2015 at 1:05pm" data-tooltip-position="bottom">:)</div>
+</div>
+<div class="b4"><img class="prof" src=""></img></div>
+   <div class="messages messages--received">
+        <div class="message" data-tooltip="Saturday, October 31, 2015 at 9:45am" data-tooltip-position="bottom">When did you give Wayne a USB that apprently has photos of me on it??</div>
+        <div class="message" data-tooltip="Saturday, October 31, 2015 at 9:46am" data-tooltip-position="bottom">An you asked him to send it to me??</div>
+</div>
+
+<!-- </div> -->
+<!--
+	<div class="text-bar">
+		<form class="text-bar__field" id="form-message">
+			<input type="text" placeholder="Type or thumb up ;)"/>
+		</form>
+		<div class="text-bar__thumb">
+			<div class="thumb"></div>
+		</div>
+	</div>
+	-->
+</div>
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
+
+</body>
+</html>
