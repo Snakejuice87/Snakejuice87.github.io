@@ -6,6 +6,36 @@
     <title>Text to Speech Example</title>
 </head>
 <body>
+		      <!-- Placeholder for the navigation -->
+    <div id="nav-placeholder"></div>
+
+    <script>
+        // Function to load the shared navigation
+        function loadNav() {
+            fetch('/_posts/nav.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('nav-placeholder').innerHTML = data;
+                    highlightCurrentPage();
+                })
+                .catch(error => console.error('Error loading navigation:', error));
+        }
+
+        // Function to highlight the current page
+        function highlightCurrentPage() {
+            const navLinks = document.querySelectorAll('#main-nav a');
+            const currentPage = window.location.pathname.pop();
+
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.setAttribute('id', 'current-page');
+                }
+            });
+        }
+
+        // Load the navigation when the page loads
+        document.addEventListener('DOMContentLoaded', loadNav);
+    </script>
         <nav>
       <a id="selected" href="https://snakejuice87.github.io/">Index</a>
 	    |  <a href="_posts/Template.html">Template</a>
