@@ -1,0 +1,310 @@
+		* {
+			box-sizing: border-box;
+		}
+
+		.meta {
+			padding: 10px 10px;
+			display: block;
+			width: 100%;
+			text-align: center;
+			color: grey;
+			opacity: 0.7;
+			text-decoration: underline;
+		}
+
+		.clearfix:after, .messages:after {
+			content: "";
+			display: table;
+			clear: both;
+			height: 0;
+			visibility: hidden;
+		}
+
+		body {
+			background-color: black;
+			padding: 0px;
+		}
+
+		.screen {
+			background-color: #fff;
+			height: 940px;
+			width: 500px;
+			margin: 0 auto;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+		}
+
+		.conversation {
+			height: calc(100% - 0px);
+			overflow: auto;
+			padding: 0px 12px 0px 15px;
+			padding-bottom: 0px;
+		}
+
+		.messages {
+			margin-bottom: 10px;
+		}
+		.b4 {
+			display: flex;
+			height: 0px;
+		}
+		.prof {
+			top: 2px;
+			left: -8px;
+			display: block;
+			float: left;
+			position: relative;
+			height: 35px;
+			width: 35px;
+			background-image: url("https://github-production-user-asset-6210df.s3.amazonaws.com/117030692/253752128-ada338c5-e824-4120-8315-816bbde33754.PNG?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240626%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240626T195614Z&X-Amz-Expires=300&X-Amz-Signature=38e144b1ea1347e8e656b31c69d42a5e78405cbb1b243d47a9c08c48d6f494c9&X-Amz-SignedHeaders=host&actor_id=117030692&key_id=0&repo_id=662465471");
+			background-position: -9px 0px;
+			background-repeat: repeat;
+			background-size: 160%;
+			border-radius: 50px;
+			background-color: black;
+		}
+		.messages--received .message {
+			float: left;
+			background-color: #ddd;
+			border-bottom-left-radius: 5px;
+			border-top-left-radius: 5px;
+		}
+		.messages--received .message:first-child {
+			border-top-left-radius: 15px;
+		}
+		.messages--received .message:last-child {
+			border-bottom-left-radius: 15px;
+		}
+		.messages--sent .message {
+			float: right;
+			background-color: #1998e6;
+			color: #fff;
+			border-bottom-right-radius: 5px;
+			border-top-right-radius: 5px;
+		}
+		.messages--sent .message:first-child {
+			border-top-right-radius: 15px;
+		}
+		.messages--sent .message:last-child {
+			border-bottom-right-radius: 15px;
+		}
+
+		.message {
+			margin-left: 35px;
+			display: inline-block;
+			margin-bottom: 2px;
+			clear: both;
+			padding: 7px 13px;
+			font-size: 16px;
+			border-radius: 15px;
+			line-height: 1.4;
+		}
+		.message--thumb {
+			background-color: transparent !important;
+			padding: 0;
+			margin-top: 5px;
+			margin-bottom: 10px;
+			width: 20px;
+			height: 20px;
+			border-radius: 0px !important;
+		}
+
+		.text-bar {
+			height: 50px;
+			border-top: 1px solid #ccc;
+		}
+		.text-bar__field {
+			float: left;
+			width: calc(100% - 50px);
+			height: 100%;
+		}
+		.text-bar__field input {
+			width: 100%;
+			height: 100%;
+			padding: 0 20px;
+			border: none;
+			position: relative;
+			vertical-align: middle;
+			font-size: 14px;
+		}
+		.text-bar__thumb {
+			float: left;
+			width: 50px;
+			height: 100%;
+			padding: 10px;
+		}
+		.text-bar__thumb:hover {
+			opacity: 0.8;
+		}
+		.text-bar__thumb .thumb {
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+		}
+
+		.thumb {
+			display: block;
+		}
+
+		.anim-wiggle {
+			-webkit-animation: wiggle 0.2s ease infinite;
+			animation: wiggle 0.2s ease infinite;
+		}
+
+		.anim-wiggle-2 {
+			-webkit-animation: wiggle2 0.2s ease infinite;
+			animation: wiggle2 0.2s ease infinite;
+		}
+
+@-webkit-keyframes wiggle {
+			0% {
+				transform: rotateZ(5deg);
+			}
+			50% {
+				transform: rotateZ(-5deg);
+			}
+			100% {
+				transform: rotateZ(5deg);
+			}
+		}
+
+@keyframes wiggle {
+			0% {
+				transform: rotateZ(5deg);
+			}
+			50% {
+				transform: rotateZ(-5deg);
+			}
+			100% {
+				transform: rotateZ(5deg);
+			}
+		}
+@-webkit-keyframes wiggle2 {
+			0% {
+				transform: rotateZ(10deg);
+			}
+			50% {
+				transform: rotateZ(-10deg);
+			}
+			100% {
+				transform: rotateZ(10deg);
+			}
+		}
+@keyframes wiggle2 {
+			0% {
+				transform: rotateZ(10deg);
+			}
+			50% {
+				transform: rotateZ(-10deg);
+			}
+			100% {
+				transform: rotateZ(10deg);
+			}
+		}
+		.thumb-img, .thumb {
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-image: url("");
+		}
+		[data-tooltip] {
+    display: inline-block;
+    position: relative;
+    cursor: help;
+    padding: 4px;
+}
+/* Tooltip styling */
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    display: none;
+    position: absolute;
+    background: #000;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    min-width: 100px;
+    text-align: center;
+    border-radius: 4px;
+}
+/* Dynamic horizontal centering */
+[data-tooltip-position="top"]:before,
+[data-tooltip-position="bottom"]:before {
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+/* Dynamic vertical centering */
+[data-tooltip-position="right"]:before,
+[data-tooltip-position="left"]:before {
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+[data-tooltip-position="top"]:before {
+    bottom: 100%;
+    margin-bottom: 6px;
+}
+[data-tooltip-position="right"]:before {
+    left: 100%;
+    margin-left: 6px;
+}
+[data-tooltip-position="bottom"]:before {
+    top: 100%;
+    margin-top: 6px;
+}
+[data-tooltip-position="left"]:before {
+    right: 100%;
+    margin-right: 6px;
+}
+
+/* Tooltip arrow styling/placement */
+[data-tooltip]:after {
+    content: '';
+    display: none;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+/* Dynamic horizontal centering for the tooltip */
+[data-tooltip-position="top"]:after,
+[data-tooltip-position="bottom"]:after {
+    left: 50%;
+    margin-left: -6px;
+}
+/* Dynamic vertical centering for the tooltip */
+[data-tooltip-position="right"]:after,
+[data-tooltip-position="left"]:after {
+    top: 50%;
+    margin-top: -6px;
+}
+[data-tooltip-position="top"]:after {
+    bottom: 100%;
+    border-width: 6px 6px 0;
+    border-top-color: #000;
+}
+[data-tooltip-position="right"]:after {
+    left: 100%;
+    border-width: 6px 6px 6px 0;
+    border-right-color: #000;
+}
+[data-tooltip-position="bottom"]:after {
+    top: 100%;
+    border-width: 0 6px 6px;
+    border-bottom-color: #000;
+}
+[data-tooltip-position="left"]:after {
+    right: 100%;
+    border-width: 6px 0 6px 6px;
+    border-left-color: #000;
+}
+/* Show the tooltip when hovering */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+    display: block;
+    z-index: 50;
+}
