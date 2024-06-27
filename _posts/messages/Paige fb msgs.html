@@ -244,7 +244,7 @@ body {
 	<div class="meta" style="margin-top: -15px;">Paige Facebook msgs - 2013</div>
 
 		   <div class="messages messages--sent">
-     				<div id="scroll" class="message">remember me 🙂</div>
+     				<div id="scrollDiv" onclick="startScrolling()" class="message">remember me 🙂</div>
           </div>
 
            	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
@@ -3307,63 +3307,36 @@ newThumb.init();
 				location.href = "#start";
 			}
 		</script>
-<!--	<script>
-/*
-	document.getElementById('scroll').addEventListener('click', function() {
-	(function scroll(host){
-        
-// Interval is in milliseconds, increment by pixels
-        var interval = 60, increment = 1, pairs = window.location.search.substring(1).split("&");
+<script>
+        let scrolling = false;
 
-        for(var i = 0; i < pairs.length; i++){
-          var pair = pairs[i].split("="),
-              attribute = pair[0],
-              value = parseInt(pair[1]);
+        function startScrolling() {
+            if (scrolling) return;
+            scrolling = true;
 
-          switch(attribute){
-            case "interval": interval = value;
-            case "increment": increment = value;
-          }         
+            const duration = 60; // Duration in ms per pixel
+
+            function step() {
+                window.scrollBy(0, 1); // Scroll down by 1 pixel
+                if (scrolling) {
+                    setTimeout(step, duration);
+                }
+            }
+
+            step();
         }
 
-        return { 
-          start: function(){ 
-            host.scrollBy(0, increment); 
-            host.setTimeout(arguments.callee, interval) 
-          } 
-        }; 
-      }(this)).start();
-	completion(true);
-});
-	*/
-	</script> -->
-	<script>
-	document.getElementById('scroll').onclick = function() {
-			(function scroll(host){
-        
-// Interval is in milliseconds, increment by pixels
-        var interval = 80, increment = 1, pairs = window.location.search.substring(1).split("&");
-
-        for(var i = 0; i < pairs.length; i++){
-          var pair = pairs[i].split("="),
-              attribute = pair[0],
-              value = parseInt(pair[1]);
-
-          switch(attribute){
-            case "interval": interval = value;
-            case "increment": increment = value;
-          }         
+        // To stop scrolling when the user clicks again, you can add this function
+        function stopScrolling() {
+            scrolling = false;
         }
 
-        return { 
-          start: function(){ 
-            host.scrollBy(0, increment); 
-            host.setTimeout(arguments.callee, interval) 
-          } 
-        }; 
-      }(this)).start();
-	completion(true);
-});
-	</script>
+        // Attach the stopScrolling function to the window scroll event or another element if needed
+        window.addEventListener('scroll', function() {
+            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+                stopScrolling();
+            }
+        });
+    </script>
 </body>
 </html>
