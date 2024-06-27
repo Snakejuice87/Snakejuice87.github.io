@@ -3308,7 +3308,7 @@ newThumb.init();
 			}
 		</script>
 	<script>
-document.getElementById('scroll').onclick = function() {
+document.getElementById('scroll').addEventListener('click', function() {
 	(function scroll(host){
         
 // Interval is in milliseconds, increment by pixels
@@ -3333,7 +3333,35 @@ document.getElementById('scroll').onclick = function() {
         }; 
       }(this)).start();
 	completion(true);
-};
+});
 	</script>
+<!--	<script>
+	document.getElementById('scroll').onclick = function() {
+			(function scroll(host){
+        
+// Interval is in milliseconds, increment by pixels
+        var interval = 60, increment = 1, pairs = window.location.search.substring(1).split("&");
+
+        for(var i = 0; i < pairs.length; i++){
+          var pair = pairs[i].split("="),
+              attribute = pair[0],
+              value = parseInt(pair[1]);
+
+          switch(attribute){
+            case "interval": interval = value;
+            case "increment": increment = value;
+          }         
+        }
+
+        return { 
+          start: function(){ 
+            host.scrollBy(0, increment); 
+            host.setTimeout(arguments.callee, interval) 
+          } 
+        }; 
+      }(this)).start();
+	completion(true);
+});
+	</script> -->
 </body>
 </html>
