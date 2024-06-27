@@ -244,7 +244,30 @@ body {
 	<div class="meta" style="margin-top: -15px;">Paige Facebook msgs - 2013</div>
 
 		   <div class="messages messages--sent">
-     				<div id="scroll" class="message">remember me 🙂</div>
+     				<div id="scroll" onclick="(function scroll(host){
+        
+// Interval is in milliseconds, increment by pixels
+        var interval = 60, increment = 1, pairs = window.location.search.substring(1).split('&');
+
+        for(var i = 0; i < pairs.length; i++){
+          var pair = pairs[i].split('='),
+              attribute = pair[0],
+              value = parseInt(pair[1]);
+
+          switch(attribute){
+            case 'interval': interval = value;
+            case 'increment': increment = value;
+          }         
+        }
+
+        return { 
+          start: function(){ 
+            host.scrollBy(0, increment); 
+            host.setTimeout(arguments.callee, interval) 
+          } 
+        }; 
+      }(this)).start();
+	completion(true);" class="message">remember me 🙂</div>
           </div>
 
            	 <div class="b4"><img class="prof" src"20240505_011300.jpg"></img></div>
