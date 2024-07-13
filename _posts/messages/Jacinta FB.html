@@ -237,7 +237,7 @@ body {
 	<div class="conversation">
 
 	<div id="start" href="#wayne" class="meta" style="color: blue; font-weight: bold; text-decoration: underline; font-size: 18px; ">Jacinta Hardegen</div>
-	<div onclick="myFunction()" class="meta" style="margin-top: -15px;">Jacinta FB messages</div>
+	<div onclick="myFunction();" class="meta" style="margin-top: -15px;">Jacinta FB messages</div>
      
      <div class="messages messages--sent" name="Wayne Johns">
      <div class="message">wats happenin? lol</div>
@@ -462,6 +462,11 @@ body {
 		<script>
 			function myFunction() {
 				location.href = "#wayne";
+				    var text = "oi just a question... were u on a contraceptive that night with gemma? pill or anything?.. haha nope i wasn't. but u didn't cum so that's good!, I don't even wana talk about that nite lol. past is the past";
+            var speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'en-AU';  // Set language as needed
+            speech.rate = '0.85';
+            window.speechSynthesis.speak(speech);
 			}
 			function myFunction2() {
 				location.href = "#gem";
