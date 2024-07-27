@@ -35,9 +35,9 @@
 body {
 /*  overscroll: hidden; */
   background-color: #fff;
-  zoom: 1.2; 
-  width: 70%;
-  margin-left: 90px;
+  zoom: 1.2 !important; 
+  width: 70% !important;
+  margin-left: 90px !important;
   margin-right: 20px;
   padding: 10px;
 }
@@ -3081,7 +3081,7 @@ body {
             if (scrolling) return;
             scrolling = true;
 
-            const duration = 10; // Duration in ms per pixel
+            const duration = 45; // Duration in ms per pixel
 
             function step() {
                 window.scrollBy(0, 1); // Scroll down by 1 pixel
