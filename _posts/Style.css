@@ -30,11 +30,11 @@
       }
 
       div#wrapper>div {
-       display: inline-grid;
-	border: 2px solid grey;
+        display: inline-grid;
+      	border: 2px solid grey;
         float: left;
         min-width: 13%;
-	width: auto;
+      	width: auto;
         padding: 1%;
         height: auto;
         max-width: 350px;
@@ -52,6 +52,18 @@
         max-width: 340px;
         height: auto;
       }
+
+			.innerwrap {
+			  margin: 0px;
+				display: block;
+				background-color: grey;
+				width: 100%;
+			}
+			
+			.innerwrap {
+			  display: grid;
+			  grid-template-columns: auto auto auto;
+			}
 
       audio {
         width: 350px;
