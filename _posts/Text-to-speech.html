@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="https://snakejuice87.github.io/" target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text to Speech Example</title>
@@ -28,7 +29,7 @@
 
             navLinks.forEach(link => {
                 if (link.getAttribute('href') === currentPage) {
-                    link.setAttribute('id', 'current-page');
+                    link.setAttribute('id', 'selected');
                 }
             });
         }
@@ -36,6 +37,7 @@
         // Load the navigation when the page loads
         document.addEventListener('DOMContentLoaded', loadNav);
     </script>
+	<p>-------</p>
         <nav>
       <a href="https://snakejuice87.github.io/">Index</a>
 	    | <a href="_posts/Template.html">Template</a>
