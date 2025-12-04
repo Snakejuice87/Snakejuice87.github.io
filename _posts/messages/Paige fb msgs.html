@@ -135,7 +135,7 @@ body {
 	
 .scroll {
   top: 10px;
-  opacity: 0.3;
+  opacity: 0.6;
   transition: opacity 0.5s;
 }
 .scroll:hover {
@@ -147,8 +147,8 @@ body {
 <!-- partial:index.partial.html -->
 <!-- <div class="screen"> -->
 	<div class="conversation"> 
-	  		<div class="scroll" id="scrollDiv" style="position: fixed; text-decoration: underline; color: grey; float: left; top: 10px;" onclick="startScrolling()">start Scroll</div>
-		        <div class="scroll" style="position: fixed; text-decoration: underline; color: grey; float: left; top: 30px;" onclick="stopScrolling()">stop Scroll</div>	 
+	  		<div class="scroll" id="scrollDiv" style="position: fixed; text-decoration: underline; color: grey; float: left; top: 10px;" onclick="startScrolling()">Scroll</div>
+		        <div class="scroll" style="position: fixed; text-decoration: underline; color: grey; float: left; top: 30px;" onclick="stopScrolling()">Stop</div>	 
 	
 		<div id="start" class="meta" style="color: blue; font-weight: bold; text-decoration: underline; font-size: 18px; margin-top: -20px;">Paigee Lewiis & Chelsea Walker</div>
 	  		<div style="text-decoration: underline; color: grey; font-weight: 700; float: right; margin-top: -20px; opacity: 0.6;" onclick="myFunction2()">Go to Gemma</div>
@@ -3060,9 +3060,10 @@ body {
 
 <!-- partial -->
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
 
-		<script>
+
+<script>
 			function myFunction() {
 				location.href = "#Wayne";
 			}
@@ -3072,9 +3073,10 @@ body {
 			function myFunction1() {
 				location.href = "#start";
 			}
-		</script>
+</script>
 	
-      <script id="scrollscript">
+
+<script id="scrollscript">
         let scrolling = false;
 
         function startScrolling() {
@@ -3089,24 +3091,22 @@ body {
                     setTimeout(step, duration);
                 }
             }
-
             step();
         }
-
         // To stop scrolling when the user clicks again, you can add this function
         function stopScrolling() {
             scrolling = false;
         }
-
         // Attach the stopScrolling function to the window scroll event or another element if needed
         window.addEventListener('scroll', function() {
             if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
                 stopScrolling();
             }
         });
-    </script>
+</script>
 
-    <script id="synth">
+	
+<script id="synth">
     // Define the function to initialize text-to-speech
 function speakText(element) {
     // Check if the browser supports speech synthesis
