@@ -150,7 +150,7 @@ body {
 	  		<div class="scroll" id="scrollDiv" style="position: fixed; text-decoration: underline; color: grey; float: left; top: 10px;" onclick="startScrolling()">Scroll</div>
 		        <div class="scroll" style="position: fixed; text-decoration: underline; color: grey; float: left; top: 30px;" onclick="stopScrolling()">Stop</div>	 
 	
-		<div id="start" class="meta" style="color: blue; font-weight: bold; text-decoration: underline; font-size: 18px; margin-top: -20px;">Paigee Lewiis & Chelsea Walker</div>
+		<div id="start" class="meta" style="color: blue; font-weight: bold; text-decoration: underline; font-size: 18px; margin-top: -20px;">Paige Lewis & Chelsea Walker</div>
 	  		<div style="text-decoration: underline; color: grey; font-weight: 700; float: right; margin-top: -20px; opacity: 0.6;" onclick="myFunction2()">Go to Gemma</div>
 	  		<br>	  		<div style="text-decoration: underline; color: grey; font-weight: 700; float: right; margin-top: -20px; opacity: 0.6;" onclick="myFunction()">Go to Wayne</div>
 	<div class="meta" style="text-align: center; margin-top: -20px;">Paige Facebook msgs - 2013</div>
@@ -3075,38 +3075,7 @@ body {
 				location.href = "#start";
 			}
 </script>
-	
 
-<script>
-        let scrolling = false;
-
-        function startScrolling() {
-            if (scrolling) return;
-            scrolling = true;
-
-            const duration = 45; // Duration in ms per pixel
-
-            function step() {
-                window.scrollBy(0, 1); // Scroll down by 1 pixel
-                if (scrolling) {
-                    setTimeout(step, duration);
-                }
-            }
-            step();
-        }
-        // To stop scrolling when the user clicks again, you can add this function
-        function stopScrolling() {
-            scrolling = false;
-        }
-        // Attach the stopScrolling function to the window scroll event or another element if needed
-        window.addEventListener('scroll', function() {
-            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
-                stopScrolling();
-            }
-        });
-</script>
-
-	
 <script>
     // Define the function to initialize text-to-speech
 function speakText(element) {
@@ -3180,6 +3149,35 @@ let elements = document.querySelectorAll('.message');
 elements.forEach(element => {
     element.addEventListener('click', handleClick);
 });
+</script>	
+
+<script>
+        let scrolling = false;
+
+        function startScrolling() {
+            if (scrolling) return;
+            scrolling = true;
+
+            const duration = 45; // Duration in ms per pixel
+
+            function step() {
+                window.scrollBy(0, 1); // Scroll down by 1 pixel
+                if (scrolling) {
+                    setTimeout(step, duration);
+                }
+            }
+            step();
+        }
+        // To stop scrolling when the user clicks again, you can add this function
+        function stopScrolling() {
+            scrolling = false;
+        }
+        // Attach the stopScrolling function to the window scroll event or another element if needed
+        window.addEventListener('scroll', function() {
+            if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+                stopScrolling();
+            }
+        });
 </script>
 
 </body>
