@@ -59,3 +59,5 @@
 ![Lil Emo Slut double BG removed](https://github.com/Snakejuice87/Snakejuice87.github.io/assets/117030692/ada338c5-e824-4120-8315-816bbde33754 "Lil Emo Slut double BG removed")
 
 ---
+
+![Paige fb screen shot](_posts/messages/337670279762044.jpg "Paige screenshot")
