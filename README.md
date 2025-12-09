@@ -63,7 +63,7 @@
 ---
 
 ---
-
+<!--
 ## Paige --
 
 ![Paige fb screen shot](_posts/messages/337670279762044.jpg "Paige screenshot")
@@ -75,3 +75,4 @@
 ![Paige selfie in mirror 2](_posts/messages/557474601122869.jpg)
 
 ![Paige selfie in mirror 3](_posts/messages/661956204008041.jpg)
+-->
