@@ -63,17 +63,3 @@
 ---
 ---
 
-<!--
-## Paige --
-
-![Paige fb screen shot](_posts/messages/337670279762044.jpg "Paige screenshot")
-
-![Paige selfie in black boobtube](_posts/messages/337670286428710.jpg)
-
-![Paige selfie in mirror 1](_posts/messages/557474547789541.jpg)
-
-![Paige selfie in mirror 2](_posts/messages/557474601122869.jpg)
-
-![Paige selfie in mirror 3](_posts/messages/661956204008041.jpg)
-
--->
