@@ -31,21 +31,34 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      - name: Build Jekyll for GitHub Pages
+        uses: actions/jekyll-build-pages@v1.0.13
+        with:
+          # Directory where the source files reside.
+          source: "."
+          # Output directory of the build. Default is ./_site
+          destination: "_site"
+          # The SHA-1 of the git commit for which the build is running. Default to GITHUB_SHA.
+          build_revision: ${{ github.sha }}
+          # Verbose output
+          verbose: true
+          # GitHub token
+          token: ${{ github.token }}
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: './_site'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: HTML Preview
-  # You may pin to the exact commit or the version.
-  # uses: pavi2410/html-preview-action@9420cd81fbbe0035f59a39536ea5a0443daffa37
+
+      - name: HTML Preview (optional)
         uses: pavi2410/html-preview-action@v2
         with:
-        # The HTML file you want to preview, relative to the root of the repo
-        html_file: # default is index.html
-          
+          html_file: index.html
