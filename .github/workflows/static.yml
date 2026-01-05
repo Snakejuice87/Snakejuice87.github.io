@@ -41,7 +41,7 @@ jobs:
           # Directory where the source files reside.
           source: "."
           # Output directory of the build. Default is ./_site
-          destination: "_site"
+          destination: "_post"
           # The SHA-1 of the git commit for which the build is running. Default to GITHUB_SHA.
           build_revision: ${{ github.sha }}
           # Verbose output
