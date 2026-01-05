@@ -100,7 +100,7 @@
  
 <p>Perfect.. perfect</p> 
 <audio playsinline controls style="/* zoom:0.7; *//* zoom: 1.1; */">
-  <source src="https://github.com/Snakejuice87/Snakejuice87.github.io/raw/refs/heads/main/_posts/HTML/Paige%20Sound%20Board/Perfect..%20perfect.m4a" type="audio/mpeg"> 
+  <source src="https://github.com/Snakejuice87/Snakejuice87.github.io/raw/refs/heads/main/_posts/HTML/Paige%20Sound%20Board/Perfect..%20perfect.m4a" type="audio/m4a"> 
   Your browser does not support the audio element. 
 </audio> 
  
@@ -177,32 +177,109 @@
 
 
   <img src="https://github.com/Snakejuice87/Snakejuice87.github.io/blob/main/_posts/HTML/Paige%20Sound%20Board/VideoCapture_20220406-191158.jpg?raw=true" style="max-width: 2    50px;" /> 
-   <img src="/private/var/mobile/Containers/Data/Application/F784D98E-BD17-48FF-8972-AC75F265002C/Documents/KeepData/otherfiles/(2,200 x 1,600) (Rotate & Crop).PNG" style="max-width: 150px;" /> 
-   <img src="private/var/mobile/Containers/Data/Application/F784D98E-BD17-48FF-8972-AC75F265002C/Documents/KeepData/otherfiles/1989792_20220311_035449.png" style="max-width: 150px" />
-   <img src="/private/var/mobile/Containers/Data/Application/F784D98E-BD17-48FF-8972-AC75F265002C/Documents/KeepData/otherfiles/1989792_20220311_035449.png" style="max-width: 150px" />
-   <img src="/private/var/mobile/Containers/Data/Application/F784D98E-BD17-48FF-8972-AC75F265002C/Documents/KeepData/otherfiles/20220505_000008.png" style="max-width: 150px" />
-  <img src="/private/var/mobile/Containers/Data/Application/F784D98E-BD17-48FF-8972-AC75F265002C/Documents/KeepData/otherfiles/20220505_000307.png" style="max-width: 250px" />
+  
+  
+  
+<script>
+    const audios = document.querySelectorAll("audio");
+    
+    for (const audio of audios) {
+        audio.setAttribute("onmouseover", "this.play()");
+        audio.setAttribute("onmouseout", "this.pause()");
+    }
+</script>
+<script>
+/*
+const umm = document.getElementById("umm");
+// const STOP_AT  = 3;
 
-<script> 
-window.onload = downScripts; 
- 
-function downScripts() { 
-    var element = document.createElement("script"); 
-    element.src = "https://update.greasyfork.org/scripts/400760/Console for mobile browsers - eruda.user.js"; 
-    document.body.appendChild(element); 
-    script.onload = function () { eruda.init(); }
-} 
-</script> 
-        <script src="https://update.greasyfork.org/scripts/400760/Console for mobile browsers - eruda.user.js"></script>
-        <script src="//cdn.jsdelivr.net/npm/eruda"></script>
-        <script>
+umm.addEventListener("loadedmetadata", () => {
+    umm.currentTime = 2; // seconds
+});
+*/
+/* umm.addEventListener("pause", () => {
+    if (!umm.ended) {
+        umm.currentTime = STOP_AT;
+    }
+}); */
+</script>
+
+<script>
         (function () { 
             var script = document.createElement('script');
             script.src="https://cdn.jsdelivr.net/npm/eruda";
             document.body.append(script);
             script.onload = function () { eruda.init(); }
         })();
-        </script>
+</script>
+        
+ <script>
+$(function () {
+    $("audio").on("mouseenter", function () {
+        if (this.paused) {
+            this.currentTime = 0;
+            this.play();
+        }
+    }).on("mouseleave", function () {
+        if (!this.paused) {
+            this.pause();
+        }
+    });
+});
+</script>
+
+<script>
+(function () {
+    "use strict";
+
+    const audios = document.querySelectorAll("audio");
+    
+    for (const audio of audios) {
+        // Set attributes
+        audio.controls = true;
+        audio.loop = false;
+        audio.muted = false;
+        audio.autoplay = false;
+
+        audio.setAttribute("controls", "");
+        audio.removeAttribute("loop");
+        audio.removeAttribute("muted");
+        audio.removeAttribute("autoplay");
+
+        // Fallback if loop property is not supported
+        if (typeof audio.loop !== "boolean") {
+            audio.addEventListener("ended", function () {
+                this.currentTime = 0;
+                this.play();
+            }, false);
+        }
+
+        // Attempt playback
+        audio.play().catch(() => {});
+    }
+})();
+</script>
+
+<script>
+       // Pause playing video if another video is played
+function onlyPlayOneIn(container) {
+    container.addEventListener("play", function (event) {
+        const audios = container.getElementsByTagName("audio");
+
+        for (let i = 0; i < audios.length; i++) {
+            const audio = audios[i];
+            if (audio !== event.target) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        }
+    }, true); // use capture so it works on all audio elements
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    onlyPlayOneIn(document.body);
+});
+</script>
         
 </body> 
 </html>
