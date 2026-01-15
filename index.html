@@ -6,7 +6,36 @@
     <meta name="theme-color" content="#1e1e1e">
     <meta charset="utf-8">
     <meta name="language" content="en">
-    <base href="https://snakejuice87.github.io/"></base>
+<!--    <base href="https://snakejuice87.github.io/"></base> -->
+    <style>
+         .collapsible {
+              background-color: #203;
+              color: white;
+              cursor: pointer;
+              padding: 13px;
+              width: 100%;
+              border: none;
+              text-align: left;
+              outline: none;
+              font-size: 15px;
+        }          
+        .active, .collapsible:hover {
+              background-color: #105;
+              color: white;
+              font-weight: 600;
+        }
+        .content {
+              display: inline-flex;
+              /* max-width: 1200px; */
+              flex-wrap: wrap;
+              /* padding: 0 18px; */
+              max-height: 0;
+              overflow: hidden;
+              transition: max-height 0.22s ease-out;
+              background-color: #fff;
+              border: 1.4px solid darkgrey;
+        }
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://snakejuice87.github.io/_posts/Style.css">
   </head>
@@ -35,7 +64,7 @@
       document.addEventListener('DOMContentLoaded', loadNav);
     </script>
     <nav>
-      <a id="selected" href="https://snakejuice87.github.io/">Index</a> | <a href="_posts/Template.html">Template</a> | <a href="https://snakejuice87.github.io/_posts/Web-archive-uploaded-videos.html">Web archive uploaded videos</a> | <a href="_posts/gemmashower.html">Gemma shower</a> | <a href="_posts/Aussie-sluts.html">Aussie Sluts</a> | <a href="_posts/archivebrowser.html">Deleted Pornhub Gifs & Gif Webms - SnakeJuice87</a> | <a href="_posts/ph gif refrence 2.html">Ph GIF refrence 2</a> | <a href="_posts/Github-made.html">Github made</a> | <a href="_posts/Gemma pornhub gif videos.html">Gemma pornhub gif videos</a> | | <a href="_posts/Text-to-speech.html">Text-to-speech</a> | <br> | <a href="_posts/JSFiddle.html">JSFiddle</a> | <a href="_posts/Web Archive full videos.html">Web Archive full videos</a> | <a href="_posts/HTML/Paige - sound board.html">Paige aound board</a>    </nav>
+      <a id="selected" href="https://snakejuice87.github.io/">Index</a> | <a href="_posts/Template.html">Template</a> | <a href="https://snakejuice87.github.io/_posts/Web-archive-uploaded-videos.html">Web archive uploaded videos</a> | <a href="_posts/gemmashower.html">Gemma shower</a> | <a href="_posts/Aussie-sluts.html">Aussie Sluts</a> | <a href="_posts/archivebrowser.html">Deleted Pornhub Gifs & Gif Webms - SnakeJuice87</a> | <a href="_posts/ph gif refrence 2.html">Ph GIF refrence 2</a> | <a href="_posts/Github-made.html">Github made</a> | <a href="_posts/Gemma pornhub gif videos.html">Gemma pornhub gif videos</a> | | <a href="_posts/Text-to-speech.html">Text-to-speech</a> | <br> | <a href="_posts/JSFiddle.html">JSFiddle</a> | <a href="_posts/Web Archive full videos.html">Web Archive full videos</a> | <a href="https://snakejuice87.github.io/_posts/HTML/Paige - sound board.html">Paige aound board</a>    </nav>
     <h1>
       <a id="selected" href="https://snakejuice87.github.io" target="_blank">https://snakejuice87.github.io/snakejuice87.github.io</a>
     </h1>
@@ -96,7 +125,9 @@
       </div>
       </br>
       <br>
-      <!--
+      
+<button class="collapsible">More</button>
+<div class="content">
       <div>
         <h1>Paige</h1>
         <div>
@@ -142,9 +173,10 @@
           </p>
           <img src="https://dn790009.ca.archive.org/0/items/paige-acacia-facebook-2/IMG_3476.jpeg" />
         </div>
-      -->
+      </div>
       </div>
       <script>
+        /*
         $(function() {
           $('video').on('mouseenter', function() {
             if (this.paused) this.play();
@@ -152,6 +184,24 @@
             if (!this.playing) this.pause();
           });
         });
+        */
       </script>
+     <script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.scrollHeight = content.scrollHeight + '650';
+      content.style.maxHeight = content.scrollHeight + "650px";
+    } 
+  });
+}
+</script>
   </body>
 </html>
