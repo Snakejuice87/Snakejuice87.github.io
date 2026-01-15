@@ -21,7 +21,7 @@
 	    | <a href="https://snakejuice87.github.io/_posts/messages/Gemma-SMS.html">Gemma-SMS msgs</a> |
         | <a href="https://snakejuice87.github.io/_posts/messages/Gemma fb w Chelsea.html">Gemma fb with Chelsea</a> |
     	| <a href="https://snakejuice87.github.io/_posts/messages/Jacinta FB.html">Jacinta FB msgs</a> |
-    	| <a href="https://snakejuice87.github.io/_posts/messages/Corrina & Chelsea fb style.html">Corrina & Chelsea FB msgs</a> |
+    	| <a href="https://snakejuice87.github.io/_posts/messages/Corrina & Chelsea fb style.html">Corrina & Chelsea FB msgs</a> | |
         | <a href="https://snakejuice87.github.io/_posts/HTML/Paige - sound board.html">Paige aound board</a> |
 	    | <a href="https://snakejuice87.github.io/_posts/Siyu 3d custom girl videos.html">Siyu 3d custom girl videos</a> |
 	</nav>
@@ -32,7 +32,7 @@ function highlightCurrentLink() {
   const currentUrl = window.location.href;
 
   // Get all anchor elements on the page
-  const anchorElements = document.querySelectorAll('a');
+  const anchorElements = document.querySelectorAll('#main-nav>a');
 
   // Iterate over each anchor element
   anchorElements.forEach(anchor => {
@@ -40,9 +40,10 @@ function highlightCurrentLink() {
     if (anchor.href === currentUrl) {
       // Add the 'id' attribute with the value 'selected'
       anchor.id = 'selected';
+	  anchor.setAttribute('id','selected');
     }
   });
 }
 // Call the function to highlight the current link
-// highlightCurrentLink();
+highlightCurrentLink();
 </script>
