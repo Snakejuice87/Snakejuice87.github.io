@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1">
+<title>Simple Video Playlist Player</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+}
+
+#player-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+video {
+    width: 100%;
+    max-height: 480px;
+    background: black;
+}
+
+#playlist, #playlist ul{
+    list-style:none;
+}
+
+#playlist {
+    margin-top: 15px;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+#playlist li {
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+}
+
+#playlist li:last-child {
+    border-bottom: none;
+}
+
+#playlist li:hover:not(.season-header) {
+    background: #f0f7ff;
+}
+
+#playlist li.active:not(.season-header) {
+    background: #1976d2;
+    color: #fff;
+    font-weight: bold;
+}
+
+.season-header.active2{
+    background-color:  white;
+    text-decoration: underline;
+    border: #1976d2 3px solid !important;
+    color: #1976d2;
+}
+.season-header.notactive2{
+    background-color: black;
+    text-decoration: underline;
+    border: white 3px solid !important;
+    background:black;
+    color: white;
+}
+
+.season-header{
+    font-weight:bold;
+    color: white;
+    background: black;
+    cursor:pointer;
+    margin-top:8px;
+}
+.season-group {
+    margin-left:10px;
+}
+.season-group.collapsed{
+    display:none;
+}
+.active{
+    background:black;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div id="player-container">
+    <video id="videoPlayer" playsinline webkit-playsinline controls></video>
+
+    <ul id="playlist"></ul>
+</div>
+
+<!--  https://dn720205.ca.archive.org/0/items/rwby-s01-to-s09/RWBY%20%282013%29/Season%2001/RWBY%20-%20S01E01%20-%20Ruby%20Rose.mp4 -->
+
+<script>
+const videos = [
+    {
+		title:"RWBY - S01E01 - Ruby Rose",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E01%20-%20Ruby%20Rose.mp4"
+	},
+	{
+		title:"RWBY - S01E02 - The Shining Beacon (1)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E02%20-%20The%20Shining%20Beacon%20%281%29.mp4"
+	},
+	{
+		title:"RWBY - S01E03 - The Shining Beacon (2)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E03%20-%20The%20Shining%20Beacon%20%282%29.mp4"
+	},
+	{
+		title:"RWBY - S01E04 - The First Step (1)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E04%20-%20The%20First%20Step%20%281%29.mp4"
+	},
+	{
+		title:"RWBY - S01E05 - The First Step (2)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E05%20-%20The%20First%20Step%20%282%29.mp4"
+	},
+	{
+		title:"RWBY - S01E06 - The Emerald Forest (1)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E06%20-%20The%20Emerald%20Forest%20%281%29.mp4"
+	},
+	{
+		title:"RWBY - S01E07 - The Emerald Forest (2)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E07%20-%20The%20Emerald%20Forest%20%282%29.mp4"
+	},
+	{
+		title:"RWBY - S01E08 - Players and Pieces",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E08%20-%20Players%20and%20Pieces.mp4"
+	},
+	{
+		title:"RWBY - S01E09 - The Badge and the Burden (1)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E09%20-%20The%20Badge%20and%20the%20Burden%20%281%29.mp4"
+	},
+	{
+		title:"RWBY - S01E10 - The Badge and the Burden (2)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E10%20-%20The%20Badge%20and%20the%20Burden%20%282%29.mp4"
+	},
+	{
+		title:"RWBY - S01E11 - Jaunedice (1)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E11%20-%20Jaunedice%20%281%29.mp4"
+	},
+	{
+		title:"RWBY - S01E12 - Jaunedice (2)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E12%20-%20Jaunedice%20%282%29.mp4"
+	},
+	{
+		title:"RWBY - S01E13 - Forever Fall (1)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E13%20-%20Forever%20Fall%20%281%29.mp4"
+	},
+	{
+		title:"RWBY - S01E14 - Forever Fall (2)",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E14%20-%20Forever%20Fall%20%282%29.mp4"
+	},
+	{
+		title:"RWBY - S01E15 - The Stray",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E15%20-%20The%20Stray.mp4"
+	},
+	{
+		title:"RWBY - S01E16 - Black and White",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2001%2FRWBY%20-%20S01E16%20-%20Black%20and%20White.mp4"
+	},
+	{
+		title:"RWBY - S02E01 - Best Day Ever",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E01%20-%20Best%20Day%20Ever.mp4"
+	},
+	{
+		title:"RWBY - S02E02 - Welcome to Beacon",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E02%20-%20Welcome%20to%20Beacon.mp4"
+	},
+	{
+		title:"RWBY - S02E03 - A Minor Hiccup",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E03%20-%20A%20Minor%20Hiccup.mp4"
+	},
+	{
+		title:"RWBY - S02E04 - Painting the Town",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E04%20-%20Painting%20the%20Town.mp4"
+	},
+	{
+		title:"RWBY - S02E05 - Extracurricular",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E05%20-%20Extracurricular.mp4"
+	},
+	{
+		title:"RWBY - S02E06 - Burning the Candle",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E06%20-%20Burning%20the%20Candle.mp4"
+	},
+	{
+		title:"RWBY - S02E07 - Dance Dance Infiltration",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E07%20-%20Dance%20Dance%20Infiltration.mp4"
+	},
+	{
+		title:"RWBY - S02E08 - Field Trip",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E08%20-%20Field%20Trip.mp4"
+	},
+	{
+		title:"RWBY - S02E09 - Search and Destroy",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E09%20-%20Search%20and%20Destroy.mp4"
+	},
+	{
+		title:"RWBY - S02E10 - Mountain Glenn",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E10%20-%20Mountain%20Glenn.mp4"
+	},
+	{
+		title:"RWBY - S02E11 - No Brakes",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E11%20-%20No%20Brakes.mp4"
+	},
+	{
+		title:"RWBY - S02E12 - Breach",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2002%2FRWBY%20-%20S02E12%20-%20Breach.mp4"
+	},
+	{
+		title:"RWBY - S03E01 - Round One",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E01%20-%20Round%20One.mp4"
+	},
+	{
+		title:"RWBY - S03E02 - New Challengers",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E02%20-%20New%20Challengers.mp4"
+	},
+	{
+		title:"RWBY - S03E03 - It\u0027s Brawl in the Family",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E03%20-%20It%27s%20Brawl%20in%20the%20Family.mp4"
+	},
+	{
+		title:"RWBY - S03E04 - Lessons Learned",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E04%20-%20Lessons%20Learned.mp4"
+	},
+	{
+		title:"RWBY - S03E05 - Never Miss a Beat",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E05%20-%20Never%20Miss%20a%20Beat.mp4"
+	},
+	{
+		title:"RWBY - S03E06 - Fall",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E06%20-%20Fall.mp4"
+	},
+	{
+		title:"RWBY - S03E07 - Beginning of the End",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E07%20-%20Beginning%20of%20the%20End.mp4"
+	},
+	{
+		title:"RWBY - S03E08 - Destiny",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E08%20-%20Destiny.mp4"
+	},
+	{
+		title:"RWBY - S03E09 - PvP",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E09%20-%20PvP.mp4"
+	},
+	{
+		title:"RWBY - S03E10 - Battle of Beacon",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E10%20-%20Battle%20of%20Beacon.mp4"
+	},
+	{
+		title:"RWBY - S03E11 - Heroes and Monsters",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E11%20-%20Heroes%20and%20Monsters.mp4"
+	},
+	{
+		title:"RWBY - S03E12 - End of the Beginning",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2003%2FRWBY%20-%20S03E12%20-%20End%20of%20the%20Beginning.mp4"
+	},
+	{
+		title:"RWBY - S04E01 - The Next Step",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E01%20-%20The%20Next%20Step.mp4"
+	},
+	{
+		title:"RWBY - S04E02 - Remembrance",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E02%20-%20Remembrance.mp4"
+	},
+	{
+		title:"RWBY - S04E03 - Of Runaways and Stowaways",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E03%20-%20Of%20Runaways%20and%20Stowaways.mp4"
+	},
+	{
+		title:"RWBY - S04E04 - Family",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E04%20-%20Family.mp4"
+	},
+	{
+		title:"RWBY - S04E05 - Menagerie",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E05%20-%20Menagerie.mp4"
+	},
+	{
+		title:"RWBY - S04E06 - Tipping Point",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E06%20-%20Tipping%20Point.mp4"
+	},
+	{
+		title:"RWBY - S04E07 - Punished",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E07%20-%20Punished.mp4"
+	},
+	{
+		title:"RWBY - S04E08 - A Much Needed Talk",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E08%20-%20A%20Much%20Needed%20Talk.mp4"
+	},
+	{
+		title:"RWBY - S04E09 - Two Steps Forward, Two Steps Back",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E09%20-%20Two%20Steps%20Forward%2C%20Two%20Steps%20Back.mp4"
+	},
+	{
+		title:"RWBY - S04E10 - Kuroyuri",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E10%20-%20Kuroyuri.mp4"
+	},
+	{
+		title:"RWBY - S04E11 - Taking Control",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E11%20-%20Taking%20Control.mp4"
+	},
+	{
+		title:"RWBY - S04E12 - No Safe Haven",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2004%2FRWBY%20-%20S04E12%20-%20No%20Safe%20Haven.mp4"
+	},
+	{
+		title:"RWBY - S05E01 - Welcome to Haven",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E01%20-%20Welcome%20to%20Haven.mp4"
+	},
+	{
+		title:"RWBY - S05E02 - Dread in the Air",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E02%20-%20Dread%20in%20the%20Air.mp4"
+	},
+	{
+		title:"RWBY - S05E03 - Unforeseen Complications",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E03%20-%20Unforeseen%20Complications.mp4"
+	},
+	{
+		title:"RWBY - S05E04 - Lighting the Fire",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E04%20-%20Lighting%20the%20Fire.mp4"
+	},
+	{
+		title:"RWBY - S05E05 - Necessary Sacrifice",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E05%20-%20Necessary%20Sacrifice.mp4"
+	},
+	{
+		title:"RWBY - S05E06 - Known by its Song",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E06%20-%20Known%20by%20its%20Song.mp4"
+	},
+	{
+		title:"RWBY - S05E07 - Rest and Resolutions",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E07%20-%20Rest%20and%20Resolutions.mp4"
+	},
+	{
+		title:"RWBY - S05E08 - Alone Together",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E08%20-%20Alone%20Together.mp4"
+	},
+	{
+		title:"RWBY - S05E09 - A Perfect Storm",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E09%20-%20A%20Perfect%20Storm.mp4"
+	},
+	{
+		title:"RWBY - S05E10 - True Colors",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E10%20-%20True%20Colors.mp4"
+	},
+	{
+		title:"RWBY - S05E11 - The More the Merrier",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E11%20-%20The%20More%20the%20Merrier.mp4"
+	},
+	{
+		title:"RWBY - S05E12 - Vault of the Spring Maiden",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E12%20-%20Vault%20of%20the%20Spring%20Maiden.mp4"
+	},
+	{
+		title:"RWBY - S05E13 - Downfall",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E13%20-%20Downfall.mp4"
+	},
+	{
+		title:"RWBY - S05E14 - Haven\u0027s Fate",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2005%2FRWBY%20-%20S05E14%20-%20Haven%27s%20Fate.mp4"
+	},
+	{
+		title:"RWBY - S06E01 - Argus Limited",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E01%20-%20Argus%20Limited.mp4"
+	},
+	{
+		title:"RWBY - S06E02 - Uncovered",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E02%20-%20Uncovered.mp4"
+	},
+	{
+		title:"RWBY - S06E03 - The Lost Fable",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E03%20-%20The%20Lost%20Fable.mp4"
+	},
+	{
+		title:"RWBY - S06E04 - So That\u0027s How It Is",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E04%20-%20So%20That%27s%20How%20It%20Is.mp4"
+	},
+	{
+		title:"RWBY - S06E05 - The Coming Storm",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E05%20-%20The%20Coming%20Storm.mp4"
+	},
+	{
+		title:"RWBY - S06E06 - Alone in the Woods",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E06%20-%20Alone%20in%20the%20Woods.mp4"
+	},
+	{
+		title:"RWBY - S06E07 - The Grimm Reaper",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E07%20-%20The%20Grimm%20Reaper.mp4"
+	},
+	{
+		title:"RWBY - S06E08 - Dead End",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E08%20-%20Dead%20End.mp4"
+	},
+	{
+		title:"RWBY - S06E09 - Lost",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E09%20-%20Lost.mp4"
+	},
+	{
+		title:"RWBY - S06E10 - Stealing from the Elderly",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E10%20-%20Stealing%20from%20the%20Elderly.mp4"
+	},
+	{
+		title:"RWBY - S06E11 - The Lady in the Shoe",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E11%20-%20The%20Lady%20in%20the%20Shoe.mp4"
+	},
+	{
+		title:"RWBY - S06E12 - Seeing Red",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E12%20-%20Seeing%20Red.mp4"
+	},
+	{
+		title:"RWBY - S06E13 - Our Way",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2006%2FRWBY%20-%20S06E13%20-%20Our%20Way.mp4"
+	},
+	{
+		title:"RWBY - S07E01 - The Greatest Kingdom",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E01%20-%20The%20Greatest%20Kingdom.mp4"
+	},
+	{
+		title:"RWBY - S07E02 - A New Approach",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E02%20-%20A%20New%20Approach.mp4"
+	},
+	{
+		title:"RWBY - S07E03 - Ace Operatives",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E03%20-%20Ace%20Operatives.mp4"
+	},
+	{
+		title:"RWBY - S07E04 - Pomp and Circumstance",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E04%20-%20Pomp%20and%20Circumstance.mp4"
+	},
+	{
+		title:"RWBY - S07E05 - Sparks",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E05%20-%20Sparks.mp4"
+	},
+	{
+		title:"RWBY - S07E06 - A Night Off",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E06%20-%20A%20Night%20Off.mp4"
+	},
+	{
+		title:"RWBY - S07E07 - Worst Case Scenario",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E07%20-%20Worst%20Case%20Scenario.mp4"
+	},
+	{
+		title:"RWBY - S07E08 - Cordially Invited",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E08%20-%20Cordially%20Invited.mp4"
+	},
+	{
+		title:"RWBY - S07E09 - As Above, So Below",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E09%20-%20As%20Above%2C%20So%20Below.mp4"
+	},
+	{
+		title:"RWBY - S07E10 - Out in the Open",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E10%20-%20Out%20in%20the%20Open.mp4"
+	},
+	{
+		title:"RWBY - S07E11 - Gravity",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E11%20-%20Gravity.mp4"
+	},
+	{
+		title:"RWBY - S07E12 - With Friends Like These",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E12%20-%20With%20Friends%20Like%20These.mp4"
+	},
+	{
+		title:"RWBY - S07E13 - The Enemy of Trust",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2007%2FRWBY%20-%20S07E13%20-%20The%20Enemy%20of%20Trust.mp4"
+	},
+	{
+		title:"RWBY - S08E01 - Divide",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E01%20-%20Divide.mp4"
+	},
+	{
+		title:"RWBY - S08E02 - Refuge",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E02%20-%20Refuge.mp4"
+	},
+	{
+		title:"RWBY - S08E03 - Strings",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E03%20-%20Strings.mp4"
+	},
+	{
+		title:"RWBY - S08E04 - Fault",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E04%20-%20Fault.mp4"
+	},
+	{
+		title:"RWBY - S08E05 - Amity",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E05%20-%20Amity.mp4"
+	},
+	{
+		title:"RWBY - S08E06 - Midnight",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E06%20-%20Midnight.mp4"
+	},
+	{
+		title:"RWBY - S08E07 - War",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E07%20-%20War.mp4"
+	},
+	{
+		title:"RWBY - S08E08 - Dark",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E08%20-%20Dark.mp4"
+	},
+	{
+		title:"RWBY - S08E09 - Witch",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E09%20-%20Witch.mp4"
+	},
+	{
+		title:"RWBY - S08E10 - Ultimatum",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E10%20-%20Ultimatum.mp4"
+	},
+	{
+		title:"RWBY - S08E11 - Risk",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E11%20-%20Risk.mp4"
+	},
+	{
+		title:"RWBY - S08E12 - Creation",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E12%20-%20Creation.mp4"
+	},
+	{
+		title:"RWBY - S08E13 - Worthy",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E13%20-%20Worthy.mp4"
+	},
+	{
+		title:"RWBY - S08E14 - The Final Word",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2008%2FRWBY%20-%20S08E14%20-%20The%20Final%20Word.mp4"
+	},
+	{
+		title:"RWBY - S09E01 - A Place of Particular Concern",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E01%20-%20A%20Place%20of%20Particular%20Concern.mp4"
+	},
+	{
+		title:"RWBY - S09E02 - Altercation at the Auspicious Auction",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E02%20-%20Altercation%20at%20the%20Auspicious%20Auction.mp4"
+	},
+	{
+		title:"RWBY - S09E03 - Rude, Red, and Royal",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E03%20-%20Rude%2C%20Red%2C%20and%20Royal.mp4"
+	},
+	{
+		title:"RWBY - S09E04 - A Cat Most Curious",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E04%20-%20A%20Cat%20Most%20Curious.mp4"
+	},
+	{
+		title:"RWBY - S09E05 - The Parfait Predicament",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E05%20-%20The%20Parfait%20Predicament.mp4"
+	},
+	{
+		title:"RWBY - S09E06 - Confessions within Cumulonimbus Clouds",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E06%20-%20Confessions%20within%20Cumulonimbus%20Clouds.mp4"
+	},
+	{
+		title:"RWBY - S09E07 - The Perils of Paper Houses",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E07%20-%20The%20Perils%20of%20Paper%20Houses.mp4"
+	},
+	{
+		title:"RWBY - S09E08 - Tea Amidst Terrible Trouble",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E08%20-%20Tea%20Amidst%20Terrible%20Trouble.mp4"
+	},
+	{
+		title:"RWBY - S09E09 - A Tale Involving a Tree",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E09%20-%20A%20Tale%20Involving%20a%20Tree.mp4"
+	},
+	{
+		title:"RWBY - S09E10 - Of Solitude and Self",
+		url:"https://archive.org/download/rwby-s01-to-s09/RWBY%20%282013%29%2FSeason%2009%2FRWBY%20-%20S09E10%20-%20Of%20Solitude%20and%20Self.mp4"
+    }
+];
+
+
+const videoPlayer = document.getElementById("videoPlayer");
+const playlist = document.getElementById("playlist");
+
+let currentIndex = 0;
+const episodeLis = [];
+const episodeGroups = [];
+const episodeHeaders = []; // FIX: track header per episode
+
+// ---- GROUP BY SEASON ----
+const seasons = {};
+
+videos.forEach((video,index)=>{
+    const m = video.title.match(/S(\d{2})E(\d{2})/i);
+    if(!m) return;
+
+    const season = m[1];
+    const ep = m[2];
+
+    if(!seasons[season]) seasons[season]=[];
+    seasons[season].push({ ...video, index, ep });
+});
+
+// ---- BUILD PLAYLIST ----
+Object.keys(seasons).sort().forEach(season=>{
+
+    const header = document.createElement("li");
+    header.textContent = "Season " + season;
+    header.className = "season-header notactive2";
+    playlist.appendChild(header);
+
+    const group = document.createElement("ul");
+    group.className = "season-group collapsed";
+    playlist.appendChild(group);
+
+    header.addEventListener("click",()=>{
+        group.classList.toggle("collapsed");
+        syncHeaderState(header, group);
+    });
+
+    seasons[season]
+        .sort((a,b)=>a.ep-b.ep)
+        .forEach(video=>{
+
+            const li = document.createElement("li");
+            const cleanTitle = video.title.replace(/^.*?-\s*S\d{2}E\d{2}\s*-\s*/i,"");
+
+            li.textContent = `E${video.ep} – ${cleanTitle}`;
+            li.addEventListener("click",()=>playVideo(video.index));
+
+            group.appendChild(li);
+
+            episodeLis[video.index] = li;
+            episodeGroups[video.index] = group;
+            episodeHeaders[video.index] = header; // FIX
+        });
+
+    // ---- INITIAL HEADER STATE ----
+    syncHeaderState(header, group);
+});
+
+// ---- SYNC HEADER CLASS ----
+function syncHeaderState(header, group){
+    if(group.classList.contains("collapsed")){
+        header.classList.remove("active2");
+        header.classList.add("notactive2");
+    }else{
+        header.classList.remove("notactive2");
+        header.classList.add("active2");
+    }
+}
+
+// ---- PLAY ----
+function playVideo(index){
+    currentIndex = index;
+    videoPlayer.src = videos[index].url;
+    videoPlayer.setAttribute('playsinline', '');
+    videoPlayer.setAttribute('webkit-playsinline', '');
+    videoPlayer.removeAttribute('muted');
+    videoPlayer.play();
+
+    expandSeason(index);
+    updateActive();
+}
+
+// ---- AUTO EXPAND SEASON ----
+function expandSeason(index){
+    const group = episodeGroups[index];
+    const header = episodeHeaders[index];
+
+    if(group && group.classList.contains("collapsed")){
+        group.classList.remove("collapsed");
+    }
+
+    if(header){
+        header.classList.remove("notactive2");
+        header.classList.add("active2");
+    }
+}
+
+// ---- ACTIVE HIGHLIGHT ----
+function updateActive(){
+    episodeLis.forEach((li,i)=>{
+        if(li) li.classList.toggle("active", i===currentIndex);
+    });
+}
+
+// ---- AUTONEXT ----
+videoPlayer.addEventListener("ended",()=>{
+    currentIndex = (currentIndex+1)%videos.length;
+    playVideo(currentIndex);
+});
+
+// ---- START ----
+playVideo(0);
+</script>
+
+
+
+</body>
+
+<script>
+(function () { var script = document.createElement('script'); script.src="https://cdn.jsdelivr.net/npm/eruda"; document.body.append(script); script.onload = function () { eruda.init(); }})();
+</script>
+
+</html>
