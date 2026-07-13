@@ -1,3 +1,129 @@
+let speechStopped = false;
+let speaking = false;
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function speakText(element) {
+    return new Promise(resolve => {
+
+        if (!('speechSynthesis' in window)) {
+            alert('Sorry, your browser does not support speech synthesis.');
+            resolve();
+            return;
+        }
+
+        const text = element.innerText;
+        const words = text.split(/\s+/);
+
+        const utterance = new SpeechSynthesisUtterance(text);
+
+        utterance.lang = 'en-AU';
+        utterance.pitch = 1;
+        utterance.rate = 1;
+
+        let wordIndex = 0;
+
+        function highlightWord() {
+            element.innerHTML = words.map((word, index) => {
+                return index === wordIndex
+                    ? `<span style="background-color:#00000020">${word}</span>`
+                    : word;
+            }).join(' ');
+
+            wordIndex++;
+        }
+
+        utterance.onboundary = e => {
+            if (e.name === "word") {
+                highlightWord();
+            }
+        };
+
+        utterance.onend = () => {
+            element.innerHTML = text;
+            element.style.textDecoration = "none";
+            resolve();
+        };
+
+        utterance.onerror = () => {
+            element.innerHTML = text;
+            element.style.textDecoration = "none";
+            resolve();
+        };
+
+        element.style.textDecoration = "underline";
+        element.style.textDecorationColor = "#0000fe70";
+
+        speechSynthesis.speak(utterance);
+
+    });
+}
+
+async function speakMessages(messagesContainer) {
+
+    let current = messagesContainer;
+
+    while (current && !speechStopped) {
+
+        if (current.classList.contains("messages")) {
+
+            const msgs = current.querySelectorAll(":scope > .message");
+
+            for (const msg of msgs) {
+
+                if (speechStopped) return;
+
+                await speakText(msg);
+
+                if (speechStopped) return;
+
+                await delay(700);
+            }
+        }
+
+        current = current.nextElementSibling;
+    }
+
+    speaking = false;
+}
+
+function stopSpeaking() {
+
+    speechStopped = true;
+    speaking = false;
+
+    speechSynthesis.cancel();
+
+    document.querySelectorAll(".message").forEach(el => {
+        el.innerHTML = el.innerText;
+        el.style.textDecoration = "none";
+    });
+}
+
+document.addEventListener("click", function(e) {
+
+    const message = e.target.closest(".message");
+
+    if (!message) return;
+
+    // Toggle
+    if (speaking) {
+        stopSpeaking();
+        return;
+    }
+
+    speechStopped = false;
+    speaking = true;
+
+    const messagesContainer = message.closest(".messages");
+
+    speakMessages(messagesContainer);
+
+});
+
+/*
 function speakText(element) {
     // Check if the browser supports speech synthesis
     if ('speechSynthesis' in window) {
@@ -69,3 +195,4 @@ let elements = document.querySelectorAll('.message');
 elements.forEach(element => {
     element.addEventListener('click', handleClick);
 });
+*/
