@@ -19,9 +19,30 @@ function speakText(element) {
 
         const utterance = new SpeechSynthesisUtterance(text);
 
+        //   -----  jshe
+        utterance.lang = 'en-AU';
+
+const parent = element.closest('.messages');
+
+if (parent?.classList.contains('messages--received')) {
+    // Slightly higher-pitched voice
+    utterance.pitch = 1.15;
+    utterance.rate = 1.0;
+} else if (parent?.classList.contains('messages--sent')) {
+    // Slightly faster and higher-pitched voice
+    utterance.pitch = 1.3;
+    utterance.rate = 1.12;
+} else {
+    // Default
+    utterance.pitch = 1;
+    utterance.rate = 1;
+}
+        /*
         utterance.lang = 'en-AU';
         utterance.pitch = 1;
         utterance.rate = 1;
+        */
+
 
         let wordIndex = 0;
 
