@@ -25,46 +25,23 @@ jobs:
     # Make the path configurable so this workflow works for plain static repos,
     # Jekyll (_site), Hugo (public), etc.
     env:
-      PAGES_PATH: _site
+      PAGES_PATH: dist
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Example build steps (uncomment and adapt the one you need).
-      # Jekyll example:
-      # - name: Set up Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: '3.x'
-      # - name: Install dependencies (Jekyll)
-      #   run: |
-      #     gem install bundler
-      #     bundle config path vendor/bundle
-      #     bundle install
-      # - name: Build site (Jekyll)
-      #   run: bundle exec jekyll build -d ${{ env.PAGES_PATH }}
-
-      # Hugo example:
-      # - name: Setup Hugo
-      #   uses: peaceiris/actions-hugo@v3
-      #   with:
-      #     hugo-version: 'latest'
-      # - name: Build site (Hugo)
-      #   run: hugo --destination ${{ env.PAGES_PATH }}
-
       # Node static build example:
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '18'
-      # - name: Install & build
-      #   run: |
-      #     npm ci
-      #     npm run build
-      #   env:
-      #     CI: true
-      # Ensure your build outputs to the directory set in PAGES_PATH.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install & build
+        run: |
+          npm ci
+          npm run build
+        env:
+          CI: true
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
