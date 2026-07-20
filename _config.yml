@@ -1,4 +1,4 @@
-theme: jekyll-theme-minimal
+theme: minima
 title: index
-description: Bookmark this to keep an eye on my project updates!
+description: Homepage
 page: index.html
